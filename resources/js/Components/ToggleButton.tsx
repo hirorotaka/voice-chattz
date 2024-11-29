@@ -13,8 +13,8 @@ export const ToggleButton = ({
 }: ToggleButtonProps) => {
     const baseStyles = "flex items-center justify-center border-0 p-2 rounded";
     const variantStyles = {
-        sidebar: "bg-green-700 hover:bg-green-600",
-        header: "bg-gray-600 hover:bg-gray-400",
+        sidebar: "bg-blue-700 hover:bg-blue-600",
+        header: "bg-blue-800 hover:bg-blue-700 text-white",
     };
 
     return (

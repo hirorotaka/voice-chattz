@@ -20,10 +20,10 @@ export default function Top() {
     return (
         <>
             <Head title="top" />
-            <div className="flex min-h-screen bg-gray-700">
+            <div className="flex min-h-screen bg-blue-950">
                 <SideMenu isOpen={isSidebarOpen} onToggle={toggleSidebar} />
                 <div className="flex-1 min-w-0">
-                    <div className="sticky top-0 z-10 bg-gray-700 p-4">
+                    <div className="sticky top-0 z-10 bg-blue-950 p-4">
                         <div className="flex justify-between items-center">
                             {!isSidebarOpen && (
                                 <ToggleButton
@@ -37,7 +37,7 @@ export default function Top() {
                             />
                         </div>
                     </div>
-                    <div className="p-4 sm:p-8">
+                    <div className="p-4 sm:p-8 flex flex-col">
                         <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-white">
                             英会話学習記録
                         </h2>

@@ -7,7 +7,7 @@ export const LearningGrid = () => {
     return (
         <div className="w-full overflow-x-auto">
             <div
-                className="grid gap-1 sm:gap-2 w-max mx-auto"
+                className="grid gap-1 sm:gap-2 w-max"
                 style={{
                     gridTemplateColumns: `repeat(${cols}, minmax(32px, 1fr))`,
                     gridTemplateRows: `repeat(${rows}, minmax(32px, 1fr))`,
@@ -25,7 +25,7 @@ export const LearningGrid = () => {
                             border
                             ${
                                 index === 106 || index === 107
-                                    ? "bg-green-500"
+                                    ? "bg-blue-500"
                                     : "bg-gray-200"
                             }
                         `}

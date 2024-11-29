@@ -11,7 +11,7 @@ export const SideMenu = ({ isOpen, onToggle }: SideMenuProps) => {
         <div
             className={`${
                 isOpen ? "w-64" : "w-0"
-            } bg-green-800 min-h-screen transition-all duration-300 overflow-hidden relative`}
+            } bg-blue-600 min-h-screen transition-all duration-300 overflow-hidden relative`}
         >
             <div className="w-64 p-4">
                 <div className="flex items-center text-white mb-8">
@@ -24,7 +24,7 @@ export const SideMenu = ({ isOpen, onToggle }: SideMenuProps) => {
                     />
                 </div>
 
-                <button className="w-full mb-6 p-3 bg-green-700 hover:bg-green-600 text-white rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
+                <button className="w-full mb-6 p-3 bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl">
                     <div className="flex items-center justify-center">
                         <HiPlus className="h-5 w-5 flex-shrink-0" />
                         <span className="text-lg font-medium ml-2">
@@ -37,7 +37,7 @@ export const SideMenu = ({ isOpen, onToggle }: SideMenuProps) => {
                     {[1, 2, 3, 4].map((num) => (
                         <div
                             key={num}
-                            className="flex items-center text-white p-3 hover:bg-green-700 rounded cursor-pointer transition-colors duration-200"
+                            className="flex items-center text-white p-3 hover:bg-blue-700 rounded cursor-pointer transition-colors duration-200"
                         >
                             <HiOutlineChatAlt2 className="h-5 w-5 mr-2" />
                             <span>英会話スレッド{num}</span>
