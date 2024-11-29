@@ -1,11 +1,5 @@
-import { Head, router } from "@inertiajs/react";
-import { useState } from "react";
-import { SideMenu } from "@/Components/SideMenu/SideMenu";
-import { LogoutButton } from "@/Components/Utils/LogoutButton";
-
+import AppLayout from "@/Layouts/AppLayout";
 import ChatContainer from "@/Components/Chat/ChatContainer";
-import SideToggleButton from "@/Components/SideMenu/SideToggleButton";
-import ProfileDropdown from "@/Components/Header/ProfileDropdown";
 
 // types/message.ts
 export type MessageType = {
@@ -20,11 +14,6 @@ export type MessageType = {
 };
 
 export default function Show() {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-    const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
-    };
     // チャットのメッセージ仮データ
     // メッセージデータをデータベース定義に合わせて修正
     const messages: MessageType[] = [
@@ -69,56 +58,9 @@ export default function Show() {
             updated_at: "2024-03-14T10:00:15Z",
         },
     ];
-
     return (
-        <>
-            <Head title="show" />
-            <div className="flex min-h-screen bg-blue-950">
-                {/* Sidebar */}
-                <div
-                    className={`
-                            fixed md:static
-                            overflow-hidden
-                            z-40 md:z-30
-                            h-full
-                            ${isSidebarOpen ? "w-64" : "w-0"}
-                            duration-300 ease-in-out
-                        `}
-                >
-                    <SideMenu onToggle={toggleSidebar} activeThreadId={2} />
-                </div>
-
-                {/* Main content */}
-                <div className="flex-1 min-w-0 flex flex-col h-screen">
-                    {/* Header */}
-                    <div className="sticky top-0 z-20 bg-blue-950 p-4">
-                        <div className="flex justify-between items-center">
-                            {!isSidebarOpen && (
-                                <SideToggleButton
-                                    onClick={toggleSidebar}
-                                    variant="header"
-                                />
-                            )}
-                            <div className="ml-auto text-white font-bold text-2xl">
-                                <ProfileDropdown />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Chat content */}
-                    <div className="flex-1">
-                        <ChatContainer messages={messages} />
-                    </div>
-                </div>
-
-                {/* md以下の時の背景 背景が暗くなってクリックで閉じる*/}
-                {isSidebarOpen && (
-                    <div
-                        className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
-                        onClick={toggleSidebar}
-                    />
-                )}
-            </div>
-        </>
+        <AppLayout title="show" activeThreadId={3}>
+            <ChatContainer messages={messages} />
+        </AppLayout>
     );
 }

@@ -1,7 +1,7 @@
-import { MessageType } from "@/Pages/Thread/Show";
 import { HiMicrophone } from "react-icons/hi2";
 import AiMessage from "./AiMessage";
 import UserMessage from "./UserMessage";
+import { MessageType } from "@/Pages/Thread/Show";
 
 interface ChatProps {
     messages: MessageType[];
@@ -9,16 +9,20 @@ interface ChatProps {
 
 const ChatContainer = ({ messages }: ChatProps) => {
     return (
-        <div className="relative h-full">
-            {/* メッセージエリア */}
-            <div className="absolute inset-0 p-10 overflow-y-auto">
-                <div className="space-y-4 pb-24">
+        <div className="relative flex flex-col h-full">
+            {/* メッセージリスト - スクロール可能なエリア */}
+            <div className="flex-1 overflow-y-auto">
+                <div className="flex flex-col gap-4 p-4">
                     {messages.map((message) => (
                         <div key={message.id}>
                             {message.sender === 1 ? (
                                 <UserMessage message={message} />
                             ) : (
                                 <div>
+                                    <AiMessage message={message} />
+                                    <AiMessage message={message} />
+                                    <AiMessage message={message} />
+                                    <AiMessage message={message} />
                                     <AiMessage message={message} />
                                 </div>
                             )}
@@ -27,10 +31,13 @@ const ChatContainer = ({ messages }: ChatProps) => {
                 </div>
             </div>
 
-            {/* マイクボタン */}
-            <div className="absolute bottom-8 right-8">
-                <button className="p-4 bg-white rounded-full shadow-lg hover:bg-gray-50 transition-transform hover:scale-105">
-                    <HiMicrophone className="w-12 h-12 text-gray-600" />
+            {/* マイクボタン - 固定位置 */}
+            <div className="absolute bottom-6 right-6">
+                <button
+                    className="p-3 bg-white rounded-full shadow-lg hover:bg-gray-50 transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    aria-label="マイク"
+                >
+                    <HiMicrophone className="w-8 h-8 text-gray-600" />
                 </button>
             </div>
         </div>

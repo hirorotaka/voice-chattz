@@ -14,7 +14,7 @@ export const SideToggleButton = ({
     const baseStyles = "flex items-center justify-center border-0 p-2 rounded";
     const variantStyles = {
         sidebar: "bg-blue-700 hover:bg-blue-600",
-        header: "bg-blue-800 hover:bg-blue-700 text-white",
+        header: "bg-blue-900 hover:bg-blue-800 text-white",
     };
 
     return (
