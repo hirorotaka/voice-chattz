@@ -3,30 +3,20 @@ import SideToggleButton from "./SideToggleButton";
 import { Link } from "@inertiajs/react";
 
 interface SideMenuProps {
-    isOpen: boolean;
     onToggle: () => void;
     activeThreadId?: number;
 }
 
-export const SideMenu = ({
-    isOpen,
-    onToggle,
-    activeThreadId,
-}: SideMenuProps) => {
+export const SideMenu = ({ onToggle, activeThreadId }: SideMenuProps) => {
     return (
-        <div
-            className={`
-            ${isOpen ? "w-64" : "w-0"}
-            bg-blue-600 min-h-screen
-            transition-all duration-300
-            overflow-hidden
-        `}
-        >
-            <div className="w-64 p-4">
+        <div className="bg-blue-600 min-h-screen">
+            <div className="w-64 p-4 h-screen flex flex-col">
                 {/* ヘッダー */}
                 <div className="flex items-center text-white mb-8">
-                    <HiOutlineChatAlt2 className="h-6 w-6 mr-2" />
-                    <span className="text-lg font-semibold">MyEnglishApp</span>
+                    <Link href={route("top")} className="flex items-center">
+                        <HiOutlineChatAlt2 className="h-6 w-6 mr-2" />
+                        <h1 className="text-lg font-semibold">MyEnglishApp</h1>
+                    </Link>
                     <SideToggleButton
                         className="ml-auto"
                         onClick={onToggle}
@@ -45,8 +35,8 @@ export const SideMenu = ({
                 </button>
 
                 {/* スレッドリスト */}
-                <nav className="space-y-2">
-                    {[1, 2, 3, 4].map((num) => (
+                <nav className="space-y-2 overflow-y-auto flex-1">
+                    {Array.from({ length: 30 }, (_, i) => i + 1).map((num) => (
                         <Link
                             href={`/thread/${num}`}
                             key={num}

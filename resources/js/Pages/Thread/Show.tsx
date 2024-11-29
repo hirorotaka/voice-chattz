@@ -79,14 +79,24 @@ export default function Show() {
         <>
             <Head title="show" />
             <div className="flex min-h-screen bg-blue-950">
-                <SideMenu
-                    isOpen={isSidebarOpen}
-                    onToggle={toggleSidebar}
-                    activeThreadId={2}
-                />
-                <div className="flex-1 min-w-0">
-                    {/* ヘッダー */}
-                    <div className="sticky top-0 z-10 bg-blue-950 p-4">
+                {/* Sidebar */}
+                <div
+                    className={`
+                            fixed md:static
+                            overflow-hidden
+                            z-40 md:z-30
+                            h-full
+                            ${isSidebarOpen ? "w-64" : "w-0"}
+                            duration-300 ease-in-out
+                        `}
+                >
+                    <SideMenu onToggle={toggleSidebar} activeThreadId={2} />
+                </div>
+
+                {/* Main content */}
+                <div className="flex-1 min-w-0 flex flex-col h-screen">
+                    {/* Header */}
+                    <div className="sticky top-0 z-20 bg-blue-950 p-4">
                         <div className="flex justify-between items-center">
                             {!isSidebarOpen && (
                                 <SideToggleButton
@@ -101,12 +111,19 @@ export default function Show() {
                         </div>
                     </div>
 
-                    {/* コンテンツ */}
-                    <div className="flex-1 p-10">
-                        {/* ここにチャットコンテンツを表示 下記は仮変数 */}
-                        <ChatContainer messages={messages}></ChatContainer>
+                    {/* Chat content */}
+                    <div className="flex-1">
+                        <ChatContainer messages={messages} />
                     </div>
                 </div>
+
+                {/* md以下の時の背景 背景が暗くなってクリックで閉じる*/}
+                {isSidebarOpen && (
+                    <div
+                        className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+                        onClick={toggleSidebar}
+                    />
+                )}
             </div>
         </>
     );
