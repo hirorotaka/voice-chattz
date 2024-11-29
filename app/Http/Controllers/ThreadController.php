@@ -17,7 +17,7 @@ class ThreadController extends Controller
     public function index(): InertiaResponse
     {
 
-        return Inertia::render('top');
+        return Inertia::render('Top');
     }
 
     /**
