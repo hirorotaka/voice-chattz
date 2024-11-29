@@ -41,7 +41,11 @@ class ThreadController extends Controller
      */
     public function show(Thread $thread)
     {
-        //
+        return Inertia::render(
+            'Thread/Show',
+            // ['thread' => $thread]
+            // 'activeThreadId' => $thread->id
+        );
     }
 
     /**
