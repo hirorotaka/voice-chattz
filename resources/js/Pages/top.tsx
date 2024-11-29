@@ -1,9 +1,9 @@
 import { Head } from "@inertiajs/react";
 import { useState } from "react";
 import { LearningGrid } from "@/Components/LearningGrid";
-import { SideMenu } from "@/Components/SideMenu";
-import { LogoutButton } from "@/Components/LogoutButton";
-import { ToggleButton } from "@/Components/ToggleButton";
+import { SideMenu } from "@/Components/SideMenu/SideMenu";
+import { LogoutButton } from "@/Components/utils/LogoutButton";
+import { SideToggleButton } from "@/Components/SideMenu/SideToggleButton";
 
 export default function Top() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -26,7 +26,7 @@ export default function Top() {
                     <div className="sticky top-0 z-10 bg-blue-950 p-4">
                         <div className="flex justify-between items-center">
                             {!isSidebarOpen && (
-                                <ToggleButton
+                                <SideToggleButton
                                     onClick={toggleSidebar}
                                     variant="header"
                                 />

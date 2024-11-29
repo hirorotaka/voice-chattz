@@ -6,7 +6,7 @@ interface ToggleButtonProps {
     variant?: "sidebar" | "header";
 }
 
-export const ToggleButton = ({
+export const SideToggleButton = ({
     className = "",
     onClick,
     variant = "header",
@@ -27,4 +27,4 @@ export const ToggleButton = ({
     );
 };
 
-export default ToggleButton;
+export default SideToggleButton;
