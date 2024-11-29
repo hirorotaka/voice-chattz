@@ -1,4 +1,4 @@
-import { Head } from "@inertiajs/react";
+import { Head, router } from "@inertiajs/react";
 import { useState } from "react";
 import { SideMenu } from "@/Components/SideMenu/SideMenu";
 import { LogoutButton } from "@/Components/utils/LogoutButton";
@@ -26,8 +26,7 @@ export default function Show() {
     };
 
     const handleLogout = () => {
-        // ログアウト処理をここに実装
-        console.log("Logout clicked");
+        router.post(route("logout"));
     };
 
     // チャットのメッセージ仮データ

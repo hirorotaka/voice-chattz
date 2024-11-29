@@ -1,9 +1,10 @@
-import { Head } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import { useState } from "react";
 import { LearningGrid } from "@/Components/LearningGrid";
 import { SideMenu } from "@/Components/SideMenu/SideMenu";
 import { LogoutButton } from "@/Components/utils/LogoutButton";
 import { SideToggleButton } from "@/Components/SideMenu/SideToggleButton";
+import { Toast } from "flowbite-react";
 
 export default function Top() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -13,8 +14,7 @@ export default function Top() {
     };
 
     const handleLogout = () => {
-        // ログアウト処理をここに実装
-        console.log("Logout clicked");
+        router.post(route("logout"));
     };
 
     return (
@@ -46,6 +46,7 @@ export default function Top() {
                                     variant="header"
                                 />
                             )}
+
                             <LogoutButton
                                 className="ml-auto"
                                 onClick={handleLogout}
