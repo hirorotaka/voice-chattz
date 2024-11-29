@@ -1,10 +1,11 @@
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import { LearningGrid } from "@/Components/LearningGrid";
 import { SideMenu } from "@/Components/SideMenu/SideMenu";
-import { LogoutButton } from "@/Components/utils/LogoutButton";
+import { LogoutButton } from "@/Components/Utils/LogoutButton";
 import { SideToggleButton } from "@/Components/SideMenu/SideToggleButton";
-import { Toast } from "flowbite-react";
+import { Dropdown } from "flowbite-react";
+import ProfileDropdown from "@/Components/Header/ProfileDropdown";
 
 export default function Top() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -13,24 +14,15 @@ export default function Top() {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
-    const handleLogout = () => {
-        router.post(route("logout"));
-    };
-
     return (
         <>
             <Head title="show" />
             <div className="flex min-h-screen bg-blue-950">
                 {/* Sidebar */}
                 <div
-                    className={`
-                            fixed md:static
-                            overflow-hidden
-                            z-40 md:z-30
-                            h-full
-                            ${isSidebarOpen ? "w-64" : "w-0"}
-                            duration-300 ease-in-out
-                        `}
+                    className={`fixed md:static overflow-hidden z-40 md:z-30 h-full ${
+                        isSidebarOpen ? "w-64" : "w-0"
+                    } duration-300 ease-in-out`}
                 >
                     <SideMenu onToggle={toggleSidebar} activeThreadId={2} />
                 </div>
@@ -46,11 +38,9 @@ export default function Top() {
                                     variant="header"
                                 />
                             )}
-
-                            <LogoutButton
-                                className="ml-auto"
-                                onClick={handleLogout}
-                            />
+                            <div className="ml-auto text-white font-bold text-2xl">
+                                <ProfileDropdown />
+                            </div>
                         </div>
                     </div>
 

@@ -1,10 +1,11 @@
 import { Head, router } from "@inertiajs/react";
 import { useState } from "react";
 import { SideMenu } from "@/Components/SideMenu/SideMenu";
-import { LogoutButton } from "@/Components/utils/LogoutButton";
+import { LogoutButton } from "@/Components/Utils/LogoutButton";
 
 import ChatContainer from "@/Components/Chat/ChatContainer";
 import SideToggleButton from "@/Components/SideMenu/SideToggleButton";
+import ProfileDropdown from "@/Components/Header/ProfileDropdown";
 
 // types/message.ts
 export type MessageType = {
@@ -24,11 +25,6 @@ export default function Show() {
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
-
-    const handleLogout = () => {
-        router.post(route("logout"));
-    };
-
     // チャットのメッセージ仮データ
     // メッセージデータをデータベース定義に合わせて修正
     const messages: MessageType[] = [
@@ -103,10 +99,9 @@ export default function Show() {
                                     variant="header"
                                 />
                             )}
-                            <LogoutButton
-                                className="ml-auto"
-                                onClick={handleLogout}
-                            />
+                            <div className="ml-auto text-white font-bold text-2xl">
+                                <ProfileDropdown />
+                            </div>
                         </div>
                     </div>
 

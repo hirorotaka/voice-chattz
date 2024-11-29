@@ -1,6 +1,7 @@
 import { HiPlus, HiOutlineChatAlt2 } from "react-icons/hi";
 import SideToggleButton from "./SideToggleButton";
 import { Link } from "@inertiajs/react";
+import { LogoutButton } from "../Utils/LogoutButton";
 
 interface SideMenuProps {
     onToggle: () => void;
@@ -54,6 +55,8 @@ export const SideMenu = ({ onToggle, activeThreadId }: SideMenuProps) => {
                         </Link>
                     ))}
                 </nav>
+
+                <LogoutButton />
             </div>
         </div>
     );
