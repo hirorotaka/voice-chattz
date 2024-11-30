@@ -10,22 +10,14 @@ interface ShowProps {
     activeThreadId: number;
 }
 
-export default function Show({
-    threads: initialThreads,
-    messages: initialMessages,
-    activeThreadId,
-}: ShowProps) {
-    const { setThreads, setActiveThread, setMessages } = useAppContext();
-
-    useEffect(() => {
-        setThreads(initialThreads);
-        setActiveThread(activeThreadId);
-        setMessages(initialMessages);
-    }, [initialThreads, activeThreadId, initialMessages]);
-
+export default function Show({ threads, messages, activeThreadId }: ShowProps) {
     return (
-        <AppLayout title="show">
-            <ChatContainer />
+        <AppLayout
+            title="show"
+            threads={threads}
+            activeThreadId={activeThreadId}
+        >
+            <ChatContainer messages={messages} />
         </AppLayout>
     );
 }

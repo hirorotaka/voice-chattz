@@ -2,13 +2,14 @@ import { HiPlus, HiOutlineChatAlt2 } from "react-icons/hi";
 import SideToggleButton from "./SideToggleButton";
 import { Link, router } from "@inertiajs/react";
 import { LogoutButton } from "../Utils/LogoutButton";
-import { useAppContext } from "@/Contexts/AppContext";
+import { ThreadType } from "@/types/types";
 
-export const SideMenu = () => {
-    const { threads, activeThread } = useAppContext();
+interface SideMenuProps {
+    threads: ThreadType[];
+    activeThreadId?: number | null;
+}
 
-    let activeThreadId = activeThread || null;
-
+export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
     const handleCreateThread = () => {
         router.post(route("thread.store"), {
             title: `英会話スレッド${threads.length + 1}`,

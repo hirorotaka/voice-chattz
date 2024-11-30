@@ -3,11 +3,12 @@ import AiMessage from "./AiMessage";
 import UserMessage from "./UserMessage";
 import { MessageType } from "@/types/types";
 import { useEffect, useRef } from "react";
-import { useAppContext } from "@/Contexts/AppContext";
 
-const ChatContainer = () => {
-    const { messages } = useAppContext();
+interface ChatContainerProps {
+    messages: MessageType[];
+}
 
+const ChatContainer = ({ messages }: ChatContainerProps) => {
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const isFirstRender = useRef(true); //再レンダリング間でも値を保持する必要があるため、useRefを使用
     const hasMessages = messages.length > 0;

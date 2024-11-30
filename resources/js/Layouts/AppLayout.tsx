@@ -4,13 +4,21 @@ import { SideMenu } from "@/Components/SideMenu/SideMenu";
 import { SideToggleButton } from "@/Components/SideMenu/SideToggleButton";
 import ProfileDropdown from "@/Components/Header/ProfileDropdown";
 import { useAppContext } from "@/Contexts/AppContext";
+import { ThreadType } from "@/types/types";
 
 interface AppLayoutProps {
     title: string;
     children: ReactNode;
+    threads: ThreadType[];
+    activeThreadId?: number | null;
 }
 
-export default function AppLayout({ title, children }: AppLayoutProps) {
+export default function AppLayout({
+    title,
+    children,
+    threads,
+    activeThreadId,
+}: AppLayoutProps) {
     const { isSidebarOpen, handleSidebarToggle } = useAppContext();
 
     return (
@@ -23,7 +31,10 @@ export default function AppLayout({ title, children }: AppLayoutProps) {
                         isSidebarOpen ? "w-64" : "w-0"
                     } duration-300 ease-in-out`}
                 >
-                    <SideMenu />
+                    <SideMenu
+                        threads={threads}
+                        activeThreadId={activeThreadId}
+                    />
                 </div>
 
                 {/* Main content */}
