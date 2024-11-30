@@ -1,13 +1,11 @@
-import React from "react";
-
 export const LearningGrid = () => {
     const rows = 6;
     const cols = 12;
 
     return (
-        <div className="w-full overflow-x-auto">
+        <div className="h-full flex items-start">
             <div
-                className="grid gap-1 sm:gap-2 w-max"
+                className="grid gap-1 sm:gap-2"
                 style={{
                     gridTemplateColumns: `repeat(${cols}, minmax(32px, 1fr))`,
                     gridTemplateRows: `repeat(${rows}, minmax(32px, 1fr))`,
@@ -18,9 +16,7 @@ export const LearningGrid = () => {
                         key={index}
                         className={`
                             w-8 h-8
-                            sm:w-10 sm:h-10
-                            md:w-12 md:h-12
-                            lg:w-14 lg:h-14
+                            lg:w-10 lg:h-10
                             xl:w-16 xl:h-16
                             border
                             ${

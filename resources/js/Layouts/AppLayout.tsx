@@ -20,7 +20,7 @@ export default function AppLayout({ title, children }: AppLayoutProps) {
                 {/* Sidebar */}
                 <div
                     className={`fixed md:static overflow-hidden z-40 h-full ${
-                        isSidebarOpen ? "w-72" : "w-0"
+                        isSidebarOpen ? "w-64" : "w-0"
                     } duration-300 ease-in-out`}
                 >
                     <SideMenu />
