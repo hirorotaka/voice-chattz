@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('message_en')->nullable();
             $table->text('message_ja')->nullable();
             $table->smallInteger('sender')->comment('1: English, 2: Japanese');
+            $table->string('audio_file_path');
             $table->timestamps();
         });
     }

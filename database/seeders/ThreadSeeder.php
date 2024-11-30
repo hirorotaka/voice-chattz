@@ -13,6 +13,11 @@ class ThreadSeeder extends Seeder
      */
     public function run(): void
     {
-        Thread::factory()->count(5)->create();
+        // 5つのスレッドを作成する
+        for ($i = 0; $i < 5; $i++) {
+            Thread::create([
+                'title' => 'スレッドタイトル' . ($i + 1),
+            ]);
+        }
     }
 }
