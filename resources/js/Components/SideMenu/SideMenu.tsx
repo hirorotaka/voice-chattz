@@ -1,15 +1,13 @@
 import { HiPlus, HiOutlineChatAlt2 } from "react-icons/hi";
 import SideToggleButton from "./SideToggleButton";
-import { Link, usePage } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 import { LogoutButton } from "../Utils/LogoutButton";
+import { useAppContext } from "@/Contexts/AppContext";
 
 export const SideMenu = () => {
-    const { props } = usePage();
+    const { threads, activeThread } = useAppContext();
 
-    let activeThreadId = null;
-    if (props.activeThreadId) {
-        activeThreadId = props.activeThreadId;
-    }
+    let activeThreadId = activeThread || null;
 
     return (
         <div className="bg-blue-600 min-h-screen">
@@ -35,21 +33,21 @@ export const SideMenu = () => {
 
                 {/* スレッドリスト */}
                 <nav className="space-y-2 overflow-y-auto flex-1 p-3">
-                    {Array.from({ length: 30 }, (_, i) => i + 1).map((num) => (
+                    {threads.map((thread) => (
                         <Link
-                            href={`/thread/${num}`}
-                            key={num}
+                            href={`/thread/${thread.id}`}
+                            key={thread.id}
                             className={`
                                 flex items-center text-white p-3 rounded cursor-pointer transition-colors duration-200
                                 ${
-                                    activeThreadId === num
+                                    String(activeThreadId) === String(thread.id)
                                         ? "bg-blue-800 font-bold"
                                         : "hover:bg-blue-700"
                                 }
                             `}
                         >
                             <HiOutlineChatAlt2 className="h-5 w-5 mr-2" />
-                            <span>英会話スレッド{num}</span>
+                            <span>英会話スレッド{thread.id}</span>
                         </Link>
                     ))}
                 </nav>
