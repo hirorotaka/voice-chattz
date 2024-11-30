@@ -51,14 +51,26 @@ const messages: MessageType[] = [
 
 const ChatContainer = () => {
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const isFirstRender = useRef(true); //再レンダリング間でも値を保持する必要があるため、useRefを使用
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        messagesEndRef.current?.scrollIntoView({
+            behavior: isFirstRender.current ? "auto" : "smooth",
+        });
     };
 
+    // 初回レンダリング時の処理
     useEffect(() => {
         scrollToBottom();
-    }, [messages]); // messages が更新されるたびにスクロール
+        isFirstRender.current = false;
+    }, []);
+
+    // メッセージが更新された時の処理
+    useEffect(() => {
+        if (!isFirstRender.current) {
+            scrollToBottom();
+        }
+    }, [messages]);
 
     return (
         <div className="relative flex flex-col h-full">
