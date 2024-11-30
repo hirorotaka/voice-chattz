@@ -2,17 +2,16 @@
 
 namespace Database\Seeders;
 
-use App\Models\Thread;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ThreadSeeder extends Seeder
+class MessageSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Thread::factory()->count(5)->create();
+        //
     }
 }

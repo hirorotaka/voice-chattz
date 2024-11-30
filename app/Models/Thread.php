@@ -9,4 +9,9 @@ class Thread extends Model
 {
     /** @use HasFactory<\Database\Factories\ThreadFactory> */
     use HasFactory;
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
 }

@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('threads', function (Blueprint $table) {
+        Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->foreignId('thread_id')->constrained()->cascadeOnDelete();
+            $table->text('message_en')->nullable();
+            $table->text('message_ja')->nullable();
+            $table->smallInteger('sender')->comment('1: English, 2: Japanese');
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('threads');
+        Schema::dropIfExists('messages');
     }
 };
