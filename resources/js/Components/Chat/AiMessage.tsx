@@ -1,4 +1,4 @@
-import { MessageType } from "@/Pages/Thread/Show";
+import { MessageType } from "@/types/types";
 import { HiSpeakerWave } from "react-icons/hi2";
 
 type AiMessageProps = {

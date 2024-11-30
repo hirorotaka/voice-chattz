@@ -1,14 +1,16 @@
 import { HiPlus, HiOutlineChatAlt2 } from "react-icons/hi";
 import SideToggleButton from "./SideToggleButton";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 import { LogoutButton } from "../Utils/LogoutButton";
 
-interface SideMenuProps {
-    onToggle: () => void;
-    activeThreadId?: number;
-}
+export const SideMenu = () => {
+    const { props } = usePage();
 
-export const SideMenu = ({ onToggle, activeThreadId }: SideMenuProps) => {
+    let activeThreadId = null;
+    if (props.activeThreadId) {
+        activeThreadId = props.activeThreadId;
+    }
+
     return (
         <div className="bg-blue-600 min-h-screen">
             <div className="p-4 h-screen flex flex-col">
@@ -18,11 +20,7 @@ export const SideMenu = ({ onToggle, activeThreadId }: SideMenuProps) => {
                         <HiOutlineChatAlt2 className="h-6 w-6 mr-2" />
                         <h1 className="text-lg font-semibold">MyEnglishApp</h1>
                     </Link>
-                    <SideToggleButton
-                        className="ml-auto"
-                        onClick={onToggle}
-                        variant="sidebar"
-                    />
+                    <SideToggleButton className="ml-auto" variant="sidebar" />
                 </div>
 
                 {/* 新規スレッド作成ボタン */}

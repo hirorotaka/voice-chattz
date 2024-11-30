@@ -1,52 +1,38 @@
 import { Head } from "@inertiajs/react";
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { SideMenu } from "@/Components/SideMenu/SideMenu";
 import { SideToggleButton } from "@/Components/SideMenu/SideToggleButton";
 import ProfileDropdown from "@/Components/Header/ProfileDropdown";
+import { useAppContext } from "@/Contexts/AppContext";
 
 interface AppLayoutProps {
     title: string;
-    activeThreadId?: number;
     children: ReactNode;
 }
 
-export default function AppLayout({
-    title,
-    children,
-    activeThreadId,
-}: AppLayoutProps) {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-    const handleSidebarToggle = () => {
-        setIsSidebarOpen(!isSidebarOpen);
-    };
+export default function AppLayout({ title, children }: AppLayoutProps) {
+    const { isSidebarOpen, handleSidebarToggle } = useAppContext();
 
     return (
         <>
             <Head title={title} />
-            <div className="flex max-h-screen bg-blue-950">
+            <div className="flex h-screen overflow-hidden bg-blue-950">
                 {/* Sidebar */}
                 <div
                     className={`fixed md:static overflow-hidden z-40 h-full ${
                         isSidebarOpen ? "w-72" : "w-0"
                     } duration-300 ease-in-out`}
                 >
-                    <SideMenu
-                        onToggle={handleSidebarToggle}
-                        activeThreadId={activeThreadId}
-                    />
+                    <SideMenu />
                 </div>
 
                 {/* Main content */}
-                <div className="flex-1 flex flex-col">
+                <div className="flex-1 flex flex-col min-h-0">
                     {/* Header */}
-                    <div className="sticky top-0 bg-blue-950 p-4">
-                        <header className="flex items-center h-8 px-4 bg-blue-950">
+                    <div className="sticky top-0 z-30 bg-blue-950 shadow-md">
+                        <header className="flex items-center h-16 px-4">
                             {!isSidebarOpen && (
-                                <SideToggleButton
-                                    onClick={handleSidebarToggle}
-                                    variant="header"
-                                />
+                                <SideToggleButton variant="header" />
                             )}
                             <div className="ml-auto text-white font-bold text-2xl">
                                 <ProfileDropdown />
@@ -54,11 +40,13 @@ export default function AppLayout({
                         </header>
                     </div>
 
-                    {/* Content area - 残りの空間を使用 */}
-                    <main className="flex-1 overflow-hidden ">{children}</main>
+                    {/* Content area */}
+                    <main className="flex-1 overflow-y-auto p-5">
+                        {children}
+                    </main>
                 </div>
 
-                {/* md以下の時の背景 背景が暗くなってクリックで閉じる*/}
+                {/* Overlay for mobile */}
                 {isSidebarOpen && (
                     <div
                         className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
