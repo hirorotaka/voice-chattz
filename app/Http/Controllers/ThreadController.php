@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreThreadRequest;
 use App\Http\Requests\UpdateThreadRequest;
 use App\Models\Thread;
+use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\In;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
@@ -34,7 +35,9 @@ class ThreadController extends Controller
      */
     public function store(StoreThreadRequest $request)
     {
-        //
+        $thread = Thread::create($request->validated());
+
+        return redirect()->route('thread.show', $thread);
     }
 
     /**
