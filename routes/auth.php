@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Middleware\RedirectIfAuthenticated;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('guest')->group(function () {
+// ログイン関連（個別ミドルウェア適用）ログインしているときに/loginへアクセスしたときの処理
+Route::middleware(RedirectIfAuthenticated::class)->group(function () {
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
