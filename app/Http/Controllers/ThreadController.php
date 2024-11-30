@@ -17,7 +17,8 @@ class ThreadController extends Controller
     public function index(): InertiaResponse
     {
 
-        return Inertia::render('Top');
+        $threads = Thread::orderBy('created_at', 'desc')->get();
+        return Inertia::render('Top', ['threads' => $threads]);
     }
 
     /**
@@ -41,13 +42,17 @@ class ThreadController extends Controller
      */
     public function show(Thread $thread)
     {
+        $threads = Thread::orderBy('created_at', 'desc')->get();
+        $messages = $thread->messages()->get();
         return Inertia::render(
             'Thread/Show',
-            // ['thread' => $thread]
-            // 'activeThreadId' => $thread->id
+            [
+                'threads' => $threads,
+                'activeThreadId' => $thread->id,
+                'messages' => $messages
+            ]
         );
     }
-
     /**
      * Show the form for editing the specified resource.
      */
