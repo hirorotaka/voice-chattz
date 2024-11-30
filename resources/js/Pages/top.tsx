@@ -1,7 +1,19 @@
 import AppLayout from "@/Layouts/AppLayout";
 import { LearningGrid } from "@/Components/LearningGrid";
+import { ThreadType } from "@/types/types";
+import { useAppContext } from "@/Contexts/AppContext";
+import { useEffect } from "react";
 
-export default function Top() {
+interface TopProps {
+    threads: ThreadType[];
+}
+
+export default function Top({ threads: initialThreads }: TopProps) {
+    const { setThreads } = useAppContext();
+
+    useEffect(() => {
+        setThreads(initialThreads);
+    }, [initialThreads]);
     return (
         <AppLayout title="Top">
             <div className="h-full flex flex-col">
