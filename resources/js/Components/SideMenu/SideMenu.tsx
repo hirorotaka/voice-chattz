@@ -6,6 +6,7 @@ import { LogoutButton } from "../Utils/LogoutButton";
 import { ThreadType } from "@/types/types";
 import { useEffect, useRef, useState } from "react";
 import DeleteThreadForm from "../Utils/DeleteThreadForm";
+import CreateThreadForm from "../Utils/CreateThreadForm";
 
 interface SideMenuProps {
     threads: ThreadType[];
@@ -18,6 +19,9 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
     // 削除モーダルの状態管理を追加
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [threadToDelete, setThreadToDelete] = useState<string | null>(null);
+
+    // 新規作成モーダル用のステート
+    const [showCreateModal, setShowCreateModal] = useState(false);
 
     // スクロール位置の管理をまとめた関数
     const scrollManager = {
@@ -64,18 +68,11 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
     }, []);
 
     const handleCreateThread = () => {
-        // スクロール位置をリセット
-        resetScroll();
+        setShowCreateModal(true);
+    };
 
-        router.post(
-            route("thread.store"),
-            {
-                title: `英会話スレッド${threads.length + 1}`,
-            },
-            {
-                preserveState: false,
-            }
-        );
+    const handleCloseCreateModal = () => {
+        setShowCreateModal(false);
     };
 
     const handleThreadSelect = (threadId: string) => {
@@ -127,9 +124,10 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                         onClick={handleCreateThread}
                         className="w-full mb-6 p-3 bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
                     >
-                        <div className="flex items-center justify-center">
-                            <HiPlus className="h-5 w-5 flex-shrink-0" />
-                            <span className="text-lg font-medium ml-2">
+                        <div className="flex items-center justify-center space-x-2">
+                            <HiPlus className="h-6 w-6 flex-shrink-0" />{" "}
+                            {/* サイズを h-6 w-6 に増やし、flex-shrink-0 を追加 */}
+                            <span className="text-lg font-medium">
                                 新規スレッド作成
                             </span>
                         </div>
@@ -158,19 +156,26 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                                         }
                                         className="flex-1 flex items-center p-2"
                                     >
-                                        <HiOutlineChatAlt2 className="h-5 w-5 mr-2" />
-                                        <p>英会話スレッド{thread.id}</p>
+                                        <HiOutlineChatAlt2 className="flex-shrink-0 h-5 w-5 mr-2" />
+                                        <p className="text-sm text-left">
+                                            {thread.title}
+                                        </p>
                                     </button>
-                                    {isActive && (
-                                        <button
-                                            onClick={() =>
-                                                handleThreadDelete(thread.id)
-                                            }
-                                            className="p-2 hover:text-red-400 transition-colors"
-                                        >
-                                            <HiTrash className="h-4 w-4" />
-                                        </button>
-                                    )}
+                                    {/* 非アクティブ時も同じ幅のスペースを確保 */}
+                                    <div className="w-8 flex justify-center">
+                                        {isActive ? (
+                                            <button
+                                                onClick={() =>
+                                                    handleThreadDelete(
+                                                        thread.id
+                                                    )
+                                                }
+                                                className="p-2 hover:text-red-400 transition-colors"
+                                            >
+                                                <HiTrash className="h-4 w-4" />
+                                            </button>
+                                        ) : null}
+                                    </div>
                                 </div>
                             );
                         })}
@@ -189,6 +194,13 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                     resetScroll={resetScroll}
                 />
             )}
+
+            {/* 新規作成モーダル */}
+            <CreateThreadForm
+                show={showCreateModal}
+                onClose={handleCloseCreateModal}
+                resetScroll={resetScroll}
+            />
         </>
     );
 };
