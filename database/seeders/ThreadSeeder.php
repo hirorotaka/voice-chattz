@@ -16,6 +16,7 @@ class ThreadSeeder extends Seeder
         // 5つのスレッドを作成する
         for ($i = 0; $i < 5; $i++) {
             Thread::create([
+                'user_id' => 1,
                 'title' => 'スレッドタイトル' . ($i + 1),
             ]);
         }
