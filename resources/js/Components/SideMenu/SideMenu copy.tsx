@@ -4,6 +4,7 @@ import { Link, router } from "@inertiajs/react";
 import SideToggleButton from "./SideToggleButton";
 import { LogoutButton } from "../Utils/LogoutButton";
 import { ThreadType } from "@/types/types";
+import { useRef } from "react"; // useEffectを削除
 
 interface SideMenuProps {
     threads: ThreadType[];
@@ -11,6 +12,8 @@ interface SideMenuProps {
 }
 
 export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
+    const navRef = useRef<HTMLElement>(null);
+
     const handleCreateThread = () => {
         router.post(
             route("thread.store"),
@@ -19,12 +22,25 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
             },
             {
                 preserveState: false,
+                preserveScroll: true,
             }
         );
     };
 
     const handleThreadSelect = (threadId: string) => {
-        router.get(route("thread.show", { thread: threadId }));
+        // nav要素のrefを使用してスクロール位置を取得
+        const navScrollPosition = navRef.current?.scrollTop;
+
+        router.visit(route("thread.show", { thread: threadId }), {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => {
+                // スクロール位置を復元
+                if (navRef.current && navScrollPosition) {
+                    navRef.current.scrollTop = navScrollPosition;
+                }
+            },
+        });
     };
 
     const handleThreadDelete = (threadId: string) => {
@@ -57,7 +73,7 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                 </button>
 
                 {/* スレッドリスト */}
-                <nav className="space-y-2 overflow-y-auto flex-1">
+                <nav ref={navRef} className="space-y-2 overflow-y-auto flex-1">
                     {threads.map((thread) => {
                         const isActive =
                             String(activeThreadId) === String(thread.id);

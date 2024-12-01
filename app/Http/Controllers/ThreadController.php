@@ -18,7 +18,7 @@ class ThreadController extends Controller
     public function index(): InertiaResponse
     {
 
-        $threads = Thread::orderBy('created_at', 'desc')->get();
+        $threads = Thread::orderBy('id', 'desc')->get();
         return Inertia::render('Top', ['threads' => $threads]);
     }
 
@@ -45,7 +45,7 @@ class ThreadController extends Controller
      */
     public function show(Thread $thread)
     {
-        $threads = Thread::orderBy('created_at', 'desc')->get();
+        $threads = Thread::orderBy('id', 'desc')->get();
         $messages = $thread->messages()->get();
         return Inertia::render(
             'Thread/Show',
