@@ -12,7 +12,8 @@ export type MessageType = {
 
 export type ThreadType = {
     id: string;
-    name: string;
+    user_id: string;
+    title: string;
     created_at: string; // ISO形式のタイムスタンプ
     updated_at: string; // ISO形式のタイムスタンプ
 };
