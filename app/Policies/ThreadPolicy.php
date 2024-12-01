@@ -4,63 +4,30 @@ namespace App\Policies;
 
 use App\Models\Thread;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ThreadPolicy
 {
     /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Thread $thread): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can create models.
+     * スレッドの作成権限
      */
     public function create(User $user): bool
     {
-        return false;
+        return true; // 認証済みユーザーは誰でも作成可能
     }
 
     /**
-     * Determine whether the user can update the model.
+     * スレッドの閲覧権限
      */
-    public function update(User $user, Thread $thread): bool
+    public function view(User $user, Thread $thread): bool
     {
-        return false;
+        return $user->id === $thread->user_id;
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * スレッドの削除権限
      */
     public function delete(User $user, Thread $thread): bool
     {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Thread $thread): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Thread $thread): bool
-    {
-        return false;
+        return $user->id === $thread->user_id;
     }
 }
