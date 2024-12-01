@@ -6,6 +6,7 @@ use App\Http\Requests\StoreThreadRequest;
 use App\Http\Requests\UpdateThreadRequest;
 use App\Models\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\In;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
@@ -18,7 +19,9 @@ class ThreadController extends Controller
     public function index(): InertiaResponse
     {
 
-        $threads = Thread::orderBy('id', 'desc')->get();
+        $threads = Thread::where('user_id', Auth::user()->id)
+            ->orderBy('id', 'desc')
+            ->get();
         return Inertia::render('Top', ['threads' => $threads]);
     }
 
@@ -45,8 +48,12 @@ class ThreadController extends Controller
      */
     public function show(Thread $thread)
     {
-        $threads = Thread::orderBy('id', 'desc')->get();
+        $threads = Thread::where('user_id', Auth::user()->id)
+            ->orderBy('id', 'desc')
+            ->get();
+
         $messages = $thread->messages()->get();
+
         return Inertia::render(
             'Thread/Show',
             [
