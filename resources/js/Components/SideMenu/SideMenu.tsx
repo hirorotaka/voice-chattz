@@ -4,6 +4,7 @@ import { Link, router } from "@inertiajs/react";
 import SideToggleButton from "./SideToggleButton";
 import { LogoutButton } from "../Utils/LogoutButton";
 import { ThreadType } from "@/types/types";
+import { useEffect, useRef } from "react";
 
 interface SideMenuProps {
     threads: ThreadType[];
@@ -11,7 +12,50 @@ interface SideMenuProps {
 }
 
 export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
+    const navRef = useRef<HTMLElement>(null);
+
+    // スクロール位置の管理をまとめた関数
+    const scrollManager = {
+        save: (scrollTop: number) => {
+            localStorage.setItem(
+                "sideMenuScrollPosition",
+                scrollTop.toString()
+            );
+        },
+        restore: () => {
+            const nav = navRef.current;
+            if (!nav) return;
+
+            const savedPosition = localStorage.getItem(
+                "sideMenuScrollPosition"
+            );
+            if (savedPosition) {
+                nav.scrollTop = parseInt(savedPosition);
+            }
+        },
+    };
+
+    // スクロール位置を監視
+    useEffect(() => {
+        const nav = navRef.current;
+        if (!nav) return;
+
+        const handleScroll = () => scrollManager.save(nav.scrollTop);
+        nav.addEventListener("scroll", handleScroll);
+        return () => nav.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    // マウント時に位置を復元
+    useEffect(() => {
+        scrollManager.restore();
+    }, []);
+
     const handleCreateThread = () => {
+        // スクロール位置をリセット
+        if (navRef.current) {
+            navRef.current.scrollTop = 0;
+            scrollManager.save(0); // localStorageの保存値も更新
+        }
         router.post(
             route("thread.store"),
             {
@@ -24,7 +68,19 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
     };
 
     const handleThreadSelect = (threadId: string) => {
-        router.get(route("thread.show", { thread: threadId }));
+        // nav要素のrefを使用してスクロール位置を取得
+        const navScrollPosition = navRef.current?.scrollTop;
+
+        router.visit(route("thread.show", { thread: threadId }), {
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => {
+                // スクロール位置を復元
+                if (navRef.current && navScrollPosition) {
+                    navRef.current.scrollTop = navScrollPosition;
+                }
+            },
+        });
     };
 
     const handleThreadDelete = (threadId: string) => {
@@ -57,7 +113,7 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                 </button>
 
                 {/* スレッドリスト */}
-                <nav className="space-y-2 overflow-y-auto flex-1">
+                <nav ref={navRef} className="space-y-2 overflow-y-auto flex-1">
                     {threads.map((thread) => {
                         const isActive =
                             String(activeThreadId) === String(thread.id);
