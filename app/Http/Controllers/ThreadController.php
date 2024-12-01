@@ -35,9 +35,9 @@ class ThreadController extends Controller
      */
     public function store(StoreThreadRequest $request)
     {
-        $thread = Thread::create($request->validated());
+        $thread = $request->user()->threads()->create($request->validated());
 
-        return redirect()->route('thread.show', $thread);
+        return to_route('thread.show', $thread);
     }
 
     /**
