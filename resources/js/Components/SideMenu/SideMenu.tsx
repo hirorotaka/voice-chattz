@@ -1,12 +1,13 @@
 import { HiPlus, HiOutlineChatAlt2 } from "react-icons/hi";
-import { HiTrash } from "react-icons/hi2";
-import { Link, router } from "@inertiajs/react";
+import { HiTrash, HiOutlinePencil } from "react-icons/hi2";
+import { Link, router, useForm } from "@inertiajs/react";
 import SideToggleButton from "./SideToggleButton";
 import { LogoutButton } from "../Utils/LogoutButton";
 import { ThreadType } from "@/types/types";
-import { useEffect, useRef, useState } from "react";
+import { FormEventHandler, useEffect, useRef, useState } from "react";
 import DeleteThreadForm from "../Utils/DeleteThreadForm";
 import CreateThreadForm from "../Utils/CreateThreadForm";
+import EditThreadForm from "../Utils/EditThreadForm";
 
 interface SideMenuProps {
     threads: ThreadType[];
@@ -22,6 +23,13 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
 
     // 新規作成モーダル用のステート
     const [showCreateModal, setShowCreateModal] = useState(false);
+
+    // 編集モーダル用のステート
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [threadToEdit, setThreadToEdit] = useState({
+        id: "",
+        title: "",
+    });
 
     // スクロール位置の管理をまとめた関数
     const scrollManager = {
@@ -81,7 +89,7 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
 
         router.visit(route("thread.show", { thread: threadId }), {
             preserveScroll: true,
-            preserveState: true,
+            // preserveState: true, //Show.tsx → Show.tsx への遷移はstateを維持
             onSuccess: () => {
                 // スクロール位置を復元
                 if (navRef.current && navScrollPosition) {
@@ -99,6 +107,15 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
     const handleCloseDeleteModal = () => {
         setShowDeleteModal(false);
         setThreadToDelete(null);
+    };
+
+    const handleClickEditToThread = (threadId: string, title: string) => {
+        setThreadToEdit({ id: threadId, title: title });
+        setShowEditModal(true);
+    };
+
+    const handleCloseEditModal = () => {
+        setShowEditModal(false);
     };
 
     return (
@@ -162,18 +179,31 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                                         </p>
                                     </button>
                                     {/* 非アクティブ時も同じ幅のスペースを確保 */}
-                                    <div className="w-8 flex justify-center">
+                                    <div className="w-12 flex justify-center">
                                         {isActive ? (
-                                            <button
-                                                onClick={() =>
-                                                    handleThreadDelete(
-                                                        thread.id
-                                                    )
-                                                }
-                                                className="p-2 hover:text-red-400 transition-colors"
-                                            >
-                                                <HiTrash className="h-4 w-4" />
-                                            </button>
+                                            <>
+                                                <button
+                                                    onClick={() =>
+                                                        handleClickEditToThread(
+                                                            thread.id,
+                                                            thread.title
+                                                        )
+                                                    }
+                                                    className="hover:text-red-400 transition-colors"
+                                                >
+                                                    <HiOutlinePencil className="h-4 w-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleThreadDelete(
+                                                            thread.id
+                                                        )
+                                                    }
+                                                    className="p-2 hover:text-red-400 transition-colors"
+                                                >
+                                                    <HiTrash className="h-4 w-4" />
+                                                </button>
+                                            </>
                                         ) : null}
                                     </div>
                                 </div>
@@ -200,6 +230,14 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                 show={showCreateModal}
                 onClose={handleCloseCreateModal}
                 resetScroll={resetScroll}
+            />
+
+            {/* 編集用モーダル */}
+            <EditThreadForm
+                show={showEditModal}
+                onClose={handleCloseEditModal}
+                threadId={threadToEdit.id}
+                title={threadToEdit.title}
             />
         </>
     );

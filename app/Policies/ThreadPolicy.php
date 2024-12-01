@@ -22,6 +22,13 @@ class ThreadPolicy
     {
         return $user->id === $thread->user_id;
     }
+    /**
+     * スレッドの閲覧権限
+     */
+    public function update(User $user, Thread $thread): bool
+    {
+        return $user->id === $thread->user_id;
+    }
 
     /**
      * スレッドの削除権限

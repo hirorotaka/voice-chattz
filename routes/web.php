@@ -15,6 +15,10 @@ Route::middleware('auth')->group(function () {
         ->middleware('can:view,thread')
         ->name('thread.show');
 
+    Route::put('/thread/{thread}', [ThreadController::class, 'update'])
+        ->middleware('can:update,thread')
+        ->name('thread.update');
+
     Route::delete('/thread/{thread}', [ThreadController::class, 'destroy'])
         ->middleware('can:delete,thread')
         ->name('thread.destroy');

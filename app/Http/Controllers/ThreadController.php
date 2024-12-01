@@ -76,7 +76,8 @@ class ThreadController extends Controller
      */
     public function update(UpdateThreadRequest $request, Thread $thread)
     {
-        //
+        $thread->update($request->validated());
+        return to_route('thread.show', $thread);
     }
 
     /**

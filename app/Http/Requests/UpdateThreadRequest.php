@@ -6,23 +6,24 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateThreadRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string|max:30',
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'タイトルを入力してください。',
+            'title.string' => 'タイトルは文字列で入力してください。',
+            'title.max' => 'タイトルは30文字以内で入力してください。',
         ];
     }
 }
