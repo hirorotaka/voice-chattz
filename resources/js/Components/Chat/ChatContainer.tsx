@@ -15,7 +15,7 @@ const ChatContainer = ({ messages }: ChatContainerProps) => {
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({
-            behavior: isFirstRender.current ? "auto" : "smooth",
+            behavior: isFirstRender.current ? "smooth" : "auto",
         });
     };
 
