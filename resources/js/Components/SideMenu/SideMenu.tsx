@@ -1,10 +1,11 @@
 import { HiPlus, HiOutlineChatAlt2 } from "react-icons/hi";
 import { HiTrash, HiOutlinePencil } from "react-icons/hi2";
-import { Link, router, useForm } from "@inertiajs/react";
+import { BsPinFill } from "react-icons/bs";
+import { Link, router } from "@inertiajs/react";
 import SideToggleButton from "./SideToggleButton";
 import { LogoutButton } from "../Utils/LogoutButton";
 import { ThreadType } from "@/types/types";
-import { FormEventHandler, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DeleteThreadForm from "../Utils/DeleteThreadForm";
 import CreateThreadForm from "../Utils/CreateThreadForm";
 import EditThreadForm from "../Utils/EditThreadForm";
@@ -118,6 +119,14 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
         setShowEditModal(false);
     };
 
+    const favariteThread = threads.filter(
+        (thread) => Boolean(thread.favorite) === true
+    );
+
+    const unFavariteThread = threads.filter(
+        (thread) => Boolean(thread.favorite) === false
+    );
+
     return (
         <>
             <div className="bg-blue-600 min-h-screen">
@@ -155,7 +164,74 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                         ref={navRef}
                         className="space-y-2 overflow-y-auto flex-1"
                     >
-                        {threads.map((thread) => {
+                        <div className="mb-2 flex">
+                            <BsPinFill className="h-5 w-5 text-white" />
+                            <p className="text-white font-bold mb-2">
+                                ピン留め
+                            </p>
+                        </div>
+                        {/* フェイバリートスレッド */}
+                        {favariteThread.map((thread) => {
+                            const isActive =
+                                String(activeThreadId) === String(thread.id);
+                            return (
+                                <div
+                                    key={thread.id}
+                                    className={`flex items-center text-white rounded cursor-pointer transition-colors duration-200 ${
+                                        isActive
+                                            ? "bg-blue-800 font-bold transition-none"
+                                            : "hover:bg-blue-700"
+                                    }`}
+                                >
+                                    <button
+                                        onClick={() =>
+                                            handleThreadSelect(thread.id)
+                                        }
+                                        className="flex-1 flex items-center p-2"
+                                    >
+                                        <HiOutlineChatAlt2 className="flex-shrink-0 h-5 w-5 mr-2" />
+                                        <p className="text-sm text-left">
+                                            {thread.title}
+                                        </p>
+                                    </button>
+                                    {/* 非アクティブ時も同じ幅のスペースを確保 */}
+                                    <div className="w-12 flex justify-center">
+                                        {isActive ? (
+                                            <>
+                                                <button
+                                                    onClick={() =>
+                                                        handleClickEditToThread(
+                                                            thread.id,
+                                                            thread.title
+                                                        )
+                                                    }
+                                                    className="hover:text-red-400 transition-colors"
+                                                >
+                                                    <HiOutlinePencil className="h-4 w-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleThreadDelete(
+                                                            thread.id
+                                                        )
+                                                    }
+                                                    className="p-2 hover:text-red-400 transition-colors"
+                                                >
+                                                    <HiTrash className="h-4 w-4" />
+                                                </button>
+                                            </>
+                                        ) : null}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                        <div>
+                            <hr className="my-2" />
+                            <hr />
+                        </div>
+
+                        {/* 非フェイバリートスレッド */}
+                        {unFavariteThread.map((thread) => {
                             const isActive =
                                 String(activeThreadId) === String(thread.id);
                             return (

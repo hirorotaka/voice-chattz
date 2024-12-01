@@ -1,21 +1,25 @@
-import { Head } from "@inertiajs/react";
-import { ReactNode } from "react";
+import { Head, router } from "@inertiajs/react";
+import { ReactNode, useState } from "react";
 import { SideMenu } from "@/Components/SideMenu/SideMenu";
 import { SideToggleButton } from "@/Components/SideMenu/SideToggleButton";
 import ProfileDropdown from "@/Components/Header/ProfileDropdown";
 import { useAppContext } from "@/Contexts/AppContext";
 import { ThreadType } from "@/types/types";
+import { HiOutlineStar, HiStar } from "react-icons/hi2";
+import { FavoriteButton } from "@/Components/Utils/FavoriteButton";
 
 interface AppLayoutProps {
     title: string;
     children: ReactNode;
     threads: ThreadType[];
+    thread?: ThreadType;
     activeThreadId?: number | null;
 }
 
 export default function AppLayout({
     title,
     children,
+    thread,
     threads,
     activeThreadId,
 }: AppLayoutProps) {
@@ -45,6 +49,7 @@ export default function AppLayout({
                             {!isSidebarOpen && (
                                 <SideToggleButton variant="header" />
                             )}
+                            {thread && <FavoriteButton thread={thread} />}
                             <div className="ml-auto text-white font-bold text-2xl">
                                 <ProfileDropdown />
                             </div>

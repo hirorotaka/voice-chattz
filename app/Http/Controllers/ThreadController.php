@@ -57,6 +57,7 @@ class ThreadController extends Controller
         return Inertia::render(
             'Thread/Show',
             [
+                'thread' => $thread,
                 'threads' => $threads,
                 'activeThreadId' => $thread->id,
                 'messages' => $messages
@@ -87,5 +88,13 @@ class ThreadController extends Controller
     {
         $thread->delete();
         return redirect()->route('top');
+    }
+
+    public function toggleFavorite(Thread $thread)
+    {
+        $thread->favorite = !$thread->favorite;
+        $thread->save();
+
+        return to_route('thread.show', $thread);
     }
 }

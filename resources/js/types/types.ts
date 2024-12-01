@@ -14,6 +14,7 @@ export type ThreadType = {
     id: string;
     user_id: string;
     title: string;
+    favorite: boolean;
     created_at: string; // ISO形式のタイムスタンプ
     updated_at: string; // ISO形式のタイムスタンプ
 };
