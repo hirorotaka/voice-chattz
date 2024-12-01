@@ -1,6 +1,7 @@
 import { HiPlus, HiOutlineChatAlt2 } from "react-icons/hi";
-import SideToggleButton from "./SideToggleButton";
+import { HiTrash } from "react-icons/hi2";
 import { Link, router } from "@inertiajs/react";
+import SideToggleButton from "./SideToggleButton";
 import { LogoutButton } from "../Utils/LogoutButton";
 import { ThreadType } from "@/types/types";
 
@@ -14,6 +15,14 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
         router.post(route("thread.store"), {
             title: `英会話スレッド${threads.length + 1}`,
         });
+    };
+
+    const handleThreadSelect = (threadId: string) => {
+        router.get(route("thread.show", { thread: threadId }));
+    };
+
+    const handleThreadDelete = (threadId: string) => {
+        console.log(`Delete thread: ${threadId}`);
     };
 
     return (
@@ -42,24 +51,41 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                 </button>
 
                 {/* スレッドリスト */}
-                <nav className="space-y-2 overflow-y-auto flex-1 p-3">
-                    {threads.map((thread) => (
-                        <Link
-                            href={route("thread.show", { thread: thread.id })}
-                            key={thread.id}
-                            className={`
-                                flex items-center text-white p-3 rounded cursor-pointer transition-colors duration-200
-                                ${
-                                    String(activeThreadId) === String(thread.id)
-                                        ? "bg-blue-800 font-bold"
+                <nav className="space-y-2 overflow-y-auto flex-1">
+                    {threads.map((thread) => {
+                        const isActive =
+                            String(activeThreadId) === String(thread.id);
+                        return (
+                            <div
+                                key={thread.id}
+                                className={`flex items-center text-white rounded cursor-pointer transition-colors duration-200 ${
+                                    isActive
+                                        ? "bg-blue-800 font-bold transition-none"
                                         : "hover:bg-blue-700"
-                                }
-                            `}
-                        >
-                            <HiOutlineChatAlt2 className="h-5 w-5 mr-2" />
-                            <span>英会話スレッド{thread.id}</span>
-                        </Link>
-                    ))}
+                                }`}
+                            >
+                                <button
+                                    onClick={() =>
+                                        handleThreadSelect(thread.id)
+                                    }
+                                    className="flex-1 flex items-center p-2"
+                                >
+                                    <HiOutlineChatAlt2 className="h-5 w-5 mr-2" />
+                                    <p>英会話スレッド{thread.id}</p>
+                                </button>
+                                {isActive && (
+                                    <button
+                                        onClick={() =>
+                                            handleThreadDelete(thread.id)
+                                        }
+                                        className="p-2 hover:text-red-400 transition-colors"
+                                    >
+                                        <HiTrash className="h-4 w-4" />
+                                    </button>
+                                )}
+                            </div>
+                        );
+                    })}
                 </nav>
 
                 <LogoutButton />
