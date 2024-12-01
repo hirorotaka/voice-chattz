@@ -84,7 +84,16 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
     };
 
     const handleThreadDelete = (threadId: string) => {
-        console.log(`Delete thread: ${threadId}`);
+        // スクロール位置をリセット
+        if (navRef.current) {
+            navRef.current.scrollTop = 0;
+            scrollManager.save(0); // localStorageの保存値も更新
+        }
+
+        router.delete(route("thread.destroy", { thread: threadId }), {
+            preserveScroll: true,
+            preserveState: true,
+        });
     };
 
     return (
