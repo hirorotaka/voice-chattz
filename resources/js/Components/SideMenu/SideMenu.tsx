@@ -1,6 +1,6 @@
 import { HiPlus, HiOutlineChatAlt2 } from "react-icons/hi";
 import { HiTrash, HiOutlinePencil } from "react-icons/hi2";
-import { BsPinFill } from "react-icons/bs";
+import { BsFillPinAngleFill } from "react-icons/bs";
 import { Link, router } from "@inertiajs/react";
 import SideToggleButton from "./SideToggleButton";
 import { LogoutButton } from "../Utils/LogoutButton";
@@ -164,12 +164,6 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                         ref={navRef}
                         className="space-y-2 overflow-y-auto flex-1"
                     >
-                        <div className="mb-2 flex">
-                            <BsPinFill className="h-5 w-5 text-white" />
-                            <p className="text-white font-bold mb-2">
-                                ピン留め
-                            </p>
-                        </div>
                         {/* フェイバリートスレッド */}
                         {favariteThread.map((thread) => {
                             const isActive =
@@ -187,47 +181,47 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                                         onClick={() =>
                                             handleThreadSelect(thread.id)
                                         }
-                                        className="flex-1 flex items-center p-2"
+                                        className="flex-1 flex items-center p-2.5 min-w-0"
                                     >
-                                        <HiOutlineChatAlt2 className="flex-shrink-0 h-5 w-5 mr-2" />
-                                        <p className="text-sm text-left">
+                                        <BsFillPinAngleFill className="flex-shrink-0 h-4 w-4 text-blue-200 mr-2" />
+                                        <p className="text-sm text-blue-50 truncate">
                                             {thread.title}
                                         </p>
                                     </button>
-                                    {/* 非アクティブ時も同じ幅のスペースを確保 */}
-                                    <div className="w-12 flex justify-center">
-                                        {isActive ? (
-                                            <>
-                                                <button
-                                                    onClick={() =>
-                                                        handleClickEditToThread(
-                                                            thread.id,
-                                                            thread.title
-                                                        )
-                                                    }
-                                                    className="hover:text-red-400 transition-colors"
-                                                >
-                                                    <HiOutlinePencil className="h-4 w-4" />
-                                                </button>
-                                                <button
-                                                    onClick={() =>
-                                                        handleThreadDelete(
-                                                            thread.id
-                                                        )
-                                                    }
-                                                    className="p-2 hover:text-red-400 transition-colors"
-                                                >
-                                                    <HiTrash className="h-4 w-4" />
-                                                </button>
-                                            </>
-                                        ) : null}
+                                    {/* アクションボタン */}
+                                    <div
+                                        className={`w-12 flex justify-end mr-1 space-x-1 ${
+                                            isActive
+                                                ? "opacity-100"
+                                                : "opacity-0 group-hover:opacity-100"
+                                        } transition-opacity duration-200`}
+                                    >
+                                        <button
+                                            onClick={() =>
+                                                handleClickEditToThread(
+                                                    thread.id,
+                                                    thread.title
+                                                )
+                                            }
+                                            className="p-1 rounded hover:bg-blue-600/50 text-blue-200 hover:text-blue-100 transition-colors"
+                                        >
+                                            <HiOutlinePencil className="h-3.5 w-3.5" />
+                                        </button>
+                                        <button
+                                            onClick={() =>
+                                                handleThreadDelete(thread.id)
+                                            }
+                                            className="p-1 rounded hover:bg-blue-600/50 text-blue-200 hover:text-blue-100 transition-colors"
+                                        >
+                                            <HiTrash className="h-3.5 w-3.5" />
+                                        </button>
                                     </div>
                                 </div>
                             );
                         })}
-                        <div>
-                            <hr className="my-2" />
-                            <hr />
+
+                        <div className="my-3">
+                            <hr className="border-blue-500/30" />
                         </div>
 
                         {/* 非フェイバリートスレッド */}
