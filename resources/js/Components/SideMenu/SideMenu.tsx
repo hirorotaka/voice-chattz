@@ -196,25 +196,31 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                                                 : "opacity-0 group-hover:opacity-100"
                                         } transition-opacity duration-200`}
                                     >
-                                        <button
-                                            onClick={() =>
-                                                handleClickEditToThread(
-                                                    thread.id,
-                                                    thread.title
-                                                )
-                                            }
-                                            className="p-1 rounded hover:bg-blue-600/50 text-blue-200 hover:text-blue-100 transition-colors"
-                                        >
-                                            <HiOutlinePencil className="h-3.5 w-3.5" />
-                                        </button>
-                                        <button
-                                            onClick={() =>
-                                                handleThreadDelete(thread.id)
-                                            }
-                                            className="p-1 rounded hover:bg-blue-600/50 text-blue-200 hover:text-blue-100 transition-colors"
-                                        >
-                                            <HiTrash className="h-3.5 w-3.5" />
-                                        </button>
+                                        {isActive ? (
+                                            <>
+                                                <button
+                                                    onClick={() =>
+                                                        handleClickEditToThread(
+                                                            thread.id,
+                                                            thread.title
+                                                        )
+                                                    }
+                                                    className="p-1 rounded hover:bg-blue-400/50 text-blue-200 hover:text-blue-100 transition-colors"
+                                                >
+                                                    <HiOutlinePencil className="h-4 w-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleThreadDelete(
+                                                            thread.id
+                                                        )
+                                                    }
+                                                    className="p-1 mr-2 rounded hover:bg-blue-400/50 text-blue-200 hover:text-blue-100 transition-colors"
+                                                >
+                                                    <HiTrash className="h-4 w-4" />
+                                                </button>
+                                            </>
+                                        ) : null}
                                     </div>
                                 </div>
                             );
@@ -259,7 +265,7 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                                                             thread.title
                                                         )
                                                     }
-                                                    className="hover:text-red-400 transition-colors"
+                                                    className="p-1 rounded hover:bg-blue-400/50 text-blue-200 hover:text-blue-100 transition-colors"
                                                 >
                                                     <HiOutlinePencil className="h-4 w-4" />
                                                 </button>
@@ -269,7 +275,7 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                                                             thread.id
                                                         )
                                                     }
-                                                    className="p-2 hover:text-red-400 transition-colors"
+                                                    className="p-1 mr-2 rounded hover:bg-blue-400/50 text-blue-200 hover:text-blue-100 transition-colors"
                                                 >
                                                     <HiTrash className="h-4 w-4" />
                                                 </button>
