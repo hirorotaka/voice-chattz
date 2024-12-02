@@ -30,9 +30,10 @@ class MessageController extends Controller
 
             // chatGPTに音声データをAPIに送信する
             $apiService = new ApiService();
-            $text = $apiService->callWhisperApi($path);
-
+            $response = $apiService->callWhisperApi($path);
+            $message_en = $response['text'];
             // APIレスポンスを音声データを保存する
+            $message->update(['message_en' => $message_en]);
 
             // Inertia.jsのレスポース形式で返す
             return back()->with([

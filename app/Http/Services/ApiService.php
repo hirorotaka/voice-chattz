@@ -45,7 +45,7 @@ class ApiService
                     'status' => $response->status(),
                     'text' => $response->json('text')
                 ]);
-                return $response->json('text');
+                return $response->json();
             }
 
             // エラーの詳細をログに記録
