@@ -10,7 +10,7 @@ export function FavoriteButton({ thread }: FavoriteButtonProps) {
     const handleFavoriteToggle = async () => {
         try {
             await router.post(
-                `/thread/${thread.id}/favorite`,
+                route("thread.toggleFavorite", { thread: thread.id }),
                 {},
                 {
                     preserveState: true,

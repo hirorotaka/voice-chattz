@@ -24,7 +24,10 @@ export default function Show({
             threads={threads}
             activeThreadId={activeThreadId}
         >
-            <ChatContainer messages={messages} />
+            <ChatContainer
+                messages={messages}
+                activeThreadId={activeThreadId}
+            />
         </AppLayout>
     );
 }
