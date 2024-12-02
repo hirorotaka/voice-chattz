@@ -4,6 +4,7 @@ import UserMessage from "./UserMessage";
 import { MessageType } from "@/types/types";
 import { useEffect, useRef, useState } from "react";
 import { router } from "@inertiajs/react";
+import LoadingSppiner from "../Utils/LoadingSppiner";
 
 interface ChatContainerProps {
     messages: MessageType[];
@@ -22,6 +23,9 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
     const [recordingTime, setRecordingTime] = useState(0);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
     const MAX_RECORDING_TIME = 300; // 5分 = 300秒
+
+    // 送信関連のstate
+    const [isSending, setIsSending] = useState(false);
 
     // 録音時間を表示用にフォーマットする関数
     const formatTime = (seconds: number): string => {
@@ -140,6 +144,9 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
             return;
         }
 
+        // 送信開始時にローディング状態をON
+        setIsSending(true);
+
         // FormDataオブジェクトを作成
         const formData = new FormData();
         // 音声データをFormDataに追加
@@ -154,11 +161,12 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                 onSuccess: (response) => {
                     // レスポンスの処理
                     console.log("音声アップロード成功:", response);
-                    // 必要に応じて追加の処理を実装
+                    setIsSending(false);
                 },
                 onError: (errors) => {
                     console.error("音声の送信に失敗しました:", errors);
                     alert("音声の送信に失敗しました。");
+                    setIsSending(false);
                 },
             }
         );
@@ -198,6 +206,9 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                 </div>
                 <div ref={messagesEndRef} /> {/* 末尾に空のdiv */}
             </div>
+
+            {/* ローディング中の表示 */}
+            {isSending && <LoadingSppiner />}
 
             {/* マイクボタンとタイマー表示 */}
             <div className="flex items-center justify-end gap-4 mb-4 mr-4">
