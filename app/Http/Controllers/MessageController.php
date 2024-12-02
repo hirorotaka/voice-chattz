@@ -53,7 +53,9 @@ class MessageController extends Controller
             );
 
             // TTSにリクエストする
-            $ttsResponse = $apiService->callTtsApi($aiMessageText);
+            $aiAudioFilePath = $apiService->callTtsApi($aiMessageText);
+            // APIレスポンスを音声データパスを保存する
+            $aiMessage->update(['audio_file_path' => $aiAudioFilePath]);
 
             // Inertia.jsのレスポース形式で返す
             return back()->with([
