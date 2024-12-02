@@ -218,11 +218,17 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                 <div ref={messagesEndRef} /> {/* 末尾に空のdiv */}
             </div>
 
-            {/* ローディング中の表示 */}
-            {isSending && <LoadingSppiner />}
-
             {/* マイクボタンとタイマー表示 */}
             <div className="flex items-center justify-end gap-4 mb-4 mr-4">
+                {/* ローディング中の表示とオーバーレイ */}
+                {isSending && (
+                    <>
+                        <div className="fixed inset-0 backdrop-blur-[1px] bg-black/25 z-50 transition-all duration-300 ease-in-out" />
+                        <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 z-50 transition-all duration-300 ease-in-out">
+                            <LoadingSppiner />
+                        </div>
+                    </>
+                )}
                 {/* 録音時間の表示 */}
                 {isRecording && (
                     <div className="flex items-center gap-2">
