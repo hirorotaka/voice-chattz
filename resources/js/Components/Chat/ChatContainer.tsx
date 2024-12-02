@@ -150,7 +150,12 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
             route("message.store", { thread: activeThreadId }),
             formData,
             {
-                forceFormData: true,
+                forceFormData: true, // アップロード時にFormDataを強制使用する。
+                onSuccess: (response) => {
+                    // レスポンスの処理
+                    console.log("音声アップロード成功:", response);
+                    // 必要に応じて追加の処理を実装
+                },
                 onError: (errors) => {
                     console.error("音声の送信に失敗しました:", errors);
                     alert("音声の送信に失敗しました。");

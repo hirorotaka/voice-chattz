@@ -17,5 +17,6 @@ class Message extends Model
         'message_en',
         'message_ja',
         'sender',
+        'audio_file_path',
     ];
 }
