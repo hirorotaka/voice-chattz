@@ -1,5 +1,5 @@
 import { flashType, MessageType } from "@/types/types";
-import { HiSpeakerWave } from "react-icons/hi2";
+import { HiSpeakerWave, HiPause } from "react-icons/hi2";
 import { useState, useRef, useEffect } from "react";
 
 type AiMessageProps = {
@@ -9,17 +9,17 @@ type AiMessageProps = {
 
 const AiMessage = ({ message, flashData }: AiMessageProps) => {
     const [isPlaying, setIsPlaying] = useState(false);
+    const [hasBeenPlayed, setHasBeenPlayed] = useState(false); // 再生履歴を追跡する新しいstate
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
         if (flashData === message.id) {
             handlePlayAudio();
         }
-    }, []); // AiMessageコンポーネントがマウントされたときに実行
+    }, []);
 
     const handlePlayAudio = () => {
         if (!audioRef.current) {
-            // 音声ファイルのパスを構築
             if (!message.audio_file_path) {
                 return;
             }
@@ -27,15 +27,16 @@ const AiMessage = ({ message, flashData }: AiMessageProps) => {
             const audioUrl = `/storage/${message.audio_file_path}`;
             audioRef.current = new Audio(audioUrl);
 
-            // 再生終了時のハンドラー
             audioRef.current.onended = () => {
                 setIsPlaying(false);
+                setHasBeenPlayed(false); // 再生終了時にフラグを立てる
             };
         }
 
         if (isPlaying) {
             audioRef.current.pause();
             setIsPlaying(false);
+            setHasBeenPlayed(true); // 手動で停止した時もフラグを立てる
         } else {
             audioRef.current.play().catch((error) => {
                 console.error("音声の再生に失敗しました:", error);
@@ -68,7 +69,11 @@ const AiMessage = ({ message, flashData }: AiMessageProps) => {
                             onClick={handlePlayAudio}
                             aria-label={isPlaying ? "音声を停止" : "音声を再生"}
                         >
-                            <HiSpeakerWave className="w-5 h-5" />
+                            {isPlaying || !hasBeenPlayed ? (
+                                <HiSpeakerWave className="w-5 h-5" />
+                            ) : (
+                                <HiPause className="w-5 h-5" />
+                            )}
                         </button>
                     )}
                     <div className="flex items-center justify-center w-8 h-8 rounded bg-gray-200">
