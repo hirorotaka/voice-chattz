@@ -135,4 +135,68 @@ class ApiService
             throw $e;
         }
     }
+
+    /**
+     *@param string $aiMessageText
+     *
+     *
+     */
+    public function callTtsApi(string $aiMessageText)
+    {
+        // 呼び出し方
+        //curl https://api.openai.com/v1/audio/speech \
+        // -H "Authorization: Bearer $OPENAI_API_KEY" \
+        // -H "Content-Type: application/json" \
+        // -d '{
+        //     "model": "tts-1",
+        //     "input": "The quick brown fox jumped over the lazy dog.",
+        //     "voice": "alloy"
+        // }' \
+        // --output speech.mp3
+
+        try {
+            $response = Http::withToken(config('services.openai.api_key'))
+                ->withHeaders([
+                    'Content-Type' => 'application/json'
+                ])
+                ->post('https://api.openai.com/v1/audio/speech', [
+                    'model' => 'tts-1',
+                    'input' => $aiMessageText,
+                    'voice' => 'nova',
+                    'response_format' => 'wav'
+                ]);
+
+            $timestamp = now()->format('YmdHis');
+            $outputPath = "ai_audio/tts_{$timestamp}.wav";
+            // storage/app/public/audio ディレクトリへのフルパスを取得
+            $fullPath = storage_path("app/public/{$outputPath}");
+            file_put_contents($fullPath, $response->body());
+
+            if ($response->successful()) {
+                Log::info('TTS API Response', [
+                    'status' => $response->status(),
+                    'file_path' => $outputPath
+                ]);
+                return $outputPath;
+            }
+
+
+            Log::error('TTS API Error', [
+                'status_code' => $response->status(),
+                'error_response' => $response->json(),
+                'input_text' => $aiMessageText,
+                'headers' => $response->headers()
+            ]);
+
+            throw new \Exception('音声生成に失敗しました。');
+        } catch (\Exception $e) {
+            Log::error('TTS API Exception', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'input_text' => $aiMessageText
+            ]);
+
+            throw $e;
+        }
+    }
 }

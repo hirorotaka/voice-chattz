@@ -39,19 +39,21 @@ class MessageController extends Controller
 
             // chatGPTに返ってきたメッセージで、APIリクエストする。
             $gptResponse = $apiService->callChatGptApi($messages);
-            $aiMessage = $gptResponse['choices'][0]['message']['content'];
+            $aiMessageText = $gptResponse['choices'][0]['message']['content'];
 
             //DBにAIのメッセージを保存
             $aiMessage = Message::create(
                 [
                     'thread_id' => $threadId,
-                    'message_en' => "$aiMessage",
+                    'message_en' => "$aiMessageText",
                     'message_ja' => "",
                     'audio_file_path' => '',
                     'sender' => 2,
                 ]
             );
 
+            // TTSにリクエストする
+            $ttsResponse = $apiService->callTtsApi($aiMessageText);
 
             // Inertia.jsのレスポース形式で返す
             return back()->with([
