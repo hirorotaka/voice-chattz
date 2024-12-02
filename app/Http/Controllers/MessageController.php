@@ -35,6 +35,24 @@ class MessageController extends Controller
             // APIレスポンスを音声データを保存する
             $message->update(['message_en' => $message_en]);
 
+            $messages = Message::where('thread_id', $threadId)->get();
+
+            // chatGPTに返ってきたメッセージで、APIリクエストする。
+            $gptResponse = $apiService->callChatGptApi($messages);
+            $aiMessage = $gptResponse['choices'][0]['message']['content'];
+
+            //DBにAIのメッセージを保存
+            $aiMessage = Message::create(
+                [
+                    'thread_id' => $threadId,
+                    'message_en' => "$aiMessage",
+                    'message_ja' => "",
+                    'audio_file_path' => '',
+                    'sender' => 2,
+                ]
+            );
+
+
             // Inertia.jsのレスポース形式で返す
             return back()->with([
                 'success' => '音声データを保存しました。',

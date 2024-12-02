@@ -65,4 +65,74 @@ class ApiService
             throw $e;
         }
     }
+
+    /**
+     *@param Collection<Message> $messages
+     *
+     *
+     */
+    public function callChatGPTApi($modelMessages)
+    {
+        // 呼び出し方
+        // curl https://api.openai.com/v1/chat/completions \
+        //     -H "Content-Type: application/json" \
+        //     -H "Authorization: Bearer $OPENAI_API_KEY" \
+        //     -d '{
+        //         "model": "gpt-4o-mini",
+        //         "messages": [
+        //         {
+        //             "role": "system",
+        //             "content": "You are a helpful assistant."
+        //         },
+        //         {
+        //             "role": "user",
+        //             "content": "Hello!"
+        //         }
+        //         ]
+        //     }'
+
+        try {
+            $systemMessage = [
+                'role' => 'system',
+                'content' => 'You are a helpful English teacher. Please speak in English.'
+            ];
+
+            $modelMessages = $modelMessages->map(fn($message) => [
+                'role' => $message->sender === 1 ? 'user' : 'assistant',
+                'content' => $message->message_en
+            ])->toArray();
+
+            $mergedMessages = array_merge([$systemMessage], $modelMessages);
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . config('services.openai.api_key'),
+                'Content-Type' => 'application/json'
+            ])->post('https://api.openai.com/v1/chat/completions', [
+                'model' => 'gpt-4o-mini',
+                'messages' => $mergedMessages,
+            ]);
+
+            if ($response->successful()) {
+                Log::info('ChatGPT API Response', [
+                    'status' => $response->status(),
+                    'response' => $response->json()
+                ]);
+                return $response->json();
+            }
+
+            // エラーの詳細をログに記録
+            Log::error('ChatGPT API Error', [
+                'status' => $response->status(),
+                'body' => $response->json()
+            ]);
+
+            throw new \Exception('ChatGPTからの応答に失敗しました。');
+        } catch (\Exception $e) {
+            Log::error('ChatGPT API Exception', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
+        }
+    }
 }
