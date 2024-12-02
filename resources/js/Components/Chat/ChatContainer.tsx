@@ -27,6 +27,9 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
     // 送信関連のstate
     const [isSending, setIsSending] = useState(false);
 
+    // キャンセルフラグをRefで管理
+    const isCancelledRef = useRef(false);
+
     // プラッシュデータを取得
     const { flashData } = usePage().props.flash as flashType;
 
@@ -37,6 +40,45 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
         return `${String(minutes).padStart(2, "0")}:${String(
             remainingSeconds
         ).padStart(2, "0")}`;
+    };
+
+    const cancelRecording = () => {
+        if (
+            mediaRecorderRef.current &&
+            mediaRecorderRef.current.state === "recording"
+        ) {
+            // キャンセルフラグを立てる（即時反映）
+            isCancelledRef.current = true;
+
+            // 初期化処理
+            cleanupRecording();
+        }
+    };
+
+    // 初期化処理を共通化
+    const cleanupRecording = () => {
+        // 録音を停止
+        if (mediaRecorderRef.current) {
+            mediaRecorderRef.current.stop();
+            // ストリームを停止
+            mediaRecorderRef.current.stream
+                .getTracks()
+                .forEach((track) => track.stop());
+            mediaRecorderRef.current = null;
+        }
+
+        // 状態を初期化
+        setIsRecording(false);
+        setRecordingTime(0);
+
+        // タイマーをクリア
+        if (timerRef.current) {
+            clearInterval(timerRef.current);
+            timerRef.current = null;
+        }
+
+        // 音声データを初期化
+        audioChunksRef.current = [];
     };
 
     // 録音時間の管理
@@ -95,17 +137,23 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                     audioChunksRef.current.push(event.data);
                 }
             };
-
             // 録音停止時に実行されるイベントハンドラ
             mediaRecorder.onstop = async () => {
-                // 収集した音声チャンクをBlobとして結合
-                const audioBlob = new Blob(audioChunksRef.current, {
-                    type: "audio/wav",
-                });
-                // サーバーに音声データを送信
-                await sendAudioToServer(audioBlob);
+                // キャンセルされていない場合のみ、データを送信
+                if (
+                    !isCancelledRef.current &&
+                    audioChunksRef.current.length > 0
+                ) {
+                    const audioBlob = new Blob(audioChunksRef.current, {
+                        type: "audio/wav",
+                    });
+                    await sendAudioToServer(audioBlob);
+                }
 
-                // 使用していたマイクのストリームを解放
+                // キャンセルフラグをリセット
+                isCancelledRef.current = false;
+
+                // ストリームを解放
                 stream.getTracks().forEach((track) => track.stop());
             };
 
@@ -128,10 +176,11 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
             mediaRecorderRef.current &&
             mediaRecorderRef.current.state === "recording"
         ) {
-            // 録音を停止（これによりonstopイベントが発火）
-            mediaRecorderRef.current.stop();
-            // 録音状態をUIに反映
-            setIsRecording(false);
+            // 通常の停止なのでキャンセルフラグは false
+            isCancelledRef.current = false;
+
+            // 初期化処理
+            cleanupRecording();
         }
     };
 
@@ -220,6 +269,11 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
 
             {/* マイクボタンとタイマー表示 */}
             <div className="flex items-center justify-end gap-4 mb-4 mr-4">
+                {/* 録音中のオーバーレイ - マイクボタン以外を押せないようにする */}
+                {isRecording && (
+                    <div className="fixed inset-0 bg-black/10 backdrop-blur-[1px] z-40" />
+                )}
+
                 {/* ローディング中の表示とオーバーレイ */}
                 {isSending && (
                     <>
@@ -229,28 +283,39 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                         </div>
                     </>
                 )}
-                {/* 録音時間の表示 */}
+                {/* 録音時間とコントロールの表示 */}
                 {isRecording && (
-                    <div className="flex items-center gap-2">
-                        <div className="animate-pulse">
-                            <div className="w-4 h-4 bg-red-500 rounded-full"></div>
+                    <div className="flex items-center gap-4 relative z-50">
+                        <div className="flex items-center gap-2">
+                            <div className="animate-pulse">
+                                <div className="w-4 h-4 bg-red-500 rounded-full"></div>
+                            </div>
+                            <span className="text-lg font-medium text-white min-w-[130px] text-right font-mono">
+                                {`${formatTime(recordingTime)}/${formatTime(
+                                    MAX_RECORDING_TIME
+                                )}`}
+                            </span>
                         </div>
-                        <span className="text-lg font-medium text-white min-w-[130px] text-right font-mono">
-                            {`${formatTime(recordingTime)}/${formatTime(
-                                MAX_RECORDING_TIME
-                            )}`}
-                        </span>
+
+                        {/* キャンセルボタン */}
+                        <button
+                            onClick={cancelRecording}
+                            className="px-4 py-2 rounded-full bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium transition-colors duration-200"
+                            aria-label="録音キャンセル"
+                        >
+                            キャンセル
+                        </button>
                     </div>
                 )}
 
-                {/* マイクボタン */}
+                {/* マイクボタン - 録音中も操作可能にするため z-50 を設定 */}
                 <button
-                    className={`p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500
-                        ${
-                            isRecording
-                                ? "bg-red-500 hover:bg-red-600"
-                                : "bg-white hover:bg-gray-50"
-                        }`}
+                    className={`p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 relative z-50
+            ${
+                isRecording
+                    ? "bg-red-500 hover:bg-red-600"
+                    : "bg-white hover:bg-gray-50"
+            }`}
                     onClick={isRecording ? stopRecording : startRecording}
                     aria-label={isRecording ? "録音停止" : "録音開始"}
                 >
