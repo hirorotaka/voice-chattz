@@ -107,6 +107,19 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
         };
     }, [isRecording]);
 
+    // コンポーネントのアンマウント時の処理を追加
+    useEffect(() => {
+        return () => {
+            // クリーンアップ処理
+            if (mediaRecorderRef.current) {
+                cleanupRecording();
+            }
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+            }
+        };
+    }, []);
+
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({
             behavior: isFirstRender.current ? "smooth" : "auto",
