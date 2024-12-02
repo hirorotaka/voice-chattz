@@ -18,3 +18,8 @@ export type ThreadType = {
     created_at: string; // ISO形式のタイムスタンプ
     updated_at: string; // ISO形式のタイムスタンプ
 };
+
+export interface flashType {
+    success: string | null;
+    flashData: number | null;
+}
