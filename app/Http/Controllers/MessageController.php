@@ -60,7 +60,7 @@ class MessageController extends Controller
             // Inertia.jsのレスポース形式で返す
             return back()->with([
                 'success' => '音声データを保存しました。',
-                'message_id' => $message->id
+                'flashData' => $aiMessage->id
             ]);
         }
         return back()->with('error', '音声ファイルが保存されませんでした。');

@@ -1,9 +1,9 @@
 import { HiMicrophone } from "react-icons/hi2";
 import AiMessage from "./AiMessage";
 import UserMessage from "./UserMessage";
-import { MessageType } from "@/types/types";
-import { useEffect, useRef, useState } from "react";
-import { router } from "@inertiajs/react";
+import { flashType, MessageType } from "@/types/types";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { router, usePage } from "@inertiajs/react";
 import LoadingSppiner from "../Utils/LoadingSppiner";
 
 interface ChatContainerProps {
@@ -26,6 +26,9 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
 
     // 送信関連のstate
     const [isSending, setIsSending] = useState(false);
+
+    // プラッシュデータを取得
+    const { flashData } = usePage().props.flash as flashType;
 
     // 録音時間を表示用にフォーマットする関数
     const formatTime = (seconds: number): string => {
@@ -187,6 +190,11 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
         }
     }, [messages, hasMessages]);
 
+    // 最新のsender: 2のメッセージを取得
+    const latestSenderMessage: MessageType | undefined = useMemo(() => {
+        return [...messages].reverse().find((message) => message.sender === 2);
+    }, [messages]);
+
     return (
         <div className="flex flex-col h-full">
             {/* メッセージリスト - スクロール可能なエリア */}
@@ -198,7 +206,10 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                                 <UserMessage message={message} />
                             ) : (
                                 <div>
-                                    <AiMessage message={message} />
+                                    <AiMessage
+                                        message={message}
+                                        flashData={flashData}
+                                    />
                                 </div>
                             )}
                         </div>

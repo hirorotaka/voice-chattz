@@ -1,14 +1,21 @@
-import { MessageType } from "@/types/types";
+import { flashType, MessageType } from "@/types/types";
 import { HiSpeakerWave } from "react-icons/hi2";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 type AiMessageProps = {
     message: MessageType;
+    flashData: flashType["flashData"];
 };
 
-const AiMessage = ({ message }: AiMessageProps) => {
+const AiMessage = ({ message, flashData }: AiMessageProps) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
+
+    useEffect(() => {
+        if (flashData === message.id) {
+            handlePlayAudio();
+        }
+    }, []); // AiMessageコンポーネントがマウントされたときに実行
 
     const handlePlayAudio = () => {
         if (!audioRef.current) {
