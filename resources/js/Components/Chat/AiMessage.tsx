@@ -18,6 +18,20 @@ const AiMessage = ({ message, flashData }: AiMessageProps) => {
         }
     }, []);
 
+    // コンポーネントのアンマウント時のクリーンアップ
+    useEffect(() => {
+        // クリーンアップ関数
+        return () => {
+            if (audioRef.current) {
+                audioRef.current.pause(); // 音声を停止
+                audioRef.current.currentTime = 0; // 再生位置をリセット
+                setIsPlaying(false);
+                setHasBeenPlayed(false);
+                audioRef.current = null; // 参照をクリア
+            }
+        };
+    }, []); // 空の依存配列でコンポーネントのマウント時のみ実行
+
     const handlePlayAudio = () => {
         if (!audioRef.current) {
             if (!message.audio_file_path) {
