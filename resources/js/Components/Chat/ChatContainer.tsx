@@ -34,7 +34,7 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
     const isCancelledRef = useRef(false);
 
     // プラッシュデータを取得
-    const { flashData } = usePage().props.flash as flashType;
+    const { flashData, success } = usePage().props.flash as flashType;
 
     // 録音用の音声ファイルを読み込む
     const [startSoundplay, { sound: startSoundHowl }] = useSound(startSound, {
@@ -273,7 +273,30 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                 onSuccess: (response) => {
                     // レスポンスの処理
                     console.log("音声アップロード成功:", response);
-                    setIsSending(false);
+                    if ((response.props.flash as flashType).success) {
+                        console.log("AI応答の生成開始");
+                        // AI応答の生成を開始
+                        router.post(
+                            route("message.generate-ai-response", {
+                                thread: activeThreadId,
+                            }),
+                            {},
+                            {
+                                preserveScroll: true,
+                                onSuccess: () => {
+                                    setIsSending(false);
+                                },
+                                onError: (errors) => {
+                                    console.error(
+                                        "AI応答の生成に失敗しました:",
+                                        errors
+                                    );
+                                    alert("AI応答の生成に失敗しました。");
+                                    setIsSending(false);
+                                },
+                            }
+                        );
+                    }
                 },
                 onError: (errors) => {
                     console.error("音声の送信に失敗しました:", errors);

@@ -27,6 +27,10 @@ Route::middleware('auth')->group(function () {
             Route::post('/favorite', [ThreadController::class, 'toggleFavorite'])->name('thread.toggleFavorite');
 
             Route::post('/message', [MessageController::class, 'store'])->name('message.store');
+
+            // routes/web.php
+            Route::post('/message/generate-ai-response', [MessageController::class, 'generateAiResponse'])
+                ->name('message.generate-ai-response');
         });
     });
 });
