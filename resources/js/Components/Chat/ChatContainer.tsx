@@ -44,6 +44,9 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
         volume: 0.1,
     });
 
+    // 音声再生中の状態を追加
+    const [isPlaying, setIsPlaying] = useState(false);
+
     // 録音時間を表示用にフォーマットする関数
     const formatTime = (seconds: number): string => {
         const minutes = Math.floor(seconds / 60);
@@ -54,22 +57,33 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
     };
 
     const handleMicButtonClickStart = async () => {
+        // 既に再生中または録音中の場合は処理をスキップ
+        if (isPlaying || isRecording) return;
+
         // 録音処理の前に音を再生
+        setIsPlaying(true); // 再生開始
         startSoundplay();
 
         // 音声の再生が終了したら、録音処理を実行
         // Howlオブジェクトを受け取り、イベントリスナを1回だけ実行
         startSoundHowl?.once("end", async () => {
             // 録音処理を実行
+            setIsPlaying(false); // 再生終了
             await startRecording();
         });
     };
     const handleMicButtonClickStop = async () => {
+        // 既に再生中の場合は処理をスキップ
+        if (isPlaying) return;
+
+        setIsPlaying(true); // 再生開始
+
         // 録音停止の前に音を再生
         endSoundplay();
 
         // 音声の再生が終了したら、録音処理を実行
         endSoundHowl?.once("end", async () => {
+            setIsPlaying(false); // 再生終了
             // 録音処理を実行
             stopRecording();
         });
@@ -367,6 +381,7 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                             ? handleMicButtonClickStop
                             : handleMicButtonClickStart
                     }
+                    disabled={isPlaying}
                     aria-label={isRecording ? "録音停止" : "録音開始"}
                 >
                     <HiMicrophone
