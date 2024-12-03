@@ -247,7 +247,7 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                             );
                         })}
 
-                        <div className="my-3">
+                        <div className="pb-4">
                             <hr className="border-blue-500/30" />
                         </div>
 
