@@ -6,4 +6,6 @@
 !audio/.gitkeep
 !sounds/
 !sounds/button.mp3
+!sounds/start.mp3
+!sounds/end.mp3
 !sounds/.gitkeep

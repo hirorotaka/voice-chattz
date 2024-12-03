@@ -5,7 +5,8 @@ import { flashType, MessageType } from "@/types/types";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { router, usePage } from "@inertiajs/react";
 import LoadingSppiner from "../Utils/LoadingSppiner";
-import se from "../../../../storage/app/public/sounds/button.mp3";
+import startSound from "../../../../storage/app/public/sounds/start.mp3";
+import endSound from "../../../../storage/app/public/sounds/end.mp3";
 import useSound from "use-sound";
 
 interface ChatContainerProps {
@@ -36,7 +37,10 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
     const { flashData } = usePage().props.flash as flashType;
 
     // 録音用の音声ファイルを読み込む
-    const [play, { sound }] = useSound(se, {
+    const [startSoundplay, { sound: startSoundHowl }] = useSound(startSound, {
+        volume: 0.1,
+    });
+    const [endSoundplay, { sound: endSoundHowl }] = useSound(endSound, {
         volume: 0.1,
     });
 
@@ -51,21 +55,21 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
 
     const handleMicButtonClickStart = async () => {
         // 録音処理の前に音を再生
-        play();
+        startSoundplay();
 
         // 音声の再生が終了したら、録音処理を実行
         // Howlオブジェクトを受け取り、イベントリスナを1回だけ実行
-        sound?.once("end", async () => {
+        startSoundHowl?.once("end", async () => {
             // 録音処理を実行
             await startRecording();
         });
     };
     const handleMicButtonClickStop = async () => {
         // 録音停止の前に音を再生
-        play();
+        endSoundplay();
 
         // 音声の再生が終了したら、録音処理を実行
-        sound?.once("end", async () => {
+        endSoundHowl?.once("end", async () => {
             // 録音処理を実行
             stopRecording();
         });
