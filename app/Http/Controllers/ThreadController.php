@@ -20,7 +20,7 @@ class ThreadController extends Controller
     {
 
         $threads = Thread::where('user_id', Auth::user()->id)
-            ->orderBy('id', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->get();
         return Inertia::render('Top', ['threads' => $threads]);
     }
@@ -49,7 +49,7 @@ class ThreadController extends Controller
     public function show(Thread $thread)
     {
         $threads = Thread::where('user_id', Auth::user()->id)
-            ->orderBy('id', 'desc')
+            ->orderBy('updated_at', 'desc')
             ->get();
 
         $messages = $thread->messages()->get();
