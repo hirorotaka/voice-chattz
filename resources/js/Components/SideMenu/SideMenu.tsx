@@ -1,6 +1,6 @@
 import { HiPlus, HiOutlineChatAlt2 } from "react-icons/hi";
 import { HiTrash, HiOutlinePencil } from "react-icons/hi2";
-import { BsFillPinAngleFill } from "react-icons/bs";
+import { BsFillPinAngleFill, BsTypeH1 } from "react-icons/bs";
 import { Link, router } from "@inertiajs/react";
 import SideToggleButton from "./SideToggleButton";
 import { LogoutButton } from "../Utils/LogoutButton";
@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from "react";
 import DeleteThreadForm from "../Utils/DeleteThreadForm";
 import CreateThreadForm from "../Utils/CreateThreadForm";
 import EditThreadForm from "../Utils/EditThreadForm";
+import { Tooltip } from "flowbite-react";
 
 interface SideMenuProps {
     threads: ThreadType[];
@@ -181,44 +182,58 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                                         onClick={() =>
                                             handleThreadSelect(thread.id)
                                         }
-                                        className="flex-1 flex items-center p-2.5 min-w-0"
+                                        className="flex-1 flex items-center p-2"
                                     >
-                                        <BsFillPinAngleFill className="flex-shrink-0 h-4 w-4 text-blue-200 mr-2" />
-                                        <p className="text-sm text-blue-50 truncate">
+                                        <HiOutlineChatAlt2 className="flex-shrink-0 h-5 w-5 mr-2" />
+                                        <p className="text-sm text-left">
                                             {thread.title}
                                         </p>
                                     </button>
-                                    {/* アクションボタン */}
-                                    <div
-                                        className={`w-12 flex justify-end mr-1 space-x-1 ${
-                                            isActive
-                                                ? "opacity-100"
-                                                : "opacity-0 group-hover:opacity-100"
-                                        } transition-opacity duration-200`}
-                                    >
+                                    {/* 非アクティブ時も同じ幅のスペースを確保 */}
+                                    <div className="w-12 flex justify-center">
                                         {isActive ? (
                                             <>
-                                                <button
-                                                    onClick={() =>
-                                                        handleClickEditToThread(
-                                                            thread.id,
-                                                            thread.title
-                                                        )
+                                                <Tooltip
+                                                    content={
+                                                        <span className="text-md font-bold">
+                                                            編集
+                                                        </span>
                                                     }
-                                                    className="p-1 rounded hover:bg-blue-400/50 text-blue-200 hover:text-blue-100 transition-colors"
+                                                    placement="bottom"
+                                                    style="light"
                                                 >
-                                                    <HiOutlinePencil className="h-4 w-4" />
-                                                </button>
-                                                <button
-                                                    onClick={() =>
-                                                        handleThreadDelete(
-                                                            thread.id
-                                                        )
+                                                    <button
+                                                        onClick={() =>
+                                                            handleClickEditToThread(
+                                                                thread.id,
+                                                                thread.title
+                                                            )
+                                                        }
+                                                        className="p-1 rounded hover:bg-blue-400/50 text-blue-200 hover:text-blue-100 transition-colors"
+                                                    >
+                                                        <BsFillPinAngleFill className="h-4 w-4" />
+                                                    </button>
+                                                </Tooltip>
+                                                <Tooltip
+                                                    content={
+                                                        <span className="text-md font-bold">
+                                                            削除
+                                                        </span>
                                                     }
-                                                    className="p-1 mr-2 rounded hover:bg-blue-400/50 text-blue-200 hover:text-blue-100 transition-colors"
+                                                    placement="bottom"
+                                                    style="light"
                                                 >
-                                                    <HiTrash className="h-4 w-4" />
-                                                </button>
+                                                    <button
+                                                        onClick={() =>
+                                                            handleThreadDelete(
+                                                                thread.id
+                                                            )
+                                                        }
+                                                        className="p-1 mr-2 rounded hover:bg-blue-400/50 text-blue-200 hover:text-blue-100 transition-colors"
+                                                    >
+                                                        <HiTrash className="h-4 w-4" />
+                                                    </button>
+                                                </Tooltip>
                                             </>
                                         ) : null}
                                     </div>
@@ -258,27 +273,47 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                                     <div className="w-12 flex justify-center">
                                         {isActive ? (
                                             <>
-                                                <button
-                                                    onClick={() =>
-                                                        handleClickEditToThread(
-                                                            thread.id,
-                                                            thread.title
-                                                        )
+                                                <Tooltip
+                                                    content={
+                                                        <span className="text-md font-bold">
+                                                            編集
+                                                        </span>
                                                     }
-                                                    className="p-1 rounded hover:bg-blue-400/50 text-blue-200 hover:text-blue-100 transition-colors"
+                                                    placement="bottom"
+                                                    style="light"
                                                 >
-                                                    <HiOutlinePencil className="h-4 w-4" />
-                                                </button>
-                                                <button
-                                                    onClick={() =>
-                                                        handleThreadDelete(
-                                                            thread.id
-                                                        )
+                                                    <button
+                                                        onClick={() =>
+                                                            handleClickEditToThread(
+                                                                thread.id,
+                                                                thread.title
+                                                            )
+                                                        }
+                                                        className="p-1 rounded hover:bg-blue-400/50 text-blue-200 hover:text-blue-100 transition-colors"
+                                                    >
+                                                        <HiOutlinePencil className="h-4 w-4" />
+                                                    </button>
+                                                </Tooltip>
+                                                <Tooltip
+                                                    content={
+                                                        <span className="text-md font-bold">
+                                                            削除
+                                                        </span>
                                                     }
-                                                    className="p-1 mr-2 rounded hover:bg-blue-400/50 text-blue-200 hover:text-blue-100 transition-colors"
+                                                    placement="bottom"
+                                                    style="light"
                                                 >
-                                                    <HiTrash className="h-4 w-4" />
-                                                </button>
+                                                    <button
+                                                        onClick={() =>
+                                                            handleThreadDelete(
+                                                                thread.id
+                                                            )
+                                                        }
+                                                        className="p-1 mr-2 rounded hover:bg-blue-400/50 text-blue-200 hover:text-blue-100 transition-colors"
+                                                    >
+                                                        <HiTrash className="h-4 w-4" />
+                                                    </button>
+                                                </Tooltip>
                                             </>
                                         ) : null}
                                     </div>

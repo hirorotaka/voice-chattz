@@ -7,6 +7,7 @@ import { useAppContext } from "@/Contexts/AppContext";
 import { ThreadType } from "@/types/types";
 import { HiOutlineStar, HiStar } from "react-icons/hi2";
 import { FavoriteButton } from "@/Components/Utils/FavoriteButton";
+import { Tooltip } from "flowbite-react";
 
 interface AppLayoutProps {
     title: string;
@@ -49,7 +50,19 @@ export default function AppLayout({
                             {!isSidebarOpen && (
                                 <SideToggleButton variant="header" />
                             )}
-                            {thread && <FavoriteButton thread={thread} />}
+                            {thread && (
+                                <Tooltip
+                                    content={
+                                        <span className="text-md font-bold">
+                                            ピン留め
+                                        </span>
+                                    }
+                                    placement="right"
+                                    style="light"
+                                >
+                                    <FavoriteButton thread={thread} />
+                                </Tooltip>
+                            )}
                             <div className="ml-auto text-white font-bold text-2xl">
                                 <ProfileDropdown />
                             </div>
