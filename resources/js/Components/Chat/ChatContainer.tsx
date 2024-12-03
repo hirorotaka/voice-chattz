@@ -5,6 +5,8 @@ import { flashType, MessageType } from "@/types/types";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { router, usePage } from "@inertiajs/react";
 import LoadingSppiner from "../Utils/LoadingSppiner";
+import se from "../../../../storage/app/public/sounds/button.mp3";
+import useSound from "use-sound";
 
 interface ChatContainerProps {
     messages: MessageType[];
@@ -33,6 +35,11 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
     // プラッシュデータを取得
     const { flashData } = usePage().props.flash as flashType;
 
+    // 録音用の音声ファイルを読み込む
+    const [play, { sound }] = useSound(se, {
+        volume: 0.1,
+    });
+
     // 録音時間を表示用にフォーマットする関数
     const formatTime = (seconds: number): string => {
         const minutes = Math.floor(seconds / 60);
@@ -40,6 +47,28 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
         return `${String(minutes).padStart(2, "0")}:${String(
             remainingSeconds
         ).padStart(2, "0")}`;
+    };
+
+    const handleMicButtonClickStart = async () => {
+        // 録音処理の前に音を再生
+        play();
+
+        // 音声の再生が終了したら、録音処理を実行
+        // Howlオブジェクトを受け取り、イベントリスナを1回だけ実行
+        sound?.once("end", async () => {
+            // 録音処理を実行
+            await startRecording();
+        });
+    };
+    const handleMicButtonClickStop = async () => {
+        // 録音停止の前に音を再生
+        play();
+
+        // 音声の再生が終了したら、録音処理を実行
+        sound?.once("end", async () => {
+            // 録音処理を実行
+            stopRecording();
+        });
     };
 
     const cancelRecording = () => {
@@ -298,7 +327,7 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                 )}
                 {/* 録音時間とコントロールの表示 */}
                 {isRecording && (
-                    <div className="flex items-center gap-4 relative z-50">
+                    <div className="flex items-center gap-4 relative z-40">
                         <div className="flex items-center gap-2">
                             <div className="animate-pulse">
                                 <div className="w-4 h-4 bg-red-500 rounded-full"></div>
@@ -321,15 +350,19 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                     </div>
                 )}
 
-                {/* マイクボタン - 録音中も操作可能にするため z-50 を設定 */}
+                {/* マイクボタン - 録音中も操作可能にするため z-40 を設定 */}
                 <button
-                    className={`p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 relative z-50
+                    className={`p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 relative z-40
             ${
                 isRecording
                     ? "bg-red-500 hover:bg-red-600"
                     : "bg-white hover:bg-gray-50"
             }`}
-                    onClick={isRecording ? stopRecording : startRecording}
+                    onClick={
+                        isRecording
+                            ? handleMicButtonClickStop
+                            : handleMicButtonClickStart
+                    }
                     aria-label={isRecording ? "録音停止" : "録音開始"}
                 >
                     <HiMicrophone
