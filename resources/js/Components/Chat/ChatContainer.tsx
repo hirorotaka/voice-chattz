@@ -47,6 +47,9 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
     // 音声再生中の状態を追加
     const [isPlaying, setIsPlaying] = useState(false);
 
+    // メッセージ作成中の状態を追加
+    const [isCreatingMessage, setIsCreatingMessage] = useState(false);
+
     // 録音時間を表示用にフォーマットする関数
     const formatTime = (seconds: number): string => {
         const minutes = Math.floor(seconds / 60);
@@ -275,6 +278,7 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                     console.log("音声アップロード成功:", response);
                     if ((response.props.flash as flashType).success) {
                         console.log("AI応答の生成開始");
+                        setIsCreatingMessage(true);
                         // AI応答の生成を開始
                         router.post(
                             route("message.generate-ai-response", {
@@ -285,6 +289,7 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                                 preserveScroll: true,
                                 onSuccess: () => {
                                     setIsSending(false);
+                                    setIsCreatingMessage(false);
                                 },
                                 onError: (errors) => {
                                     console.error(
@@ -293,6 +298,7 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                                     );
                                     alert("AI応答の生成に失敗しました。");
                                     setIsSending(false);
+                                    setIsCreatingMessage(false);
                                 },
                             }
                         );
@@ -337,15 +343,19 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                             {message.sender === 1 ? (
                                 <UserMessage message={message} />
                             ) : (
-                                <div>
-                                    <AiMessage
-                                        message={message}
-                                        flashData={flashData}
-                                    />
-                                </div>
+                                <AiMessage
+                                    message={message}
+                                    flashData={flashData}
+                                />
                             )}
                         </div>
                     ))}
+                    {/* AI応答中の表示 */}
+                    {isCreatingMessage && (
+                        <div className="animate-pulse">
+                            <AiMessage />
+                        </div>
+                    )}
                 </div>
                 <div ref={messagesEndRef} /> {/* 末尾に空のdiv */}
             </div>
@@ -354,13 +364,13 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
             <div className="flex items-center justify-end gap-4 mb-4 mr-4">
                 {/* 録音中のオーバーレイ - マイクボタン以外を押せないようにする */}
                 {isRecording && (
-                    <div className="fixed inset-0 bg-black/10 backdrop-blur-[1px] z-40" />
+                    <div className="fixed inset-0 bg-black/5 backdrop-blur-[0.7px] z-40" />
                 )}
 
                 {/* ローディング中の表示とオーバーレイ */}
                 {isSending && (
                     <>
-                        <div className="fixed inset-0 backdrop-blur-[1px] bg-black/25 z-50 transition-all duration-300 ease-in-out" />
+                        <div className="fixed inset-0 backdrop-blur-[0.7px] bg-black/5 z-50 transition-all duration-300 ease-in-out" />
                         <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 z-50 transition-all duration-300 ease-in-out">
                             <LoadingSppiner />
                         </div>

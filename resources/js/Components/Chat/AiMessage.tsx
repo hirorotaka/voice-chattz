@@ -3,8 +3,8 @@ import { HiSpeakerWave, HiPause } from "react-icons/hi2";
 import { useState, useRef, useEffect } from "react";
 
 type AiMessageProps = {
-    message: MessageType;
-    flashData: flashType["flashData"];
+    message?: MessageType;
+    flashData?: flashType["flashData"];
 };
 
 const AiMessage = ({ message, flashData }: AiMessageProps) => {
@@ -13,7 +13,7 @@ const AiMessage = ({ message, flashData }: AiMessageProps) => {
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     useEffect(() => {
-        if (flashData === message.id) {
+        if (flashData === message?.id) {
             handlePlayAudio();
         }
     }, []);
@@ -34,7 +34,7 @@ const AiMessage = ({ message, flashData }: AiMessageProps) => {
 
     const handlePlayAudio = () => {
         if (!audioRef.current) {
-            if (!message.audio_file_path) {
+            if (!message?.audio_file_path) {
                 return;
             }
 
@@ -67,13 +67,15 @@ const AiMessage = ({ message, flashData }: AiMessageProps) => {
             </div>
             <div className="flex items-center gap-2 w-5/6">
                 <div className="px-4 py-2 rounded-lg bg-gray-200">
-                    <p className="text-lg">{message.message_en}</p>
+                    <p className="text-lg">
+                        {message?.message_en || "メッセージを作成しています..."}
+                    </p>
                     <p className="text-lg text-gray-600">
-                        {message.message_ja}
+                        {message?.message_ja}
                     </p>
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
-                    {message.audio_file_path && (
+                    {message?.audio_file_path && (
                         <button
                             className={`p-2 rounded-full transition-colors duration-200 ${
                                 isPlaying
@@ -90,9 +92,6 @@ const AiMessage = ({ message, flashData }: AiMessageProps) => {
                             )}
                         </button>
                     )}
-                    <div className="flex items-center justify-center w-8 h-8 rounded bg-gray-200">
-                        <span className="text-sm font-medium">Aあ</span>
-                    </div>
                 </div>
             </div>
         </div>
