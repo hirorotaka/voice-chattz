@@ -275,6 +275,7 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
             {
                 forceFormData: true, // アップロード時にFormDataを強制使用する。
                 onSuccess: (response) => {
+                    setIsSending(false);
                     // レスポンスの処理
                     console.log("音声アップロード成功:", response);
                     if ((response.props.flash as flashType).success) {
@@ -289,7 +290,6 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                             {
                                 preserveScroll: true,
                                 onSuccess: () => {
-                                    setIsSending(false);
                                     setIsCreatingMessage(false);
                                 },
                                 onError: (errors) => {
@@ -298,7 +298,6 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                                         errors
                                     );
                                     alert("AI応答の生成に失敗しました。");
-                                    setIsSending(false);
                                     setIsCreatingMessage(false);
                                 },
                             }
@@ -366,6 +365,10 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                 {/* 録音中のオーバーレイ - マイクボタン以外を押せないようにする */}
                 {isRecording && (
                     <div className="fixed inset-0 bg-black/5 backdrop-blur-[0.7px] z-40" />
+                )}
+                {/* Ai応答中のオーバーレイ  */}
+                {isCreatingMessage && (
+                    <div className="fixed inset-0 bg-black/5 backdrop-blur-[0.5px] z-40" />
                 )}
 
                 {/* ローディング中の表示とオーバーレイ */}
