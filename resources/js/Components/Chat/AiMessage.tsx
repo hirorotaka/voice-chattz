@@ -1,62 +1,87 @@
-import { flashType, MessageType } from "@/types/types";
-import { HiSpeakerWave, HiPause } from "react-icons/hi2";
 import { useState, useRef, useEffect } from "react";
+import { HiSpeakerWave } from "react-icons/hi2";
+import { flashType, MessageType } from "@/types/types";
 
 type AiMessageProps = {
     message?: MessageType;
     flashData?: flashType["flashData"];
+    isActiveAiSound?: number | null;
+    handleactivePlayAudio?: (messageId: number | null) => void;
 };
 
-const AiMessage = ({ message, flashData }: AiMessageProps) => {
+const AiMessage = ({
+    message,
+    flashData,
+    isActiveAiSound,
+    handleactivePlayAudio,
+}: AiMessageProps) => {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [hasBeenPlayed, setHasBeenPlayed] = useState(false); // 再生履歴を追跡する新しいstate
     const audioRef = useRef<HTMLAudioElement | null>(null);
+
+    const isDisabled =
+        isActiveAiSound !== null && isActiveAiSound !== message?.id;
 
     useEffect(() => {
         if (flashData === message?.id) {
             handlePlayAudio();
         }
+    }, [flashData]);
+
+    useEffect(() => {
+        if (
+            isActiveAiSound !== null &&
+            isActiveAiSound !== message?.id &&
+            isPlaying
+        ) {
+            stopAudio();
+        }
+    }, [isActiveAiSound]);
+
+    useEffect(() => {
+        return () => {
+            stopAudio();
+            audioRef.current = null;
+        };
     }, []);
 
-    // コンポーネントのアンマウント時のクリーンアップ
-    useEffect(() => {
-        // クリーンアップ関数
-        return () => {
-            if (audioRef.current) {
-                audioRef.current.pause(); // 音声を停止
-                audioRef.current.currentTime = 0; // 再生位置をリセット
-                setIsPlaying(false);
-                setHasBeenPlayed(false);
-                audioRef.current = null; // 参照をクリア
-            }
-        };
-    }, []); // 空の依存配列でコンポーネントのマウント時のみ実行
+    console.log("is:", isActiveAiSound);
+
+    const stopAudio = () => {
+        if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.currentTime = 0;
+            setIsPlaying(false);
+            handleactivePlayAudio?.(null);
+        }
+    };
 
     const handlePlayAudio = () => {
-        if (!audioRef.current) {
-            if (!message?.audio_file_path) {
-                return;
-            }
+        if (!message?.audio_file_path || isDisabled) return;
 
+        if (isActiveAiSound !== null && isActiveAiSound !== message.id) {
+            handleactivePlayAudio?.(null);
+        }
+
+        if (!audioRef.current) {
             const audioUrl = `/storage/${message.audio_file_path}`;
             audioRef.current = new Audio(audioUrl);
 
             audioRef.current.onended = () => {
                 setIsPlaying(false);
-                setHasBeenPlayed(false); // 再生終了時にフラグを立てる
+                handleactivePlayAudio?.(null);
             };
         }
 
         if (isPlaying) {
-            audioRef.current.pause();
-            setIsPlaying(false);
-            setHasBeenPlayed(true); // 手動で停止した時もフラグを立てる
+            stopAudio();
         } else {
             audioRef.current.play().catch((error) => {
-                console.error("音声の再生に失敗しました:", error);
+                console.error("Failed to play audio:", error);
                 setIsPlaying(false);
+                handleactivePlayAudio?.(null);
             });
             setIsPlaying(true);
+            handleactivePlayAudio?.(message.id);
         }
     };
 
@@ -77,19 +102,18 @@ const AiMessage = ({ message, flashData }: AiMessageProps) => {
                 <div className="flex items-center gap-2 flex-shrink-0">
                     {message?.audio_file_path && (
                         <button
-                            className={`p-2 rounded-full transition-colors duration-200 ${
+                            className={`p-2 rounded-full transition-all duration-200 ${
                                 isPlaying
                                     ? "bg-blue-500 text-white"
+                                    : isDisabled
+                                    ? "bg-gray-100 text-gray-300 cursor-not-allowed opacity-50"
                                     : "hover:bg-gray-200 text-gray-400"
                             }`}
                             onClick={handlePlayAudio}
+                            disabled={isDisabled}
                             aria-label={isPlaying ? "音声を停止" : "音声を再生"}
                         >
-                            {isPlaying || !hasBeenPlayed ? (
-                                <HiSpeakerWave className="w-5 h-5" />
-                            ) : (
-                                <HiPause className="w-5 h-5" />
-                            )}
+                            <HiSpeakerWave className="w-5 h-5" />
                         </button>
                     )}
                 </div>
