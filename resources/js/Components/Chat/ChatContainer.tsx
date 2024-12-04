@@ -45,8 +45,11 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
         volume: 0.1,
     });
 
-    // 音声再生中の状態を追加
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [isActiveAiSound, setIsActiveAiSound] = useState<null | number>(null);
+
+    const handleactivePlayAudio = (messageId: number | null) => {
+        setIsActiveAiSound(messageId);
+    };
 
     // メッセージ作成中の状態を追加
     const [isCreatingMessage, setIsCreatingMessage] = useState(false);
@@ -61,34 +64,29 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
     };
 
     const handleMicButtonClickStart = async () => {
-        // 既に再生中または録音中の場合は処理をスキップ
-        if (isPlaying || isRecording) return;
+        // 録音中状態をUIに反映
+        setIsRecording(true);
 
         // 録音処理の前に音を再生
-        setIsPlaying(true); // 再生開始
         startSoundplay();
 
         // 音声の再生が終了したら、録音処理を実行
         // Howlオブジェクトを受け取り、イベントリスナを1回だけ実行
         startSoundHowl?.once("end", async () => {
             // 録音処理を実行
-            setIsPlaying(false); // 再生終了
             await startRecording();
         });
     };
     const handleMicButtonClickStop = async () => {
-        // 既に再生中の場合は処理をスキップ
-        if (isPlaying) return;
-
-        setIsPlaying(true); // 再生開始
+        // 録音停止後すぐにPOST送信するためローディング状態をON
+        setIsSending(true);
 
         // 録音停止の前に音を再生
         endSoundplay();
 
         // 音声の再生が終了したら、録音処理を実行
         endSoundHowl?.once("end", async () => {
-            setIsPlaying(false); // 再生終了
-            // 録音処理を実行
+            // 録停止処理を実行
             stopRecording();
         });
     };
@@ -223,8 +221,6 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
 
             // 録音開始
             mediaRecorder.start();
-            // 録音中状態をUIに反映
-            setIsRecording(true);
         } catch (error) {
             console.error("録音の開始に失敗しました:", error);
             alert("マイクへのアクセスが拒否されたか、エラーが発生しました。");
@@ -259,9 +255,6 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
             alert("音声ファイルが大きすぎます（上限10MB）");
             return;
         }
-
-        // 送信開始時にローディング状態をON
-        setIsSending(true);
 
         // FormDataオブジェクトを作成
         const formData = new FormData();
@@ -362,6 +355,10 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                                 <AiMessage
                                     message={message}
                                     flashData={flashData}
+                                    handleactivePlayAudio={
+                                        handleactivePlayAudio
+                                    }
+                                    isActiveAiSound={isActiveAiSound}
                                 />
                             )}
                         </div>
@@ -422,42 +419,47 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                 )}
 
                 {/* マイクボタン - 録音中も操作可能にするため z-40 を設定 */}
-                <Tooltip
-                    content={
-                        <span className="text-md font-bold">
-                            {isRecording ? "録音停止" : "録音開始"}
-                        </span>
-                    }
-                    placement="top"
-                    style="light"
-                    arrow={false}
-                    theme={{
-                        base: "absolute z-40 inline-block rounded-lg px-3 py-2 text-sm font-medium shadow-sm",
-                    }}
-                    // baseのレイアウトを修正
-                >
-                    <button
-                        className={`p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 relative z-40
+                {isActiveAiSound ? (
+                    <button className="p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 relative z-40 bg-gray-200 hover:bg-gray-300">
+                        <HiMicrophone className="w-12 h-12 text-gray-600" />
+                    </button>
+                ) : (
+                    <Tooltip
+                        content={
+                            <span className="text-md font-bold">
+                                {isRecording ? "録音停止" : "録音開始"}
+                            </span>
+                        }
+                        placement="top"
+                        style="light"
+                        arrow={false}
+                        theme={{
+                            base: "absolute z-40 inline-block rounded-lg px-3 py-2 text-sm font-medium shadow-sm",
+                        }}
+                        // baseのレイアウトを修正
+                    >
+                        <button
+                            className={`p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 relative z-40
             ${
                 isRecording
                     ? "bg-red-500 hover:bg-red-600"
                     : "bg-white hover:bg-gray-50"
             }`}
-                        onClick={
-                            isRecording
-                                ? handleMicButtonClickStop
-                                : handleMicButtonClickStart
-                        }
-                        disabled={isPlaying}
-                        aria-label={isRecording ? "録音停止" : "録音開始"}
-                    >
-                        <HiMicrophone
-                            className={`w-12 h-12 ${
-                                isRecording ? "text-white" : "text-gray-600"
-                            }`}
-                        />
-                    </button>
-                </Tooltip>
+                            onClick={
+                                isRecording
+                                    ? handleMicButtonClickStop
+                                    : handleMicButtonClickStart
+                            }
+                            aria-label={isRecording ? "録音停止" : "録音開始"}
+                        >
+                            <HiMicrophone
+                                className={`w-12 h-12 ${
+                                    isRecording ? "text-white" : "text-gray-600"
+                                }`}
+                            />
+                        </button>
+                    </Tooltip>
+                )}
             </div>
         </div>
     );
