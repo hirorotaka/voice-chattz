@@ -8,6 +8,7 @@ import LoadingSppiner from "../Utils/LoadingSppiner";
 import startSound from "../../../../storage/app/public/sounds/start.mp3";
 import endSound from "../../../../storage/app/public/sounds/end.mp3";
 import useSound from "use-sound";
+import { Tooltip } from "flowbite-react";
 
 interface ChatContainerProps {
     messages: MessageType[];
@@ -402,27 +403,42 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                 )}
 
                 {/* マイクボタン - 録音中も操作可能にするため z-40 を設定 */}
-                <button
-                    className={`p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 relative z-40
+                <Tooltip
+                    content={
+                        <span className="text-md font-bold">
+                            {isRecording ? "録音停止" : "録音開始"}
+                        </span>
+                    }
+                    placement="top"
+                    style="light"
+                    arrow={false}
+                    theme={{
+                        base: "absolute z-40 inline-block rounded-lg px-3 py-2 text-sm font-medium shadow-sm",
+                    }}
+                    // baseのレイアウトを修正
+                >
+                    <button
+                        className={`p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 relative z-40
             ${
                 isRecording
                     ? "bg-red-500 hover:bg-red-600"
                     : "bg-white hover:bg-gray-50"
             }`}
-                    onClick={
-                        isRecording
-                            ? handleMicButtonClickStop
-                            : handleMicButtonClickStart
-                    }
-                    disabled={isPlaying}
-                    aria-label={isRecording ? "録音停止" : "録音開始"}
-                >
-                    <HiMicrophone
-                        className={`w-12 h-12 ${
-                            isRecording ? "text-white" : "text-gray-600"
-                        }`}
-                    />
-                </button>
+                        onClick={
+                            isRecording
+                                ? handleMicButtonClickStop
+                                : handleMicButtonClickStart
+                        }
+                        disabled={isPlaying}
+                        aria-label={isRecording ? "録音停止" : "録音開始"}
+                    >
+                        <HiMicrophone
+                            className={`w-12 h-12 ${
+                                isRecording ? "text-white" : "text-gray-600"
+                            }`}
+                        />
+                    </button>
+                </Tooltip>
             </div>
         </div>
     );
