@@ -21,5 +21,5 @@ export type ThreadType = {
 
 export interface flashType {
     success: boolean | null;
-    flashData: number | null;
+    flashData: number | string | null;
 }

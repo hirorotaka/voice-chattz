@@ -24,6 +24,11 @@ class MessageController extends Controller
         // chatGPTに音声データをAPIに送信する
         $apiService = new ApiService();
         $response = $apiService->callWhisperApi($path);
+
+        if (!isset($response['text']) || $response['text'] === 'noSound') {
+            return back()->with('flashData', 'noSound');
+        }
+
         $message_en = $response['text'];
 
         // 音声データを保存する

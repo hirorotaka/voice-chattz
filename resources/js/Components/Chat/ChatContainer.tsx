@@ -278,6 +278,16 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                     setIsSending(false);
                     // レスポンスの処理
                     console.log("音声アップロード成功:", response);
+
+                    // 音声が無音の場合はアラートを表示
+                    if (
+                        (response.props.flash as flashType).flashData ===
+                        "noSound"
+                    ) {
+                        alert("無音でした。音声登録をもう一度お願いします。");
+                    }
+
+                    // ユーザー音声がDBに保存されたら、AI応答の生成を開始
                     if ((response.props.flash as flashType).success) {
                         console.log("AI応答の生成開始");
                         setIsCreatingMessage(true);
@@ -306,7 +316,13 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                 },
                 onError: (errors) => {
                     console.error("音声の送信に失敗しました:", errors);
-                    alert("音声の送信に失敗しました。");
+                    // エラーメッセージに応じて処理を分岐
+                    if (errors.error === "無音でした。") {
+                        alert("無音でした。もう一度録音してください。");
+                    } else {
+                        console.error("音声の送信に失敗しました:", errors);
+                        alert("音声の送信に失敗しました。");
+                    }
                     setIsSending(false);
                 },
             }
