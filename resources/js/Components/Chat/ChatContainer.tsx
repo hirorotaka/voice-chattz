@@ -368,7 +368,7 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                 )}
                 {/* Ai応答中のオーバーレイ  */}
                 {isCreatingMessage && (
-                    <div className="fixed inset-0 bg-black/5 backdrop-blur-[0.5px] z-40" />
+                    <div className="fixed inset-0 bg-black/5 backdrop-blur-[0.5px] z-50" />
                 )}
 
                 {/* ローディング中の表示とオーバーレイ */}

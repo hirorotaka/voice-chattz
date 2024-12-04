@@ -28,6 +28,13 @@ class ApiService
             // 保存されたファイルのフルパスを取得
             $fullPath = storage_path('app/public/' . $audioFilePath);
 
+            // 無音のチェック
+            if ($this->isSilentAudio(file_get_contents($fullPath))) {
+                Log::info('Detected silent audio: Skipping Whisper API call.');
+                return null;
+            }
+
+
             // Content-Type ヘッダーは不要（Http::attachが自動で適切なヘッダーを設定します）
             $response = Http::withHeaders([
                 'Authorization' => 'Bearer ' . config('services.openai.api_key'), // configを使用
@@ -37,7 +44,9 @@ class ApiService
                 basename($fullPath), // 実際のファイル名を使用
             )->post('https://api.openai.com/v1/audio/transcriptions', [
                 'model' => 'whisper-1',
-                'language' => 'en',
+                'language' => 'ja',
+                'response_format' => 'verbose_json',
+                'prompt' => 'この音声は日本語でのインタビュー録音です。',
             ]);
 
             if ($response->successful()) {
@@ -94,7 +103,7 @@ class ApiService
         try {
             $systemMessage = [
                 'role' => 'system',
-                'content' => 'You are a helpful English teacher. Please speak in English.'
+                'content' => 'あなたは役に立つアシスタントです。日本語で会話をしてください。'
             ];
 
             $modelMessages = $modelMessages->map(fn($message) => [
@@ -198,5 +207,17 @@ class ApiService
 
             throw $e;
         }
+    }
+
+    /**
+     * 無音かどうかを判定するメソッド
+     * @param string $audioContent
+     * @return bool
+     */
+    private function isSilentAudio(string $audioContent): bool
+    {
+        // 音声データの無音判定をここで行う（例: ファイルサイズが小さい、またはサンプルし無音検出）
+        // 簡易的な方法としてファイルの大きさを基準にすることができますが、専門的な音声処理ライブラリを使うのが望ましい。
+        return strlen($audioContent) < 1000; // この閾値は環境によって調整が必要です
     }
 }
