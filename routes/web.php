@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 require __DIR__ . '/auth.php';
 
 Route::middleware('auth')->group(function () {
-    Route::get('/top', [ThreadController::class, 'index'])->name('top');
+    Route::get('/', [ThreadController::class, 'index'])->name('top');
 
     Route::prefix('thread')->group(function () {
         Route::post('/', [ThreadController::class, 'store'])->name('thread.store');
