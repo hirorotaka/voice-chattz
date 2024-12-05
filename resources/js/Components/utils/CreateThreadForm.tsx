@@ -26,7 +26,7 @@ export default function CreateThreadForm({
     languages,
 }: CreateThreadFormProps) {
     const form = useForm<FormData>({
-        title: "",
+        title: "無題のスレッド", // デフォルトタイトルを設定
         language_id: "",
     });
 
@@ -36,9 +36,18 @@ export default function CreateThreadForm({
         onClose();
     };
 
-    const createThread: FormEventHandler = (e) => {
+    // 言語選択時に両方のデータを更新
+    const handleLanguageChange = (value: string) => {
+        form.setData({
+            language_id: value,
+            title: value === "2" ? "無題のスレッド" : "Untitled Thread",
+        });
+    };
+
+    const createThread: FormEventHandler = async (e) => {
         e.preventDefault();
 
+        // データが設定された後で送信
         form.post(route("thread.store"), {
             preserveScroll: true,
             preserveState: true,
@@ -49,6 +58,8 @@ export default function CreateThreadForm({
         });
     };
 
+    console.log(form.data);
+
     return (
         <Modal show={show} onClose={handleClose}>
             <form onSubmit={createThread} className="p-6">
@@ -57,38 +68,18 @@ export default function CreateThreadForm({
                 </h2>
 
                 <div className="mt-6">
-                    <InputLabel htmlFor="title" value="タイトル *" />
-                    <TextInput
-                        id="title"
-                        name="title"
-                        type="text"
-                        className={`mt-1 block w-full ${
-                            form.errors.title ? "border-red-500" : ""
-                        }`}
-                        value={form.data.title}
-                        onChange={(e) => form.setData("title", e.target.value)}
-                        placeholder="スレッドのタイトル"
-                        isFocused={true}
-                    />
-                    {form.errors.title && (
-                        <div className="text-red-500 text-sm mt-1">
-                            {form.errors.title}
-                        </div>
-                    )}
-                </div>
-
-                <div className="mt-6">
-                    <InputLabel htmlFor="local" value="言語 *" />
+                    <InputLabel htmlFor="language_id" value="対話モード *" />
+                    <p className="text-sm text-gray-500 mb-2">
+                        使用する言語を選択してください
+                    </p>
                     <select
                         id="language_id"
                         name="language_id"
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                         value={form.data.language_id}
-                        onChange={(e) =>
-                            form.setData("language_id", e.target.value)
-                        }
+                        onChange={(e) => handleLanguageChange(e.target.value)}
                     >
-                        <option value="">選択してください</option>
+                        <option value="">選択してください</option>
                         {languages.map((language) => (
                             <option key={language.locale} value={language.id}>
                                 {language.name}
@@ -107,7 +98,10 @@ export default function CreateThreadForm({
                         キャンセル
                     </SecondaryButton>
 
-                    <PrimaryButton className="ms-3" disabled={form.processing}>
+                    <PrimaryButton
+                        className="ms-3"
+                        disabled={form.processing || !form.data.language_id}
+                    >
                         作成する
                     </PrimaryButton>
                 </div>
