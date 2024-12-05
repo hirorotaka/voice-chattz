@@ -45,6 +45,8 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
         volume: 0.1,
     });
 
+    const [isSePlaying, setIsSePlaying] = useState(false);
+
     const [isActiveAiSound, setIsActiveAiSound] = useState<null | number>(null);
 
     const handleactivePlayAudio = (messageId: number | null) => {
@@ -64,9 +66,12 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
     };
 
     const handleMicButtonClickStart = async () => {
-        // 録音中状態をUIに反映
-        setIsRecording(true);
+        // 録音中か、SE音声再生中の場合は何もしない
+        if (isRecording || isSePlaying) {
+            return;
+        }
 
+        setIsSePlaying(true);
         // 録音処理の前に音を再生
         startSoundplay();
 
@@ -75,12 +80,15 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
         startSoundHowl?.once("end", async () => {
             // 録音処理を実行
             await startRecording();
+            setIsSePlaying(false);
         });
     };
     const handleMicButtonClickStop = async () => {
-        // 録音停止後すぐにPOST送信するためローディング状態をON
-        setIsSending(true);
-
+        //SE音声再生中の場合は何もしない
+        if (isSePlaying) {
+            return;
+        }
+        setIsSePlaying(true);
         // 録音停止の前に音を再生
         endSoundplay();
 
@@ -88,6 +96,7 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
         endSoundHowl?.once("end", async () => {
             // 録停止処理を実行
             stopRecording();
+            setIsSePlaying(false);
         });
     };
 
@@ -183,7 +192,11 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
         try {
             // マイクへのアクセス権限を要求
             const stream = await navigator.mediaDevices.getUserMedia({
-                audio: true,
+                audio: {
+                    echoCancellation: true,
+                    noiseSuppression: true,
+                    autoGainControl: true,
+                },
             });
             // MediaRecorderインスタンスを作成
             const mediaRecorder = new MediaRecorder(stream);
@@ -221,9 +234,37 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
 
             // 録音開始
             mediaRecorder.start();
+            setIsRecording(true);
         } catch (error) {
             console.error("録音の開始に失敗しました:", error);
-            alert("マイクへのアクセスが拒否されたか、エラーが発生しました。");
+
+            if (error instanceof DOMException) {
+                if (error.name === "NotAllowedError") {
+                    alert(
+                        "マイクへのアクセスが拒否されています。\n\n" +
+                            "マイクを使用するには以下の手順で設定を変更してください：\n\n" +
+                            "1. ブラウザのアドレスバーの左側にあるアイコンをクリック\n" +
+                            "2. マイクの設定を「許可」に変更\n" +
+                            "3. ページを更新して再度お試しください"
+                    );
+                } else if (error.name === "NotFoundError") {
+                    alert(
+                        "マイクが見つかりません。マイクが正しく接続されているか確認してください。"
+                    );
+                } else if (error.name === "NotReadableError") {
+                    alert(
+                        "マイクにアクセスできません。他のアプリケーションがマイクを使用している可能性があります。"
+                    );
+                } else {
+                    alert(
+                        "マイクへのアクセスでエラーが発生しました。ページを更新して再度お試しください。"
+                    );
+                }
+            } else {
+                alert(
+                    "予期せぬエラーが発生しました。ページを更新して再度お試しください。"
+                );
+            }
         }
     };
 
@@ -238,6 +279,9 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
         ) {
             // 通常の停止なのでキャンセルフラグは false
             isCancelledRef.current = false;
+
+            // 録音停止後すぐにPOST送信するためローディング状態をON
+            setIsSending(true);
 
             // 初期化処理
             cleanupRecording();
@@ -375,8 +419,8 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
 
             {/* マイクボタンとタイマー表示 */}
             <div className="flex items-center justify-end gap-4 mb-4 mr-4">
-                {/* 録音中のオーバーレイ - マイクボタン以外を押せないようにする */}
-                {isRecording && (
+                {/* 録音中またはSE再生中のオーバーレイ - マイクボタン以外を押せないようにする */}
+                {(isRecording || isSePlaying) && (
                     <div className="fixed inset-0 bg-black/5 backdrop-blur-[0.7px] z-40" />
                 )}
                 {/* Ai応答中のオーバーレイ  */}
