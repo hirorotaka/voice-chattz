@@ -420,7 +420,7 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
 
                 {/* マイクボタン - 録音中も操作可能にするため z-40 を設定 */}
                 {isActiveAiSound ? (
-                    <button className="p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 relative z-40 bg-gray-200 hover:bg-gray-300">
+                    <button className="p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none  relative z-40 bg-gray-400">
                         <HiMicrophone className="w-12 h-12 text-gray-600" />
                     </button>
                 ) : (
