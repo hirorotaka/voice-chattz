@@ -23,7 +23,10 @@ class ThreadController extends Controller
         $threads = Thread::where('user_id', Auth::user()->id)
             ->orderBy('updated_at', 'desc')
             ->get();
-        return Inertia::render('Top', ['threads' => $threads]);
+
+        $languages = Language::all();
+
+        return Inertia::render('Top', ['threads' => $threads, 'languages' => $languages]);
     }
 
     /**
