@@ -56,6 +56,15 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
     // メッセージ作成中の状態を追加
     const [isCreatingMessage, setIsCreatingMessage] = useState(false);
 
+    // グローバル再生速度
+    const [globalPlaybackRate, setGlobalPlaybackRate] = useState(1.0);
+
+    const handlePlaybackRateChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setGlobalPlaybackRate(parseFloat(event.target.value));
+    };
+
     // 録音時間を表示用にフォーマットする関数
     const formatTime = (seconds: number): string => {
         const minutes = Math.floor(seconds / 60);
@@ -403,6 +412,8 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                                         handleactivePlayAudio
                                     }
                                     isActiveAiSound={isActiveAiSound}
+                                    playbackRate={globalPlaybackRate}
+                                    setPlaybackRate={setGlobalPlaybackRate}
                                 />
                             )}
                         </div>
@@ -419,6 +430,23 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
 
             {/* マイクボタンとタイマー表示 */}
             <div className="flex items-center justify-end mr-4">
+                <div className="mr-auto pl-10">
+                    {/* 再生速度調整スライダー */}
+                    <input
+                        type="range"
+                        min="1.0"
+                        max="3.0"
+                        step="0.1"
+                        value={globalPlaybackRate}
+                        onInput={handlePlaybackRateChange}
+                        aria-label="再生速度"
+                        className="w-40 h-2 bg-gray-400 rounded-full appearance-none"
+                    />
+                    <span className="ml-2 text-white text-lg">
+                        {globalPlaybackRate}x
+                    </span>{" "}
+                    {/* 再生速度表示 */}
+                </div>
                 {/* 録音中またはSE再生中のオーバーレイ - マイクボタン以外を押せないようにする */}
                 {(isRecording || isSePlaying) && (
                     <div className="fixed inset-0 bg-black/5 backdrop-blur-[0.7px] z-40" />
@@ -461,7 +489,6 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                         </button>
                     </div>
                 )}
-
                 {/* マイクボタン - 録音中も操作可能にするため z-40 を設定 */}
                 {isActiveAiSound ? (
                     <button className="p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none  relative z-40 bg-gray-400">

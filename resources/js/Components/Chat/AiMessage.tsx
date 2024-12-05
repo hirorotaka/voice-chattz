@@ -8,6 +8,8 @@ type AiMessageProps = {
     flashData?: flashType["flashData"];
     isActiveAiSound?: number | null;
     handleactivePlayAudio?: (messageId: number | null) => void;
+    playbackRate?: number;
+    setPlaybackRate?: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const AiMessage = ({
@@ -15,6 +17,8 @@ const AiMessage = ({
     flashData,
     isActiveAiSound,
     handleactivePlayAudio,
+    playbackRate,
+    setPlaybackRate,
 }: AiMessageProps) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -39,13 +43,19 @@ const AiMessage = ({
     }, [isActiveAiSound]);
 
     useEffect(() => {
+        if (audioRef.current) {
+            if (playbackRate !== undefined) {
+                audioRef.current.playbackRate = playbackRate;
+            }
+        }
+    }, [playbackRate]); // playbackRate が変更されるたびに実行
+
+    useEffect(() => {
         return () => {
             stopAudio();
             audioRef.current = null;
         };
     }, []);
-
-    console.log("is:", isActiveAiSound);
 
     const stopAudio = () => {
         if (audioRef.current) {
@@ -66,6 +76,10 @@ const AiMessage = ({
         if (!audioRef.current) {
             const audioUrl = `/storage/${message.audio_file_path}`;
             audioRef.current = new Audio(audioUrl);
+
+            if (playbackRate !== undefined) {
+                audioRef.current.playbackRate = playbackRate; // props の playbackRate を使用する
+            }
 
             audioRef.current.onended = () => {
                 setIsPlaying(false);
