@@ -58,39 +58,58 @@ export default function CreateThreadForm({
         });
     };
 
-    console.log(form.data);
-
     return (
         <Modal show={show} onClose={handleClose}>
             <form onSubmit={createThread} className="p-6">
-                <h2 className="text-lg font-medium text-gray-900">
+                <h1 className="text-2xl font-medium text-gray-900">
                     新規スレッドを作成
-                </h2>
+                </h1>
 
                 <div className="mt-6">
-                    <InputLabel htmlFor="language_id" value="対話モード *" />
-                    <p className="text-sm text-gray-500 mb-2">
+                    <InputLabel value="対話モード *" />
+                    <p className="text-sm text-gray-500 mb-4">
                         使用する言語を選択してください
                     </p>
-                    <select
-                        id="language_id"
-                        name="language_id"
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                        value={form.data.language_id}
-                        onChange={(e) => handleLanguageChange(e.target.value)}
-                    >
-                        <option value="">選択してください</option>
-                        {languages.map((language) => (
-                            <option key={language.locale} value={language.id}>
-                                {language.name}
-                            </option>
+                    <div className="grid grid-cols-2 gap-3 max-w-80">
+                        {languages?.map((language) => (
+                            <label
+                                key={language.locale}
+                                className={`
+                    relative flex items-center justify-center p-4 rounded-xl cursor-pointer
+                    transition-all duration-200 ease-in-out
+                    ${
+                        form.data.language_id === String(language.id)
+                            ? "bg-indigo-100 ring-2 ring-indigo-500"
+                            : "bg-white ring-1 ring-gray-200 hover:ring-indigo-200"
+                    }
+                `}
+                            >
+                                <input
+                                    type="radio"
+                                    name="language_id"
+                                    value={language.id}
+                                    checked={
+                                        form.data.language_id ===
+                                        String(language.id)
+                                    }
+                                    onChange={(e) =>
+                                        handleLanguageChange(e.target.value)
+                                    }
+                                    className="sr-only" // ラジオボタンを視覚的に隠す
+                                />
+                                <span
+                                    className={`text-base font-medium ${
+                                        form.data.language_id ===
+                                        String(language.id)
+                                            ? "text-indigo-800"
+                                            : "text-gray-900"
+                                    }`}
+                                >
+                                    {language.name}
+                                </span>
+                            </label>
                         ))}
-                    </select>
-                    {form.errors.language_id && (
-                        <div className="text-red-500 text-sm mt-1">
-                            {form.errors.language_id}
-                        </div>
-                    )}
+                    </div>
                 </div>
 
                 <div className="mt-6 flex justify-end">
