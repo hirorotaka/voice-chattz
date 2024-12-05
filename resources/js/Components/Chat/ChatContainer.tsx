@@ -9,6 +9,7 @@ import startSound from "../../../../storage/app/public/sounds/start.mp3";
 import endSound from "../../../../storage/app/public/sounds/end.mp3";
 import useSound from "use-sound";
 import { Tooltip } from "flowbite-react";
+import { useAppContext } from "@/Contexts/AppContext";
 
 interface ChatContainerProps {
     messages: MessageType[];
@@ -16,6 +17,12 @@ interface ChatContainerProps {
 }
 
 const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
+    const {
+        globalPlaybackRate,
+        setGlobalPlaybackRate,
+        handlePlaybackRateChange,
+    } = useAppContext();
+
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const isFirstRender = useRef(true); //再レンダリング間でも値を保持する必要があるため、useRefを使用
     const hasMessages = messages.length > 0;
@@ -55,15 +62,6 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
 
     // メッセージ作成中の状態を追加
     const [isCreatingMessage, setIsCreatingMessage] = useState(false);
-
-    // グローバル再生速度
-    const [globalPlaybackRate, setGlobalPlaybackRate] = useState(1.0);
-
-    const handlePlaybackRateChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setGlobalPlaybackRate(parseFloat(event.target.value));
-    };
 
     // 録音時間を表示用にフォーマットする関数
     const formatTime = (seconds: number): string => {

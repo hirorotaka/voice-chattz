@@ -4,6 +4,11 @@ import { createContext, useContext, useState, ReactNode } from "react";
 interface AppContextType {
     isSidebarOpen: boolean;
     handleSidebarToggle: () => void;
+    globalPlaybackRate: number;
+    setGlobalPlaybackRate: React.Dispatch<React.SetStateAction<number>>;
+    handlePlaybackRateChange: (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => void;
 }
 
 interface AppProviderProps {
@@ -15,6 +20,15 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export function AppProvider({ children }: AppProviderProps) {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+    // グローバル再生速度
+    const [globalPlaybackRate, setGlobalPlaybackRate] = useState(1.0);
+
+    const handlePlaybackRateChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setGlobalPlaybackRate(parseFloat(event.target.value));
+    };
+
     const handleSidebarToggle = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
@@ -22,6 +36,9 @@ export function AppProvider({ children }: AppProviderProps) {
     const value: AppContextType = {
         isSidebarOpen,
         handleSidebarToggle,
+        globalPlaybackRate,
+        setGlobalPlaybackRate,
+        handlePlaybackRateChange,
     };
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
