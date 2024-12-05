@@ -66,6 +66,13 @@ export default function AppLayout({
                                     <FavoriteButton thread={thread} />
                                 </Tooltip>
                             )}
+                            {thread && (
+                                <div className="text-white font-bold text-xl">
+                                    {thread?.language?.locale === "en"
+                                        ? "Language Mode:English"
+                                        : "言語モード:日本語"}
+                                </div>
+                            )}
                             <div className="ml-auto text-white font-bold text-2xl">
                                 <ProfileDropdown />
                             </div>

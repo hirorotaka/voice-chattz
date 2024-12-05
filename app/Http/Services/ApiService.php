@@ -14,7 +14,7 @@ class ApiService
      * @return string|null 文字起こしされたテキスト
      * @throws \Exception API呼び出しに失敗した場合
      */
-    public function callWhisperApi($audioFilePath)
+    public function callWhisperApi($audioFilePath, $language)
     {
         // curlでの呼び出し方
         // curl https://api.openai.com/v1/audio/transcriptions \
@@ -35,8 +35,8 @@ class ApiService
                 basename($fullPath),
             )->post('https://api.openai.com/v1/audio/transcriptions', [
                 'model' => 'whisper-1',
-                'language' => 'ja',
-                'prompt' => 'あなたのタスクは、音声データから人間の発話を書き起こすことです。もし人間の発話が検出された場合：音声を日本語のテキストに変換してください。もし人間の発話が検出されなかった場合：「無音です」と報告してください。「無音」とは、人間の音声以外の音（ノイズ、音楽、無音状態など）を指します。',
+                'language' => $language->locale,
+                'prompt' => $language->audio_prompt,
                 'no_speech_threshold' => 0.9, // API側の無音判定閾値
                 'response_format' => 'verbose_json', // 詳細なJSONレスポンスを取得
             ]);
@@ -82,7 +82,7 @@ class ApiService
      *
      *
      */
-    public function callChatGPTApi($modelMessages)
+    public function callChatGPTApi($modelMessages, $language)
     {
         // 呼び出し方
         // curl https://api.openai.com/v1/chat/completions \
@@ -105,7 +105,7 @@ class ApiService
         try {
             $systemMessage = [
                 'role' => 'system',
-                'content' => 'あなたは役に立つアシスタントです。日本語で会話をしてください。200文字程度で返信してください。また会話口調でやりとりしながら回答してください。事例は２つ程度でお願いします。'
+                'content' => $language->text_prompt
             ];
 
             $modelMessages = $modelMessages->map(fn($message) => [

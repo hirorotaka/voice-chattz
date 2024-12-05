@@ -13,10 +13,12 @@ export type MessageType = {
 export type ThreadType = {
     id: string;
     user_id: string;
+    language_id: number;
     title: string;
     favorite: boolean;
     created_at: string; // ISO形式のタイムスタンプ
     updated_at: string; // ISO形式のタイムスタンプ
+    language?: LanguageType;
 };
 
 export interface flashType {

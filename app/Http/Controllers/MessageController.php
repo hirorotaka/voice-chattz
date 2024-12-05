@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Services\ApiService;
 use App\Models\Message;
+use App\Models\Thread;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
@@ -15,6 +16,9 @@ class MessageController extends Controller
             return back()->with('error', '音声ファイルが保存されませんでした。');
         }
 
+        // スレッドに紐づく言語情報を取得
+        $language = Thread::findOrFail($threadId)->language;
+
         // 音声データを保存する
         $audio = $request->file('audio');
         // ファイル名を日時を基に作成
@@ -23,7 +27,7 @@ class MessageController extends Controller
 
         // chatGPTに音声データをAPIに送信する
         $apiService = new ApiService();
-        $response = $apiService->callWhisperApi($path);
+        $response = $apiService->callWhisperApi($path, $language);
 
         if (!isset($response['text']) || $response['text'] === 'noSound') {
             return back()->with('flashData', 'noSound');
@@ -54,9 +58,12 @@ class MessageController extends Controller
     {
         $messages = Message::where('thread_id', $threadId)->get();
 
+        // スレッドに紐づく言語情報を取得
+        $language = Thread::findOrFail($threadId)->language;
+
         $apiService = new ApiService();
         // ChatGPT APIでAI応答を生成
-        $gptResponse = $apiService->callChatGptApi($messages);
+        $gptResponse = $apiService->callChatGptApi($messages, $language);
         $aiMessageText = $gptResponse['choices'][0]['message']['content'];
 
         // TTSでAIの音声を生成
