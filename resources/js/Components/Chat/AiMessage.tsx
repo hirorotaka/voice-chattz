@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { HiSpeakerWave } from "react-icons/hi2";
 import { flashType, MessageType } from "@/types/types";
+import MessageDisplay from "./MessageDisplay";
 
 type AiMessageProps = {
     message?: MessageType;
@@ -92,9 +93,12 @@ const AiMessage = ({
             </div>
             <div className="flex items-center gap-2 w-5/6">
                 <div className="px-4 py-2 rounded-lg bg-gray-200">
-                    <p className="text-lg">
-                        {message?.message_en || "メッセージを作成しています..."}
-                    </p>
+                    <MessageDisplay
+                        content={
+                            message?.message_en ||
+                            "メッセージを作成しています..."
+                        }
+                    />
                     <p className="text-lg text-gray-600">
                         {message?.message_ja}
                     </p>
