@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreThreadRequest;
 use App\Http\Requests\UpdateThreadRequest;
+use App\Models\Language;
 use App\Models\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,6 +53,8 @@ class ThreadController extends Controller
             ->orderBy('updated_at', 'desc')
             ->get();
 
+        $languages = Language::all();
+
         $messages = $thread->messages()->get();
 
         return Inertia::render(
@@ -60,7 +63,8 @@ class ThreadController extends Controller
                 'thread' => $thread,
                 'threads' => $threads,
                 'activeThreadId' => $thread->id,
-                'messages' => $messages
+                'messages' => $messages,
+                'languages' => $languages
             ]
         );
     }

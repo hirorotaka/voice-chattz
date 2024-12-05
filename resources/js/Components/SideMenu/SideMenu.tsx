@@ -4,7 +4,7 @@ import { BsFillPinAngleFill, BsTypeH1 } from "react-icons/bs";
 import { Link, router } from "@inertiajs/react";
 import SideToggleButton from "./SideToggleButton";
 import { LogoutButton } from "../Utils/LogoutButton";
-import { ThreadType } from "@/types/types";
+import { LanguageType, ThreadType } from "@/types/types";
 import { useEffect, useRef, useState } from "react";
 import DeleteThreadForm from "../Utils/DeleteThreadForm";
 import CreateThreadForm from "../Utils/CreateThreadForm";
@@ -14,9 +14,14 @@ import { Tooltip } from "flowbite-react";
 interface SideMenuProps {
     threads: ThreadType[];
     activeThreadId?: number | null;
+    languages: LanguageType[];
 }
 
-export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
+export const SideMenu = ({
+    threads,
+    activeThreadId = null,
+    languages,
+}: SideMenuProps) => {
     const navRef = useRef<HTMLElement>(null);
 
     // 削除モーダルの状態管理を追加
@@ -353,6 +358,7 @@ export const SideMenu = ({ threads, activeThreadId = null }: SideMenuProps) => {
                 show={showCreateModal}
                 onClose={handleCloseCreateModal}
                 resetScroll={resetScroll}
+                languages={languages}
             />
 
             {/* 編集用モーダル */}

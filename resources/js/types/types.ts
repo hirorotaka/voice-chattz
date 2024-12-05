@@ -23,3 +23,12 @@ export interface flashType {
     success: boolean | null;
     flashData: number | string | null;
 }
+export interface LanguageType {
+    id: number;
+    name: string;
+    locale: string;
+    text_prompt: string;
+    audio_prompt: string;
+    created_at: string;
+    updated_at: string;
+}

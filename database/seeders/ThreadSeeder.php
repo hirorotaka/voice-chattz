@@ -18,6 +18,7 @@ class ThreadSeeder extends Seeder
             Thread::create([
                 'user_id' => 1,
                 'title' => 'スレッドタイトル' . ($i + 1),
+                'language_id' => 1
             ]);
         }
     }
