@@ -9,4 +9,9 @@ class Language extends Model
 {
     /** @use HasFactory<\Database\Factories\LanguageFactory> */
     use HasFactory;
+
+    public function thread()
+    {
+        return $this->hasMany(Message::class);
+    }
 }
