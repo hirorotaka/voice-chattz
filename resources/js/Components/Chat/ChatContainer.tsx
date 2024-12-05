@@ -390,7 +390,7 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
         <div className="flex flex-col h-full">
             {/* メッセージリスト - スクロール可能なエリア */}
             <div className="flex-1 overflow-y-auto">
-                <div className="flex flex-col gap-4 p-4">
+                <div className="flex flex-col gap-2 p-4">
                     {messages.map((message) => (
                         <div key={message.id}>
                             {message.sender === 1 ? (
@@ -418,7 +418,7 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
             </div>
 
             {/* マイクボタンとタイマー表示 */}
-            <div className="flex items-center justify-end gap-4 mb-4 mr-4">
+            <div className="flex items-center justify-end mr-4">
                 {/* 録音中またはSE再生中のオーバーレイ - マイクボタン以外を押せないようにする */}
                 {(isRecording || isSePlaying) && (
                     <div className="fixed inset-0 bg-black/5 backdrop-blur-[0.7px] z-40" />
@@ -439,7 +439,7 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                 )}
                 {/* 録音時間とコントロールの表示 */}
                 {isRecording && (
-                    <div className="flex items-center gap-4 relative z-40">
+                    <div className="flex items-center gap-4 relative mr-4 z-40">
                         <div className="flex items-center gap-2">
                             <div className="animate-pulse">
                                 <div className="w-4 h-4 bg-red-500 rounded-full"></div>

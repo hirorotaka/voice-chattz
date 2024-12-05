@@ -92,7 +92,7 @@ const AiMessage = ({
                 <span className="text-sm font-medium">AI</span>
             </div>
             <div className="flex items-center gap-2 w-5/6">
-                <div className="px-4 py-2 rounded-lg bg-gray-200">
+                <div className="p-2 rounded-lg bg-gray-200">
                     <MessageDisplay
                         content={
                             message?.message_en ||

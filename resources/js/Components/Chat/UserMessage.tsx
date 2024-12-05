@@ -10,14 +10,14 @@ const UserMessage = ({ message }: UserMessageProps) => {
             {" "}
             {/* w-1/2を削除、w-fullに変更 */}
             <div className="flex items-center gap-2">
-                <div className="px-4 py-2 rounded-lg bg-teal-200 max-w-[30vw]">
+                <div className="px-4 py-2 rounded-lg bg-teal-200 max-w-[40vw]">
                     <p className="text-lg break-words">{message.message_en}</p>
                     <p className="text-lg text-gray-600 break-words">
                         {message.message_ja}
                     </p>
                 </div>
             </div>
-            <div className="flex items-center justify-center px-3 py-1 rounded bg-gray-200 flex-shrink-0">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-300">
                 <span className="text-sm font-medium">You</span>
             </div>
         </div>

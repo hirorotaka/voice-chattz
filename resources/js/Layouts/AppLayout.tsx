@@ -70,7 +70,7 @@ export default function AppLayout({
                     </div>
 
                     {/* Content area */}
-                    <main className="flex-1 overflow-y-auto p-5">
+                    <main className="flex-1 overflow-y-auto pb-5">
                         {children}
                     </main>
                 </div>
