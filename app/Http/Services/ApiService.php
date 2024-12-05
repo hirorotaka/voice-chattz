@@ -105,7 +105,7 @@ class ApiService
         try {
             $systemMessage = [
                 'role' => 'system',
-                'content' => 'あなたは役に立つアシスタントです。日本語で会話をしてください。'
+                'content' => 'あなたは役に立つアシスタントです。日本語で会話をしてください。200文字程度で返信してください。また会話口調でやりとりしながら回答してください。事例は２つ程度でお願いします。'
             ];
 
             $modelMessages = $modelMessages->map(fn($message) => [
