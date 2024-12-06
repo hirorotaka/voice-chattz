@@ -20,6 +20,11 @@ class Thread extends Model
         return $this->belongsTo(Language::class);
     }
 
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
 
     public function user()
     {

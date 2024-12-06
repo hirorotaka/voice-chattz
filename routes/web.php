@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ThreadController;
+use App\Models\Role;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
@@ -33,4 +35,6 @@ Route::middleware('auth')->group(function () {
                 ->name('message.generate-ai-response');
         });
     });
+
+    Route::get('/role', [RoleController::class, 'index'])->name('role.index');
 });
