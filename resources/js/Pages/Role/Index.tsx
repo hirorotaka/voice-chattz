@@ -1,6 +1,8 @@
+import CreateRoleForm from "@/Components/Utils/CreateRoleForm";
 import AppLayout from "@/Layouts/AppLayout";
 import { LanguageType, RoleType, ThreadType } from "@/types/types";
 import { Tooltip } from "flowbite-react";
+import { useState } from "react";
 import { HiTrash, HiOutlinePencil } from "react-icons/hi2";
 
 interface TopProps {
@@ -10,12 +12,32 @@ interface TopProps {
 }
 
 export default function Index({ threads, languages, roles }: TopProps) {
+    // 新規作成モーダル用のステート
+    const [roleCreateModal, setRoleCreateModal] = useState(false);
+
+    const handleCreateRole = () => {
+        setRoleCreateModal(true);
+    };
+
+    const handleCloseCreateModal = () => {
+        setRoleCreateModal(false);
+    };
     return (
         <AppLayout title="roles" threads={threads} languages={languages}>
             <div className="h-full flex flex-col p-5">
-                <p className="text-2xl sm:text-3xl font-semibold mb-6 text-white text-center">
-                    役割一覧
-                </p>
+                <div className="flex justify-between items-center mb-6">
+                    {" "}
+                    {/* ボタンの位置調整 */}
+                    <p className="text-2xl sm:text-3xl font-semibold text-white text-center">
+                        役割一覧
+                    </p>
+                    <button
+                        onClick={handleCreateRole}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                        役割作成
+                    </button>
+                </div>
                 <div className="overflow-x-auto rounded-lg shadow-md bg-gray-300">
                     <table className="min-w-full divide-y divide-gray-300">
                         <thead className="bg-gray-200">
@@ -117,6 +139,13 @@ export default function Index({ threads, languages, roles }: TopProps) {
                     </table>
                 </div>
             </div>
+
+            {/* 新規作成モーダル */}
+            <CreateRoleForm
+                show={roleCreateModal}
+                onClose={handleCloseCreateModal}
+                languages={languages}
+            />
         </AppLayout>
     );
 }

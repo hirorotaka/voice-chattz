@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRoleRequest;
 use App\Models\Language;
 use App\Models\Role;
 use App\Models\Thread;
@@ -37,9 +38,9 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        //
+        dd($request->validated());
     }
 
     /**

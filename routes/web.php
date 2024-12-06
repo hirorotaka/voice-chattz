@@ -36,8 +36,5 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    Route::get('/role', [RoleController::class, 'index'])->name('role.index');
-    Route::post('/role', [RoleController::class, 'store'])->name('role.store');
-    Route::put('/role', [RoleController::class, 'update'])->name('role.update');
-    Route::put('/delete', [RoleController::class, 'destroy'])->name('role.destroy');
+    Route::resource('roles', RoleController::class)->except(['show', 'create', 'edit']);
 });

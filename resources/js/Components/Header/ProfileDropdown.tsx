@@ -17,7 +17,7 @@ const ProfileDropdown = () => {
             <Link href={route("top")}>
                 <Dropdown.Item>TOP</Dropdown.Item>
             </Link>
-            <Link href={route("role.index")}>
+            <Link href={route("roles.index")}>
                 <Dropdown.Item>役割一覧</Dropdown.Item>
             </Link>
             <Dropdown.Item onClick={handleLogout}>ログアウト</Dropdown.Item>
