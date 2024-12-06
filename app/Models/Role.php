@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Role extends Model
 {
@@ -19,4 +20,16 @@ class Role extends Model
     {
         return $this->belongsTo(Language::class);
     }
+
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->withPivot('owner')->withTimestamps();
+    }
+
+    protected $fillable = [
+        'name',
+        'first_message',
+        'description',
+        'language_id'
+    ];
 }

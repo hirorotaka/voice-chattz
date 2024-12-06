@@ -36,5 +36,18 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    Route::resource('roles', RoleController::class)->except(['show', 'create', 'edit']);
+    Route::prefix('roles')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('roles.index');
+
+        Route::post('/', [RoleController::class, 'store'])
+            ->name('roles.store');
+
+        Route::put('/{role}', [RoleController::class, 'update'])
+            ->middleware('can:update,role') // update ポリシーの適用
+            ->name('roles.update');
+
+        Route::delete('/{role}', [RoleController::class, 'destroy'])
+            ->middleware('can:delete,role') // delete ポリシーの適用
+            ->name('roles.destroy');
+    });
 });

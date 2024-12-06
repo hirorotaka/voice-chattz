@@ -79,16 +79,16 @@ export default function Index({ threads, languages, roles }: TopProps) {
                         <tbody className="bg-white divide-y divide-gray-200">
                             {roles.map((role) => (
                                 <tr key={role.id} className="hover:bg-gray-50">
-                                    <td className="px-6 py-4 text-sm text-gray-500 max-w-[200px] break-words">
+                                    <td className="px-2 py-4 text-sm text-gray-500 break-words w-32">
                                         {role.name}
                                     </td>
-                                    <td className="px-6 py-4 text-sm text-gray-500">
+                                    <td className="px-2 py-4 text-sm text-gray-500">
                                         {role.first_message}
                                     </td>
-                                    <td className="px-6 py-4 text-sm text-gray-500">
+                                    <td className="px-2 py-4 text-sm text-gray-500">
                                         {role.description}
                                     </td>
-                                    <td className="px-6 py-4 text-sm text-gray-500">
+                                    <td className="px-2 py-4 text-sm text-gray-500">
                                         {role.language?.name}
                                     </td>
                                     <td className="text-right text-sm font-medium">
@@ -106,7 +106,7 @@ export default function Index({ threads, languages, roles }: TopProps) {
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                 }}
-                                                className="p-1 rounded text-gray-500 hover:text-gray-400 transition-colors"
+                                                className="rounded text-gray-500 hover:text-gray-400 transition-colors"
                                             >
                                                 <HiOutlinePencil className="h-5 w-5" />
                                             </button>
@@ -127,7 +127,7 @@ export default function Index({ threads, languages, roles }: TopProps) {
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                 }}
-                                                className="p-1 rounded text-red-400 hover:text-red-300 transition-colors"
+                                                className="rounded text-red-400 hover:text-red-300 transition-colors"
                                             >
                                                 <HiTrash className="h-5 w-5" />
                                             </button>

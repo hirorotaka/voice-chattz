@@ -17,7 +17,10 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::with('language')->get();
+        // ownerがtrueのロールのみを取得
+        $roles = Auth::user()->roles()
+            ->wherePivot('owner', true)
+            ->get();
         $threads = Thread::where('user_id', Auth::user()->id)
             ->orderBy('updated_at', 'desc')
             ->get();
@@ -40,7 +43,18 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        dd($request->validated());
+        $validatedData = $request->validated();
+
+        // ログインユーザーのIDを取得
+        $userId = Auth::id();
+
+        // ロールを作成
+        $role = Role::create($validatedData);
+
+        // ログインユーザーとロールを紐づけ、ownerをtrueにする
+        $role->users()->attach(Auth::id(), ['owner' => true]);
+
+        return to_route('roles.index');
     }
 
     /**
