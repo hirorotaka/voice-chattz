@@ -60,7 +60,7 @@ export default function AppLayout({
                                             ピン留め
                                         </span>
                                     }
-                                    placement="right"
+                                    placement="bottom"
                                     style="light"
                                 >
                                     <FavoriteButton thread={thread} />
