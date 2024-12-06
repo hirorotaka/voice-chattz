@@ -14,4 +14,9 @@ class Role extends Model
     {
         return $this->hasMany(Message::class);
     }
+
+    public function language()
+    {
+        return $this->belongsTo(Language::class);
+    }
 }
