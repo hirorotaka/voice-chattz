@@ -427,30 +427,33 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
 
             {/* マイクボタンとタイマー表示 */}
             <div className="flex items-center justify-end mr-4">
-                <div className="flex items-center mr-auto pl-10">
-                    {/* 再生速度調整スライダー */}
-                    <input
-                        type="range"
-                        min="1.0"
-                        max="3.0"
-                        step="0.1"
-                        value={globalPlaybackRate}
-                        onInput={handlePlaybackRateChange}
-                        aria-label="再生速度"
-                        className="w-40 h-2 bg-gray-400 rounded-full appearance-none block"
-                    />
-                    {/* 再生速度表示 */}
-                    <div className="ml-2 text-white text-lg w-8">
-                        {globalPlaybackRate}x
+                {/* 録音中は表示しない */}
+                {!isRecording && (
+                    <div className="flex items-center mr-auto pl-10">
+                        {/* 再生速度調整スライダー */}
+                        <input
+                            type="range"
+                            min="1.0"
+                            max="3.0"
+                            step="0.1"
+                            value={globalPlaybackRate}
+                            onInput={handlePlaybackRateChange}
+                            aria-label="再生速度"
+                            className="w-40 h-2 bg-gray-400 rounded-full appearance-none block"
+                        />
+                        {/* 再生速度表示 */}
+                        <div className="ml-2 text-white text-lg w-8">
+                            {globalPlaybackRate}x
+                        </div>
+                        {/* 再生速度リセットボタン */}
+                        <div
+                            onClick={handlePlaybackRateReset}
+                            className="ml-2 text-white text-sm bg-white/10 hover:bg-white/20 px-2 py-1 rounded-full cursor-pointer"
+                        >
+                            リセット
+                        </div>
                     </div>
-                    {/* 再生速度リセットボタン */}
-                    <div
-                        onClick={handlePlaybackRateReset}
-                        className="ml-2 text-white text-sm bg-white/10 hover:bg-white/20 px-2 py-1 rounded-full cursor-pointer"
-                    >
-                        リセット
-                    </div>
-                </div>
+                )}
                 {/* 録音中またはSE再生中のオーバーレイ - マイクボタン以外を押せないようにする */}
                 {(isRecording || isSePlaying) && (
                     <div className="fixed inset-0 bg-black/5 backdrop-blur-[0.7px] z-40" />
