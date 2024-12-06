@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Language;
 use App\Models\Role;
+use App\Models\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class RoleController extends Controller
@@ -13,7 +16,13 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Role/Index');
+        $threads = Thread::where('user_id', Auth::user()->id)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        $languages = Language::all();
+
+        return Inertia::render('Role/Index', ['threads' => $threads, 'languages' => $languages]);
     }
 
     /**

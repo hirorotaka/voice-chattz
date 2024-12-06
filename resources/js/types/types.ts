@@ -14,6 +14,7 @@ export type ThreadType = {
     id: string;
     user_id: string;
     language_id: number;
+    role_id: number;
     title: string;
     favorite: boolean;
     created_at: string; // ISO形式のタイムスタンプ
@@ -33,4 +34,11 @@ export interface LanguageType {
     audio_prompt: string;
     created_at: string;
     updated_at: string;
+}
+
+export interface RoleType {
+    id: number;
+    name: string;
+    first_message: string; // first_message を追加
+    description: string;
 }
