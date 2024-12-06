@@ -14,8 +14,8 @@ class Language extends Model
     {
         return $this->hasMany(Message::class);
     }
-    public function languages()
+    public function roles()
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(Role::class);
     }
 }
