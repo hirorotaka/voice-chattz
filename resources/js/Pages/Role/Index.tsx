@@ -6,50 +6,10 @@ import { HiTrash, HiOutlinePencil } from "react-icons/hi2";
 interface TopProps {
     threads: ThreadType[];
     languages: LanguageType[];
+    roles: RoleType[];
 }
 
-export default function Index({ threads, languages }: TopProps) {
-    const sampleRoles: RoleType[] = [
-        {
-            id: 1,
-            name: "プログラマーあああああああああああああああ",
-            first_message:
-                "こんにちは！私はプログラミングが得意なAIです。どんなプログラムを作りたいですか？",
-            description:
-                "様々なプログラミング言語で、あなたの要望に沿ったプログラムを作成します。",
-        },
-        {
-            id: 2,
-            name: "ライター",
-            first_message:
-                "はじめまして！私は文章を書くのが得意なAIです。どんな記事を書きたいですか？",
-            description:
-                "ブログ記事、小説、詩など、様々なジャンルの文章を作成できます。",
-        },
-        {
-            id: 3,
-            name: "翻訳家",
-            first_message:
-                "Hello! I am an AI who is good at translation. What language do you want to translate?",
-            description:
-                "英語、日本語、中国語など、様々な言語の翻訳に対応しています。",
-        },
-        {
-            id: 4,
-            name: "詩人",
-            first_message:
-                "こんにちは。私は詩を書くAIです。あなたの心に響く詩を詠みます。",
-            description: "美しい言葉で、あなたの心を表現する詩を創作します。",
-        },
-        {
-            id: 5,
-            name: "作曲家",
-            first_message:
-                "どうも！私は作曲ができるAIです。どんな音楽を作りたいですか？",
-            description: "様々なジャンルの音楽を制作できます。",
-        },
-    ];
-
+export default function Index({ threads, languages, roles }: TopProps) {
     return (
         <AppLayout title="roles" threads={threads} languages={languages}>
             <div className="h-full flex flex-col p-5">
@@ -78,16 +38,24 @@ export default function Index({ threads, languages }: TopProps) {
                                 >
                                     説明
                                 </th>
-                                <th scope="col" className="relative px-6 py-3">
+                                <th
+                                    scope="col"
+                                    className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap"
+                                >
+                                    言語
+                                    <br />
+                                    モード
+                                </th>
+                                <th scope="col" className="relative px-6 py-1">
                                     <span className="sr-only">編集</span>
                                 </th>
-                                <th scope="col" className="relative px-6 py-3">
+                                <th scope="col" className="relative px-6 py-1">
                                     <span className="sr-only">削除</span>
                                 </th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {sampleRoles.map((role) => (
+                            {roles.map((role) => (
                                 <tr key={role.id} className="hover:bg-gray-50">
                                     <td className="px-6 py-4 text-sm text-gray-500 max-w-[200px] break-words">
                                         {role.name}
@@ -97,6 +65,9 @@ export default function Index({ threads, languages }: TopProps) {
                                     </td>
                                     <td className="px-6 py-4 text-sm text-gray-500">
                                         {role.description}
+                                    </td>
+                                    <td className="px-6 py-4 text-sm text-gray-500">
+                                        {role.language?.name}
                                     </td>
                                     <td className="text-right text-sm font-medium">
                                         <Tooltip

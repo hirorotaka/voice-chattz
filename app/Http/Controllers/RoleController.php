@@ -16,13 +16,14 @@ class RoleController extends Controller
      */
     public function index()
     {
+        $roles = Role::with('language')->get();
         $threads = Thread::where('user_id', Auth::user()->id)
             ->orderBy('updated_at', 'desc')
             ->get();
 
         $languages = Language::all();
 
-        return Inertia::render('Role/Index', ['threads' => $threads, 'languages' => $languages]);
+        return Inertia::render('Role/Index', ['threads' => $threads, 'languages' => $languages, 'roles' => $roles]);
     }
 
     /**
