@@ -9,6 +9,7 @@ interface AppContextType {
     handlePlaybackRateChange: (
         event: React.ChangeEvent<HTMLInputElement>
     ) => void;
+    handlePlaybackRateReset: () => void;
 }
 
 interface AppProviderProps {
@@ -29,6 +30,10 @@ export function AppProvider({ children }: AppProviderProps) {
         setGlobalPlaybackRate(parseFloat(event.target.value));
     };
 
+    const handlePlaybackRateReset = () => {
+        setGlobalPlaybackRate(1.0);
+    };
+
     const handleSidebarToggle = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
@@ -39,6 +44,7 @@ export function AppProvider({ children }: AppProviderProps) {
         globalPlaybackRate,
         setGlobalPlaybackRate,
         handlePlaybackRateChange,
+        handlePlaybackRateReset,
     };
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

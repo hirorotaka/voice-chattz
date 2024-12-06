@@ -9,7 +9,6 @@ type AiMessageProps = {
     isActiveAiSound?: number | null;
     handleactivePlayAudio?: (messageId: number | null) => void;
     playbackRate?: number;
-    setPlaybackRate?: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const AiMessage = ({
@@ -18,7 +17,6 @@ const AiMessage = ({
     isActiveAiSound,
     handleactivePlayAudio,
     playbackRate,
-    setPlaybackRate,
 }: AiMessageProps) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
