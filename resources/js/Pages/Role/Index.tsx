@@ -61,40 +61,34 @@ export default function Index({ threads, languages, roles }: TopProps) {
                                 <tr>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+                                        className="px-2 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
                                     >
                                         役割名
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+                                        className="px-2 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
                                     >
                                         初回メッセージ
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+                                        className="px-2 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
                                     >
                                         説明
                                     </th>
                                     <th
                                         scope="col"
-                                        className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap"
+                                        className="px-2 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap"
                                     >
                                         言語
                                         <br />
                                         モード
                                     </th>
-                                    <th
-                                        scope="col"
-                                        className="relative px-6 py-1"
-                                    >
+                                    <th scope="col">
                                         <span className="sr-only">編集</span>
                                     </th>
-                                    <th
-                                        scope="col"
-                                        className="relative px-6 py-1"
-                                    >
+                                    <th scope="col">
                                         <span className="sr-only">削除</span>
                                     </th>
                                 </tr>
@@ -117,7 +111,7 @@ export default function Index({ threads, languages, roles }: TopProps) {
                                         <td className="px-2 py-4 text-sm text-gray-500">
                                             {role.language?.name}
                                         </td>
-                                        <td className="text-right text-sm font-medium">
+                                        <td className="text-right text-sm">
                                             <Tooltip
                                                 content={
                                                     <span className="text-md font-bold">
@@ -138,7 +132,7 @@ export default function Index({ threads, languages, roles }: TopProps) {
                                                 </button>
                                             </Tooltip>
                                         </td>
-                                        <td className="text-right text-sm font-medium">
+                                        <td className="text-right text-sm">
                                             <Tooltip
                                                 content={
                                                     <span className="text-md font-bold">
