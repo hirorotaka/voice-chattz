@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreThreadRequest;
 use App\Http\Requests\UpdateThreadRequest;
 use App\Models\Language;
+use App\Models\Message;
 use App\Models\Prompt;
 use App\Models\Role;
 use App\Models\Thread;
@@ -72,6 +73,17 @@ class ThreadController extends Controller
                     'name' => $role->name,
                     'description' => $role->description
                 ]);
+
+                // 初期メッセージを作成
+                Message::create(
+                    [
+                        'thread_id' => $thread->id,
+                        'message_en' => $role->first_message,
+                        'message_ja' => "",
+                        'audio_file_path' => "",
+                        'sender' => 2,
+                    ]
+                );
             } else {
                 // role_idがnullの場合は空の情報で作成
                 Prompt::create([
@@ -79,7 +91,24 @@ class ThreadController extends Controller
                     'name' => '',
                     'description' => ''
                 ]);
+
+                // 初期メッセージを作成
+                $defaultMessage_en = "Hello! I'm your AI assistant. How can I help you today? I can engage in conversations on a wide range of topics, so please feel free to ask me anything.";
+                $defaultMessage_ja = "こんにちは！私はAIアシスタントです。どのようなお手伝いができますか？幅広い話題について会話ができますので、気軽にお話しください。";
+
+                Message::create(
+                    [
+                        'thread_id' => $thread->id,
+                        'message_en' => $thread->language_id == 1 ? $defaultMessage_en : $defaultMessage_ja,
+                        'message_ja' => "",
+                        'audio_file_path' => "",
+                        'sender' => 2,
+                    ]
+                );
             }
+
+            // 音声データを保存する
+
 
             return redirect()->route('thread.show', $thread);
         });
