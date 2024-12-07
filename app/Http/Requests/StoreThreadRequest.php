@@ -16,6 +16,7 @@ class StoreThreadRequest extends FormRequest
         return [
             'title' => 'required|string|max:30',
             'language_id' => 'required|exists:languages,id',
+            'role_id' => 'nullable|exists:roles,id',
         ];
     }
 

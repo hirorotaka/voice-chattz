@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreThreadRequest;
 use App\Http\Requests\UpdateThreadRequest;
 use App\Models\Language;
+use App\Models\Prompt;
+use App\Models\Role;
 use App\Models\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\In;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
@@ -26,7 +30,9 @@ class ThreadController extends Controller
 
         $languages = Language::all();
 
-        return Inertia::render('Top', ['threads' => $threads, 'languages' => $languages]);
+        $roles = Auth::user()->roles()->with('language')->get();
+
+        return Inertia::render('Top', ['threads' => $threads, 'languages' => $languages, 'roles' => $roles]);
     }
 
     /**
@@ -42,9 +48,41 @@ class ThreadController extends Controller
      */
     public function store(StoreThreadRequest $request)
     {
-        $thread = $request->user()->threads()->create($request->validated());
+        $attributes = $request->only(['language_id', 'role_id']);
 
-        return to_route('thread.show', $thread);
+        // ポリシーチェック
+        $result = Gate::inspect('create', [Thread::class, $attributes]);
+
+        if (!$result->allowed()) {
+            abort(403);
+        }
+
+        return DB::transaction(function () use ($request) {
+            $thread = Thread::create([
+                'user_id' => auth()->id(),
+                'language_id' => $request->language_id,
+                'title' => $request->title,
+            ]);
+
+            if ($request->role_id) {
+                $role = Role::findOrFail($request->role_id);
+
+                Prompt::create([
+                    'thread_id' => $thread->id,
+                    'name' => $role->name,
+                    'description' => $role->description
+                ]);
+            } else {
+                // role_idがnullの場合は空の情報で作成
+                Prompt::create([
+                    'thread_id' => $thread->id,
+                    'name' => '',
+                    'description' => ''
+                ]);
+            }
+
+            return redirect()->route('thread.show', $thread);
+        });
     }
 
     /**
@@ -58,6 +96,8 @@ class ThreadController extends Controller
 
         $languages = Language::all();
 
+        $roles = Auth::user()->roles()->with('language')->get();
+
         $messages = $thread->messages()->get();
 
         return Inertia::render(
@@ -67,7 +107,8 @@ class ThreadController extends Controller
                 'threads' => $threads,
                 'activeThreadId' => $thread->id,
                 'messages' => $messages,
-                'languages' => $languages
+                'languages' => $languages,
+                'roles' => $roles
             ]
         );
     }
