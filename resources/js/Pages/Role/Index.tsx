@@ -74,7 +74,12 @@ export default function Index({ threads, languages, roles }: TopProps) {
     };
 
     return (
-        <AppLayout title="roles" threads={threads} languages={languages}>
+        <AppLayout
+            title="roles"
+            threads={threads}
+            languages={languages}
+            roles={roles}
+        >
             <div className="h-full flex flex-col p-5">
                 {roles.length === 0 ? (
                     <div className="flex items-center flex-col justify-center h-full">

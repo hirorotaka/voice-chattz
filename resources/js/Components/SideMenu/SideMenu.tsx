@@ -4,7 +4,7 @@ import { BsFillPinAngleFill, BsTypeH1 } from "react-icons/bs";
 import { Link, router } from "@inertiajs/react";
 import SideToggleButton from "./SideToggleButton";
 import { LogoutButton } from "../Utils/LogoutButton";
-import { LanguageType, ThreadType } from "@/types/types";
+import { LanguageType, RoleType, ThreadType } from "@/types/types";
 import { useEffect, useRef, useState } from "react";
 import DeleteThreadForm from "../Utils/DeleteThreadForm";
 import CreateThreadForm from "../Utils/CreateThreadForm";
@@ -15,12 +15,14 @@ interface SideMenuProps {
     threads: ThreadType[];
     activeThreadId?: number | null;
     languages: LanguageType[];
+    roles: RoleType[];
 }
 
 export const SideMenu = ({
     threads,
     activeThreadId = null,
     languages,
+    roles,
 }: SideMenuProps) => {
     const navRef = useRef<HTMLElement>(null);
 
@@ -359,6 +361,7 @@ export const SideMenu = ({
                 onClose={handleCloseCreateModal}
                 resetScroll={resetScroll}
                 languages={languages}
+                roles={roles}
             />
 
             {/* 編集用モーダル */}

@@ -4,7 +4,7 @@ import { SideMenu } from "@/Components/SideMenu/SideMenu";
 import { SideToggleButton } from "@/Components/SideMenu/SideToggleButton";
 import ProfileDropdown from "@/Components/Header/ProfileDropdown";
 import { useAppContext } from "@/Contexts/AppContext";
-import { LanguageType, ThreadType } from "@/types/types";
+import { LanguageType, RoleType, ThreadType } from "@/types/types";
 import { HiOutlineStar, HiStar } from "react-icons/hi2";
 import { FavoriteButton } from "@/Components/Utils/FavoriteButton";
 import { Tooltip } from "flowbite-react";
@@ -16,6 +16,7 @@ interface AppLayoutProps {
     thread?: ThreadType;
     activeThreadId?: number | null;
     languages: LanguageType[];
+    roles: RoleType[];
 }
 
 export default function AppLayout({
@@ -25,6 +26,7 @@ export default function AppLayout({
     threads,
     activeThreadId,
     languages,
+    roles,
 }: AppLayoutProps) {
     const { isSidebarOpen, handleSidebarToggle } = useAppContext();
 
@@ -42,6 +44,7 @@ export default function AppLayout({
                         threads={threads}
                         activeThreadId={activeThreadId}
                         languages={languages}
+                        roles={roles}
                     />
                 </div>
 

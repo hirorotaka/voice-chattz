@@ -1,15 +1,21 @@
 import AppLayout from "@/Layouts/AppLayout";
 import { LearningGrid } from "@/Components/LearningGrid";
-import { LanguageType, ThreadType } from "@/types/types";
+import { LanguageType, RoleType, ThreadType } from "@/types/types";
 
 interface TopProps {
     threads: ThreadType[];
     languages: LanguageType[];
+    roles: RoleType[];
 }
 
-export default function Top({ threads, languages }: TopProps) {
+export default function Top({ threads, languages, roles }: TopProps) {
     return (
-        <AppLayout title="Top" threads={threads} languages={languages}>
+        <AppLayout
+            title="Top"
+            threads={threads}
+            languages={languages}
+            roles={roles}
+        >
             <div className="h-full flex flex-col">
                 <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-white">
                     英会話学習記録
