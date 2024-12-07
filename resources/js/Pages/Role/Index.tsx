@@ -1,4 +1,5 @@
 import CreateRoleForm from "@/Components/Utils/CreateRoleForm";
+import DeleteRoleForm from "@/Components/Utils/DeleteRoleForm";
 import EditRoleForm from "@/Components/Utils/EditRoleForm";
 import AppLayout from "@/Layouts/AppLayout";
 import { LanguageType, RoleType, ThreadType } from "@/types/types";
@@ -29,6 +30,10 @@ export default function Index({ threads, languages, roles }: TopProps) {
         updated_at: "",
     });
 
+    // 削除モーダルの状態管理を追加
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [roleToDelete, setRoleToDelete] = useState<number | null>(null);
+
     const handleOpenCreateModal = () => {
         setRoleCreateModal(true);
     };
@@ -57,6 +62,17 @@ export default function Index({ threads, languages, roles }: TopProps) {
             updated_at: "",
         });
     };
+
+    const handleClickOpenDeleteModal = (roleId: number) => {
+        setRoleToDelete(roleId);
+        setShowDeleteModal(true);
+    };
+
+    const handleClickCloseDeleteModal = () => {
+        setShowDeleteModal(false);
+        setRoleToDelete(null);
+    };
+
     return (
         <AppLayout title="roles" threads={threads} languages={languages}>
             <div className="h-full flex flex-col p-5">
@@ -187,6 +203,9 @@ export default function Index({ threads, languages, roles }: TopProps) {
                                                     <button
                                                         onClick={(e) => {
                                                             e.stopPropagation();
+                                                            handleClickOpenDeleteModal(
+                                                                role.id
+                                                            );
                                                         }}
                                                         className="pr-3 rounded text-red-400 hover:text-red-300 transition-colors"
                                                     >
@@ -215,6 +234,14 @@ export default function Index({ threads, languages, roles }: TopProps) {
                 onClose={handleCloseEditModal}
                 languages={languages}
                 roleToEdit={roleToEdit}
+            />
+
+            {/* 削除モーダルを追加 */}
+
+            <DeleteRoleForm
+                show={showDeleteModal}
+                onClose={handleClickCloseDeleteModal}
+                roleId={roleToDelete}
             />
         </AppLayout>
     );
