@@ -17,10 +17,8 @@ class RoleController extends Controller
      */
     public function index()
     {
-        // ownerがtrueのロールのみを取得
-        $roles = Auth::user()->roles()
-            ->wherePivot('owner', true)
-            ->get();
+        $roles = Auth::user()->roles()->with('language')->get();
+
         $threads = Thread::where('user_id', Auth::user()->id)
             ->orderBy('updated_at', 'desc')
             ->get();
