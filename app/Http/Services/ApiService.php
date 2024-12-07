@@ -82,7 +82,7 @@ class ApiService
      *
      *
      */
-    public function callChatGPTApi($modelMessages, $language)
+    public function callChatGPTApi($modelMessages, $language, $promptDescription)
     {
         // 呼び出し方
         // curl https://api.openai.com/v1/chat/completions \
@@ -105,7 +105,7 @@ class ApiService
         try {
             $systemMessage = [
                 'role' => 'system',
-                'content' => $language->text_prompt
+                'content' => $language->text_prompt . $promptDescription
             ];
 
             $modelMessages = $modelMessages->map(fn($message) => [

@@ -58,12 +58,19 @@ class MessageController extends Controller
     {
         $messages = Message::where('thread_id', $threadId)->get();
 
-        // スレッドに紐づく言語情報を取得
-        $language = Thread::findOrFail($threadId)->language;
+        // スレッドとその関連データを取得
+        $thread = Thread::with(['language', 'prompt'])->findOrFail($threadId);
+
+        // プロンプト情報を取得（ない場合はデフォルト設定を使用）
+        $promptDescription = $thread->prompt?->description ?? '';
 
         $apiService = new ApiService();
         // ChatGPT APIでAI応答を生成
-        $gptResponse = $apiService->callChatGptApi($messages, $language);
+        $gptResponse = $apiService->callChatGptApi(
+            modelMessages: $messages,
+            language: $thread->language,
+            promptDescription: $promptDescription
+        );
         $aiMessageText = $gptResponse['choices'][0]['message']['content'];
 
         // TTSでAIの音声を生成
