@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('roles', function (Blueprint $table) {
-            $table->foreignId('language_id')->constrained();
+            $table->after('id', function (Blueprint $table) {
+                $table->foreignId('language_id')->constrained();
+            });
         });
     }
 

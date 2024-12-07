@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -59,6 +61,11 @@ class RoleSeeder extends Seeder
             ],
         ];
 
-        DB::table('roles')->insert($roles);
+        foreach ($roles as $roleData) {
+            $role = Role::create($roleData);
+
+            // 例：最初のユーザーにロールを割り当て
+            User::first()->roles()->attach($role->id, ['owner' => true]);
+        }
     }
 }

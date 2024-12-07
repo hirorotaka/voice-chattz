@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('role_user', function (Blueprint $table) {
-            $table->boolean('owner')->default(false); // ownerカラムを追加
+            $table->after('role_id', function (Blueprint $table) {
+                $table->boolean('owner')->default(false); // ownerカラムを追加
+            });
         });
     }
 
