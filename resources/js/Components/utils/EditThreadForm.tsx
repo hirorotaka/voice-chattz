@@ -7,38 +7,51 @@ import { FormEventHandler, useEffect } from "react";
 interface CreateThreadFormProps {
     onClose: () => void;
     show: boolean;
-    threadId: string;
-    title: string;
+    threadToEdit: {
+        id: string;
+        title: string;
+    };
 }
 
 export default function EditThreadForm({
     onClose,
     show,
-    threadId,
-    title,
+    threadToEdit,
 }: CreateThreadFormProps) {
-    const { data, setData, put, processing, errors } = useForm({
-        title: title,
+    const { data, setData, put, processing, errors, clearErrors } = useForm({
+        id: threadToEdit.id,
+        title: threadToEdit.title,
     });
 
     useEffect(() => {
-        setData("title", title);
-    }, [title]); // titleが変更されたときに再設定
+        if (show) {
+            // モーダルが表示されたときだけデータを更新
+            setData({
+                id: threadToEdit.id,
+                title: threadToEdit.title,
+            });
+        }
+    }, [threadToEdit, show]);
+
+    const handleClose = () => {
+        clearErrors();
+        onClose();
+    };
 
     const editThreadsubmit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        put(route("thread.update", { thread: threadId }), {
+        put(route("thread.update", { thread: data.id }), {
             preserveScroll: true,
             preserveState: true, // バリデーションエラー時にフォームの状態を保持
             onSuccess: () => {
-                onClose();
+                handleClose();
             },
         });
     };
 
     return (
-        <Modal show={show} onClose={onClose}>
+        <Modal show={show} onClose={handleClose}>
             <form onSubmit={editThreadsubmit} className="p-6">
                 <h2 className="text-lg font-medium text-gray-900">
                     スレッドを編集
@@ -63,12 +76,12 @@ export default function EditThreadForm({
                 </div>
 
                 <div className="mt-6 flex justify-end">
-                    <SecondaryButton type="button" onClick={onClose}>
+                    <SecondaryButton type="button" onClick={handleClose}>
                         キャンセル
                     </SecondaryButton>
 
                     <PrimaryButton className="ms-3" disabled={processing}>
-                        保存する
+                        更新する
                     </PrimaryButton>
                 </div>
             </form>

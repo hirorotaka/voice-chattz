@@ -123,6 +123,7 @@ export const SideMenu = ({
 
     const handleCloseEditModal = () => {
         setShowEditModal(false);
+        setThreadToEdit({ id: "", title: "" });
     };
 
     const favariteThread = threads.filter(
@@ -365,8 +366,7 @@ export const SideMenu = ({
             <EditThreadForm
                 show={showEditModal}
                 onClose={handleCloseEditModal}
-                threadId={threadToEdit.id}
-                title={threadToEdit.title}
+                threadToEdit={threadToEdit}
             />
         </>
     );
