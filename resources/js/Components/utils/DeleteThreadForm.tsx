@@ -5,7 +5,7 @@ import { useForm } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 
 interface DeleteThreadFormProps {
-    threadId: string;
+    threadId: number | null;
     onClose: () => void;
     show: boolean;
     resetScroll: () => void;

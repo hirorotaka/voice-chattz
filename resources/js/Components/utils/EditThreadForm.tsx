@@ -8,7 +8,7 @@ interface CreateThreadFormProps {
     onClose: () => void;
     show: boolean;
     threadToEdit: {
-        id: string;
+        id: number;
         title: string;
     };
 }

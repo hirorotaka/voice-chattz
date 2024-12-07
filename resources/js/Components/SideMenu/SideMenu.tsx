@@ -26,7 +26,7 @@ export const SideMenu = ({
 
     // 削除モーダルの状態管理を追加
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [threadToDelete, setThreadToDelete] = useState<string | null>(null);
+    const [threadToDelete, setThreadToDelete] = useState<number | null>(null);
 
     // 新規作成モーダル用のステート
     const [showCreateModal, setShowCreateModal] = useState(false);
@@ -34,7 +34,7 @@ export const SideMenu = ({
     // 編集モーダル用のステート
     const [showEditModal, setShowEditModal] = useState(false);
     const [threadToEdit, setThreadToEdit] = useState({
-        id: "",
+        id: 0,
         title: "",
     });
 
@@ -90,7 +90,7 @@ export const SideMenu = ({
         setShowCreateModal(false);
     };
 
-    const handleThreadSelect = (threadId: string) => {
+    const handleThreadSelect = (threadId: number) => {
         // nav要素のrefを使用してスクロール位置を取得
         const navScrollPosition = navRef.current?.scrollTop;
 
@@ -106,7 +106,7 @@ export const SideMenu = ({
         });
     };
 
-    const handleThreadDelete = (threadId: string) => {
+    const handleThreadDelete = (threadId: number) => {
         setThreadToDelete(threadId);
         setShowDeleteModal(true);
     };
@@ -116,14 +116,14 @@ export const SideMenu = ({
         setThreadToDelete(null);
     };
 
-    const handleClickEditToThread = (threadId: string, title: string) => {
+    const handleClickEditToThread = (threadId: number, title: string) => {
         setThreadToEdit({ id: threadId, title: title });
         setShowEditModal(true);
     };
 
     const handleCloseEditModal = () => {
         setShowEditModal(false);
-        setThreadToEdit({ id: "", title: "" });
+        setThreadToEdit({ id: 0, title: "" });
     };
 
     const favariteThread = threads.filter(
@@ -345,14 +345,13 @@ export const SideMenu = ({
             </div>
 
             {/* 削除モーダルを追加 */}
-            {threadToDelete && (
-                <DeleteThreadForm
-                    show={showDeleteModal}
-                    onClose={handleCloseDeleteModal}
-                    threadId={threadToDelete}
-                    resetScroll={resetScroll}
-                />
-            )}
+
+            <DeleteThreadForm
+                show={showDeleteModal}
+                onClose={handleCloseDeleteModal}
+                threadId={threadToDelete}
+                resetScroll={resetScroll}
+            />
 
             {/* 新規作成モーダル */}
             <CreateThreadForm

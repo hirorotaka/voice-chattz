@@ -11,7 +11,7 @@ export type MessageType = {
 };
 
 export type ThreadType = {
-    id: string;
+    id: number;
     user_id: string;
     language_id: number;
     role_id: number;
