@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { HiSpeakerWave } from "react-icons/hi2";
 import { flashType, MessageType } from "@/types/types";
 import MessageDisplay from "./MessageDisplay";
+import { Avatar } from "flowbite-react";
 
 type AiMessageProps = {
     message?: MessageType;
@@ -100,8 +101,12 @@ const AiMessage = ({
 
     return (
         <div className="flex items-center gap-2 mb-4 justify-start">
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-300">
-                <span className="text-sm font-medium">AI</span>
+            <div className="flex flex-wrap gap-2 bg-gray-300 rounded-full">
+                {isPlaying ? (
+                    <Avatar img="/storage/images/icon_chat.gif" rounded />
+                ) : (
+                    <Avatar img="/storage/images/icon_chat.png" rounded />
+                )}
             </div>
             <div className="flex items-center gap-2 w-5/6">
                 <div className="p-2 rounded-lg bg-gray-200">
