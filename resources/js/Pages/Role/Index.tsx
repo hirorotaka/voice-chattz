@@ -156,10 +156,10 @@ export default function Index({ threads, languages, roles }: TopProps) {
                                             <td className="px-2 py-4 text-sm text-gray-500 break-words w-32">
                                                 {role.name}
                                             </td>
-                                            <td className="px-2 py-4 text-sm text-gray-500">
+                                            <td className="px-2 py-4 text-sm text-gray-500 max-w-40">
                                                 {role.first_message}
                                             </td>
-                                            <td className="px-2 py-4 text-sm text-gray-500">
+                                            <td className="px-2 py-4 text-sm text-gray-500 max-w-60">
                                                 {role.description}
                                             </td>
                                             <td className="px-2 py-4 text-sm text-gray-500">
