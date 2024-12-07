@@ -193,7 +193,7 @@ export const SideMenu = ({
                                         }
                                         className="flex-1 flex items-center p-2 pr-14" // pr-14 を追加して w-12 分のスペースを確保
                                     >
-                                        <BsFillPinAngleFill className="flex-shrink-0 h-5 w-5 mr-2" />
+                                        <BsFillPinAngleFill className="flex-shrink-0 h-5 w-5 mr-2 text-yellow-400" />
                                         <p className="text-sm text-left">
                                             {thread.title}
                                         </p>

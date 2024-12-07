@@ -103,7 +103,7 @@ class ThreadController extends Controller
         return Inertia::render(
             'Thread/Show',
             [
-                'thread' => $thread->load('language'),  // 個別のthreadに関連するlanguageを取得
+                'thread' => $thread->load(['language', 'prompt']),  // 個別のthreadに関連するlanguageを取得
                 'threads' => $threads,
                 'activeThreadId' => $thread->id,
                 'messages' => $messages,

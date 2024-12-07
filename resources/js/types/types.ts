@@ -20,6 +20,7 @@ export type ThreadType = {
     created_at: string; // ISO形式のタイムスタンプ
     updated_at: string; // ISO形式のタイムスタンプ
     language?: LanguageType;
+    prompt?: PromptType;
 };
 
 export interface flashType {
@@ -45,4 +46,11 @@ export interface RoleType {
     language_id: number;
     created_at: string;
     updated_at: string;
+}
+
+export interface PromptType {
+    id: number;
+    name: string;
+    description: string;
+    thread_id: number;
 }

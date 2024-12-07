@@ -70,11 +70,33 @@ export default function AppLayout({
                                 </Tooltip>
                             )}
                             {thread && (
-                                <div className="text-white font-bold text-xl">
-                                    {thread?.language?.locale === "en"
-                                        ? "Language Mode:English"
-                                        : "言語モード:日本語"}
-                                </div>
+                                <>
+                                    <div>
+                                        <div className="text-white font-bold text-base">
+                                            {thread?.language?.locale === "en"
+                                                ? "Language Mode:English"
+                                                : "言語モード:日本語"}
+                                        </div>
+                                        <div className="text-white font-bold text-base">
+                                            {thread?.language?.locale ===
+                                            "en" ? (
+                                                // 英語の場合
+                                                <>
+                                                    Role:{" "}
+                                                    {thread.prompt?.name ||
+                                                        "Default"}
+                                                </>
+                                            ) : (
+                                                // 日本語の場合
+                                                <>
+                                                    役割：
+                                                    {thread.prompt?.name ||
+                                                        "デフォルト"}
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
+                                </>
                             )}
                             <div className="ml-auto text-white font-bold text-2xl">
                                 <ProfileDropdown />
