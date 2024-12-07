@@ -111,29 +111,27 @@ export default function Index({ threads, languages, roles }: TopProps) {
                                     <tr>
                                         <th
                                             scope="col"
-                                            className="px-2 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+                                            className="px-2 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
                                         >
                                             役割名
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-2 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+                                            className="px-2 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
                                         >
                                             初回メッセージ
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-2 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+                                            className="px-2 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
                                         >
                                             説明
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-2 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap"
+                                            className="px-2 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap"
                                         >
-                                            言語
-                                            <br />
-                                            モード
+                                            言語モード
                                         </th>
                                         <th scope="col">
                                             <span className="sr-only">
@@ -153,16 +151,16 @@ export default function Index({ threads, languages, roles }: TopProps) {
                                             key={role.id}
                                             className="hover:bg-gray-50"
                                         >
-                                            <td className="px-2 py-4 text-sm text-gray-500 break-words w-32">
+                                            <td className="px-2 py-3 text-sm text-gray-500 break-words w-32">
                                                 {role.name}
                                             </td>
-                                            <td className="px-2 py-4 text-sm text-gray-500 max-w-40">
+                                            <td className="px-2 py-3 text-sm text-gray-500 max-w-40">
                                                 {role.first_message}
                                             </td>
-                                            <td className="px-2 py-4 text-sm text-gray-500 max-w-60">
+                                            <td className="px-2 py-3 text-sm text-gray-500 max-w-60">
                                                 {role.description}
                                             </td>
-                                            <td className="px-2 py-4 text-sm text-gray-500">
+                                            <td className="px-2 py-3 text-sm text-gray-500">
                                                 {role.language?.name}
                                             </td>
                                             <td className="text-right text-sm">
