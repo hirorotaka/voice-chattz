@@ -42,6 +42,7 @@ export interface RoleType {
     first_message: string; // first_message を追加
     description: string;
     language?: LanguageType;
+    language_id: number;
     created_at: string;
     updated_at: string;
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
 use App\Models\Language;
 use App\Models\Role;
 use App\Models\Thread;
@@ -74,9 +75,10 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $role)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        //
+        $role->update($request->validated());
+        return to_route('roles.index');
     }
 
     /**

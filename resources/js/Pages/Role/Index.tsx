@@ -1,4 +1,5 @@
 import CreateRoleForm from "@/Components/Utils/CreateRoleForm";
+import EditRoleForm from "@/Components/Utils/EditRoleForm";
 import AppLayout from "@/Layouts/AppLayout";
 import { LanguageType, RoleType, ThreadType } from "@/types/types";
 import { Tooltip } from "flowbite-react";
@@ -15,12 +16,46 @@ export default function Index({ threads, languages, roles }: TopProps) {
     // 新規作成モーダル用のステート
     const [roleCreateModal, setRoleCreateModal] = useState(false);
 
-    const handleCreateRole = () => {
+    // 編集モーダル用のステート
+    const [roleEditModal, setRoleEditModal] = useState(false);
+    const [roleToEdit, setRoleToEdit] = useState<RoleType>({
+        id: 0,
+        name: "",
+        first_message: "",
+        description: "",
+        language_id: 0,
+        language: undefined, // language情報も含める
+        created_at: "",
+        updated_at: "",
+    });
+
+    const handleOpenCreateModal = () => {
         setRoleCreateModal(true);
     };
 
     const handleCloseCreateModal = () => {
         setRoleCreateModal(false);
+    };
+
+    const handleClickOpenEditModal = (role: RoleType) => {
+        setRoleToEdit(role);
+        setRoleEditModal(true);
+    };
+
+    const handleCloseEditModal = () => {
+        // まずモーダルを閉じる
+        setRoleEditModal(false);
+        // モーダルが閉じた後にroleToEditをリセット
+        setRoleToEdit({
+            id: 0,
+            name: "",
+            first_message: "",
+            description: "",
+            language_id: 0,
+            language: undefined,
+            created_at: "",
+            updated_at: "",
+        });
     };
     return (
         <AppLayout title="roles" threads={threads} languages={languages}>
@@ -33,7 +68,7 @@ export default function Index({ threads, languages, roles }: TopProps) {
                             役割一覧
                         </p>
                         <button
-                            onClick={handleCreateRole}
+                            onClick={handleOpenCreateModal}
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                         >
                             役割作成
@@ -48,7 +83,7 @@ export default function Index({ threads, languages, roles }: TopProps) {
                             役割を作成してみましょう。
                         </p>
                         <button
-                            onClick={handleCreateRole}
+                            onClick={handleOpenCreateModal}
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold p-5 rounded text-3xl"
                         >
                             役割作成
@@ -125,6 +160,9 @@ export default function Index({ threads, languages, roles }: TopProps) {
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation();
+                                                        handleClickOpenEditModal(
+                                                            role
+                                                        );
                                                     }}
                                                     className="rounded text-gray-500 hover:text-gray-400 transition-colors"
                                                 >
@@ -166,6 +204,13 @@ export default function Index({ threads, languages, roles }: TopProps) {
                 show={roleCreateModal}
                 onClose={handleCloseCreateModal}
                 languages={languages}
+            />
+            {/* 編集モーダル */}
+            <EditRoleForm
+                show={roleEditModal}
+                onClose={handleCloseEditModal}
+                languages={languages}
+                roleToEdit={roleToEdit}
             />
         </AppLayout>
     );
