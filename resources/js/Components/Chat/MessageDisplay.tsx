@@ -2,6 +2,7 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import React from "react";
 import type { Options } from "react-markdown";
+import { Highlight, themes } from "prism-react-renderer";
 
 type ComponentPropsType = {
     children?: React.ReactNode;
@@ -11,8 +12,9 @@ type ComponentPropsType = {
 
 const MessageDisplay = ({ content }: { content: string }) => {
     const components: Options["components"] = {
-        // コードブロック
         code({ inline, className, children, ...props }: ComponentPropsType) {
+            const match = /language-(\w+)/.exec(className || "");
+            const language = match ? match[1] : "";
             const escapedContent =
                 typeof children === "string"
                     ? children.replace(/`/g, "\\`")
@@ -30,14 +32,38 @@ const MessageDisplay = ({ content }: { content: string }) => {
             }
 
             return (
-                <code
-                    className={`block p-4 my-4 bg-gray-300 rounded-lg overflow-x-auto ${
-                        className || ""
-                    }`}
-                    {...props}
+                <Highlight
+                    theme={themes.nightOwl}
+                    code={String(children).replace(/\n$/, "")}
+                    language={language || "text"}
                 >
-                    {escapedContent}
-                </code>
+                    {({
+                        className,
+                        style,
+                        tokens,
+                        getLineProps,
+                        getTokenProps,
+                    }) => (
+                        <pre
+                            className={`p-4 my-4 rounded-lg overflow-x-auto ${className}`}
+                            style={style}
+                        >
+                            {tokens.map((line, i) => (
+                                <div key={i} {...getLineProps({ line })}>
+                                    <span className="inline-block w-8 text-gray-500 text-right mr-4">
+                                        {i + 1}
+                                    </span>
+                                    {line.map((token, key) => (
+                                        <span
+                                            key={key}
+                                            {...getTokenProps({ token })}
+                                        />
+                                    ))}
+                                </div>
+                            ))}
+                        </pre>
+                    )}
+                </Highlight>
             );
         },
         // 見出し
