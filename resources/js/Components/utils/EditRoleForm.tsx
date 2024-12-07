@@ -16,6 +16,7 @@ interface EditRoleFormProps {
 }
 
 interface FormData {
+    id: number;
     name: string;
     first_message: string;
     description: string;
@@ -30,6 +31,7 @@ export default function EditRoleForm({
 }: EditRoleFormProps) {
     console.log(roleToEdit);
     const form = useForm<FormData>({
+        id: roleToEdit.id,
         name: roleToEdit.name,
         first_message: roleToEdit.first_message,
         description: roleToEdit.description,
@@ -40,6 +42,7 @@ export default function EditRoleForm({
         if (show) {
             // モーダルが表示されたときだけデータを更新
             form.setData({
+                id: roleToEdit.id,
                 name: roleToEdit.name,
                 first_message: roleToEdit.first_message,
                 description: roleToEdit.description,
@@ -196,7 +199,11 @@ export default function EditRoleForm({
                         キャンセル
                     </SecondaryButton>
 
-                    <PrimaryButton className="ms-3" type="submit">
+                    <PrimaryButton
+                        className="ms-3"
+                        type="submit"
+                        disabled={form.processing}
+                    >
                         更新する
                     </PrimaryButton>
                 </div>

@@ -188,7 +188,7 @@ export default function Index({ threads, languages, roles }: TopProps) {
                                                         onClick={(e) => {
                                                             e.stopPropagation();
                                                         }}
-                                                        className="rounded text-red-400 hover:text-red-300 transition-colors"
+                                                        className="pr-3 rounded text-red-400 hover:text-red-300 transition-colors"
                                                     >
                                                         <HiTrash className="h-5 w-5" />
                                                     </button>
