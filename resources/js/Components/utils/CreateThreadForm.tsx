@@ -137,7 +137,7 @@ export default function CreateThreadForm({
                         onChange={(e) =>
                             form.setData("role_id", Number(e.target.value))
                         }
-                        className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        className="w-10/12 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                     >
                         <option value="">デフォルト（フリートーク）</option>
                         {roles
