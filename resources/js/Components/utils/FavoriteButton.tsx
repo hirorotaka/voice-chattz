@@ -25,7 +25,7 @@ export function FavoriteButton({ thread }: FavoriteButtonProps) {
     return (
         <button
             onClick={handleFavoriteToggle}
-            className="p-2 hover:bg-blue-900 rounded-full transition-colors duration-200"
+            className="p-4 hover:bg-blue-900 rounded-full transition-colors duration-200"
             aria-label={
                 thread.favorite ? "お気に入りを解除" : "お気に入りに追加"
             }
