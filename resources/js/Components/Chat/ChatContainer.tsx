@@ -5,9 +5,6 @@ import { flashType, MessageType, ThreadType } from "@/types/types";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { router, usePage } from "@inertiajs/react";
 import LoadingSppiner from "../Utils/LoadingSppiner";
-import startSound from "../../../../storage/app/public/sounds/start.mp3";
-import endSound from "../../../../storage/app/public/sounds/end.mp3";
-import useSound from "use-sound";
 import { Tooltip } from "flowbite-react";
 import { useAppContext } from "@/Contexts/AppContext";
 
@@ -49,16 +46,6 @@ const ChatContainer = ({
     // プラッシュデータを取得
     const { flashData, success } = usePage().props.flash as flashType;
 
-    // 録音用の音声ファイルを読み込む
-    const [startSoundplay, { sound: startSoundHowl }] = useSound(startSound, {
-        volume: 0.1,
-    });
-    const [endSoundplay, { sound: endSoundHowl }] = useSound(endSound, {
-        volume: 0.1,
-    });
-
-    const [isSePlaying, setIsSePlaying] = useState(false);
-
     const [isActiveAiSound, setIsActiveAiSound] = useState<null | number>(null);
 
     const handleactivePlayAudio = (messageId: number | null) => {
@@ -77,39 +64,17 @@ const ChatContainer = ({
         ).padStart(2, "0")}`;
     };
 
-    const handleMicButtonClickStart = async () => {
+    const handleMicButtonClickStart = () => {
         // 録音中か、SE音声再生中の場合は何もしない
-        if (isRecording || isSePlaying) {
+        if (isRecording) {
             return;
         }
 
-        setIsSePlaying(true);
-        // 録音処理の前に音を再生
-        startSoundplay();
-
-        // 音声の再生が終了したら、録音処理を実行
-        // Howlオブジェクトを受け取り、イベントリスナを1回だけ実行
-        startSoundHowl?.once("end", async () => {
-            // 録音処理を実行
-            await startRecording();
-            setIsSePlaying(false);
-        });
+        // 録音開始処理を実行
+        startRecording();
     };
     const handleMicButtonClickStop = async () => {
-        //SE音声再生中の場合は何もしない
-        if (isSePlaying) {
-            return;
-        }
-        setIsSePlaying(true);
-        // 録音停止の前に音を再生
-        endSoundplay();
-
-        // 音声の再生が終了したら、録音処理を実行
-        endSoundHowl?.once("end", async () => {
-            // 録停止処理を実行
-            stopRecording();
-            setIsSePlaying(false);
-        });
+        stopRecording();
     };
 
     const cancelRecording = () => {
@@ -120,8 +85,20 @@ const ChatContainer = ({
             // キャンセルフラグを立てる（即時反映）
             isCancelledRef.current = true;
 
-            // 初期化処理
-            cleanupRecording();
+            // 録音を停止
+            if (mediaRecorderRef.current) {
+                mediaRecorderRef.current.stop(); // stop() を追加
+            }
+
+            setIsRecording(false);
+            setRecordingTime(0);
+            // タイマーをクリア
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+                timerRef.current = null;
+            }
+            // 音声データを初期化
+            audioChunksRef.current = [];
         }
     };
 
@@ -130,10 +107,12 @@ const ChatContainer = ({
         // 録音を停止
         if (mediaRecorderRef.current) {
             mediaRecorderRef.current.stop();
-            // ストリームを停止
-            mediaRecorderRef.current.stream
-                .getTracks()
-                .forEach((track) => track.stop());
+            // ストリームが存在する場合のみ停止処理を実行
+            if (mediaRecorderRef.current.stream) {
+                mediaRecorderRef.current.stream
+                    .getTracks()
+                    .forEach((track) => track.stop());
+            }
             mediaRecorderRef.current = null;
         }
 
@@ -226,6 +205,7 @@ const ChatContainer = ({
             };
             // 録音停止時に実行されるイベントハンドラ
             mediaRecorder.onstop = async () => {
+                setIsRecording(false); // これを追加
                 // キャンセルされていない場合のみ、データを送信
                 if (
                     !isCancelledRef.current &&
@@ -241,7 +221,15 @@ const ChatContainer = ({
                 isCancelledRef.current = false;
 
                 // ストリームを解放
-                stream.getTracks().forEach((track) => track.stop());
+                if (mediaRecorderRef.current?.stream) {
+                    // stream が存在するか確認
+                    mediaRecorderRef.current.stream
+                        .getTracks()
+                        .forEach((track) => track.stop());
+                }
+
+                // 初期化処理
+                cleanupRecording();
             };
 
             // 録音開始
@@ -365,11 +353,14 @@ const ChatContainer = ({
                 },
                 onError: (errors) => {
                     console.error("音声の送信に失敗しました:", errors);
-                    // エラーメッセージに応じて処理を分岐
                     if (errors.error === "無音でした。") {
+                        // 無音エラーは専用のメッセージを表示
                         alert("無音でした。もう一度録音してください。");
+                    } else if (errors.file_too_big) {
+                        // ファイルサイズが大きすぎる場合のエラー処理
+                        alert("音声ファイルが大きすぎます（上限10MB）");
                     } else {
-                        console.error("音声の送信に失敗しました:", errors);
+                        // それ以外のエラーは汎用的なメッセージを表示
                         alert("音声の送信に失敗しました。");
                     }
                     setIsSending(false);
@@ -461,7 +452,7 @@ const ChatContainer = ({
                     </div>
                 )}
                 {/* 録音中またはSE再生中のオーバーレイ - マイクボタン以外を押せないようにする */}
-                {(isRecording || isSePlaying) && (
+                {isRecording && (
                     <div className="fixed inset-0 bg-black/5 backdrop-blur-[0.7px] z-40" />
                 )}
                 {/* Ai応答中のオーバーレイ  */}
