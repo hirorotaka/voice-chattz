@@ -31,6 +31,7 @@ export default function Show({
             roles={roles}
         >
             <ChatContainer
+                thread={thread}
                 messages={messages}
                 activeThreadId={activeThreadId}
             />

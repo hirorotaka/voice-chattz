@@ -33,6 +33,11 @@ Route::middleware('auth')->group(function () {
             // routes/web.php
             Route::post('/message/generate-ai-response', [MessageController::class, 'generateAiResponse'])
                 ->name('message.generate-ai-response');
+
+            // メッセージを日本語で翻訳するエンドポイント
+            Route::post('/message/{message}/translate-to-japanese', [MessageController::class, 'translateToJapanese'])
+                ->name('message.translate-to-japanese')
+                ->where('message', '[0-9]+');
         });
     });
 

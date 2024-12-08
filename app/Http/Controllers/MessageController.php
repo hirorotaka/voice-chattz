@@ -91,4 +91,31 @@ class MessageController extends Controller
             'flashData' => $aiMessage->id
         ]);
     }
+
+    // 日本語に翻訳する
+    public function translateToJapanese(Request $request, int $threadId, int $messageId)
+    {
+
+        $message = Message::findOrFail($messageId);
+
+
+        if ($message->message_ja) {
+            return back()->with([
+                'error' => '処理が完了しました。',
+            ]);
+        }
+
+        $message_en = $message->message_en;
+
+        $apiService = new ApiService();
+        $response = $apiService->callTranslationApi($message_en);
+
+        // 翻訳結果を保存する
+        $message->message_ja = $response['choices'][0]['message']['content'];
+        $message->save();
+
+        return back()->with([
+            'success' => '処理が完了しました。',
+        ]);
+    }
 }

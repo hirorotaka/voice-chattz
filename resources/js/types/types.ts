@@ -1,7 +1,7 @@
 // types/message.ts
 export type MessageType = {
     id: number;
-    thread_id: string;
+    thread_id: number;
     message_en: string;
     message_ja: string;
     sender: 1 | 2; // 1: user, 2: AI

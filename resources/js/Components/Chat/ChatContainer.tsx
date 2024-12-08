@@ -1,7 +1,7 @@
 import { HiMicrophone } from "react-icons/hi2";
 import AiMessage from "./AiMessage";
 import UserMessage from "./UserMessage";
-import { flashType, MessageType } from "@/types/types";
+import { flashType, MessageType, ThreadType } from "@/types/types";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { router, usePage } from "@inertiajs/react";
 import LoadingSppiner from "../Utils/LoadingSppiner";
@@ -14,9 +14,14 @@ import { useAppContext } from "@/Contexts/AppContext";
 interface ChatContainerProps {
     messages: MessageType[];
     activeThreadId: number;
+    thread: ThreadType;
 }
 
-const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
+const ChatContainer = ({
+    messages,
+    activeThreadId,
+    thread,
+}: ChatContainerProps) => {
     const {
         globalPlaybackRate,
         handlePlaybackRateChange,
@@ -411,6 +416,7 @@ const ChatContainer = ({ messages, activeThreadId }: ChatContainerProps) => {
                                     }
                                     isActiveAiSound={isActiveAiSound}
                                     playbackRate={globalPlaybackRate}
+                                    thread={thread}
                                 />
                             )}
                         </div>

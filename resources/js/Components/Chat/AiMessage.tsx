@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import { HiSpeakerWave } from "react-icons/hi2";
-import { flashType, MessageType } from "@/types/types";
+import { HiSpeakerWave, HiLanguage } from "react-icons/hi2";
+import { flashType, MessageType, ThreadType } from "@/types/types";
 import MessageDisplay from "./MessageDisplay";
 import { Avatar } from "flowbite-react";
+import TranslateButton from "../Utils/TranslateButton";
 
 type AiMessageProps = {
     message?: MessageType;
@@ -10,6 +11,7 @@ type AiMessageProps = {
     isActiveAiSound?: number | null;
     handleactivePlayAudio?: (messageId: number | null) => void;
     playbackRate?: number;
+    thread?: ThreadType;
 };
 
 const AiMessage = ({
@@ -18,9 +20,12 @@ const AiMessage = ({
     isActiveAiSound,
     handleactivePlayAudio,
     playbackRate,
+    thread,
 }: AiMessageProps) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
+
+    const [showJapanese, setShowJapanese] = useState(false); // 日本語表示の状態管理
 
     const isDisabled =
         isActiveAiSound !== null && isActiveAiSound !== message?.id;
@@ -116,26 +121,64 @@ const AiMessage = ({
                             "メッセージを作成しています..."
                         }
                     />
-                    <p className="text-lg text-gray-600">
-                        {message?.message_ja}
-                    </p>
+                    {/* 日本語訳の条件付きレンダリング */}
+                    {message?.message_ja && showJapanese && (
+                        <p className="text-lg text-gray-600">
+                            {message.message_ja}
+                        </p>
+                    )}
                 </div>
                 <div className="flex items-center gap-2 flex-shrink-0">
                     {message?.audio_file_path && (
-                        <button
-                            className={`p-2 rounded-full transition-all duration-200 ${
-                                isPlaying
+                        <>
+                            <button
+                                className={`p-2 rounded-full transition-all duration-200 ${
+                                    isPlaying
+                                        ? "bg-blue-500 text-white"
+                                        : isDisabled
+                                        ? "bg-gray-100 text-gray-300 cursor-not-allowed opacity-50"
+                                        : "hover:bg-gray-200 text-gray-400"
+                                }`}
+                                onClick={handlePlayAudio}
+                                disabled={isDisabled}
+                                aria-label={
+                                    isPlaying ? "音声を停止" : "音声を再生"
+                                }
+                            >
+                                <HiSpeakerWave className="w-5 h-5" />
+                            </button>
+                            {/* 英語の場合のみ翻訳関連のボタンを表示 */}
+                            {thread?.language_id === 1 && (
+                                <>
+                                    {message?.message_ja ? (
+                                        <button
+                                            className={`p-2 rounded-full transition-all duration-200
+                            ${
+                                showJapanese
                                     ? "bg-blue-500 text-white"
-                                    : isDisabled
-                                    ? "bg-gray-100 text-gray-300 cursor-not-allowed opacity-50"
                                     : "hover:bg-gray-200 text-gray-400"
                             }`}
-                            onClick={handlePlayAudio}
-                            disabled={isDisabled}
-                            aria-label={isPlaying ? "音声を停止" : "音声を再生"}
-                        >
-                            <HiSpeakerWave className="w-5 h-5" />
-                        </button>
+                                            onClick={() =>
+                                                setShowJapanese(!showJapanese)
+                                            }
+                                            aria-label={
+                                                showJapanese
+                                                    ? "日本語を非表示"
+                                                    : "日本語を表示"
+                                            }
+                                        >
+                                            <HiLanguage className="w-5 h-5" />
+                                        </button>
+                                    ) : (
+                                        <TranslateButton
+                                            threadId={message.thread_id}
+                                            messageId={message.id}
+                                            setShowJapanese={setShowJapanese}
+                                        />
+                                    )}
+                                </>
+                            )}
+                        </>
                     )}
                 </div>
             </div>

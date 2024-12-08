@@ -210,4 +210,71 @@ class ApiService
             throw $e;
         }
     }
+
+    public function callTranslationApi(string $message_en): array
+    {
+        try {
+            $systemMessage = [
+                'role' => 'system',
+                'content' => "You are a professional translator with expertise in English to Japanese translation.
+
+                Your task:
+                - Translate the English input into natural, fluent Japanese
+                - Maintain the original tone and nuance of the text
+                - Use appropriate levels of formality (尊敬語, 謙譲語, 丁寧語 when needed)
+                - Ensure cultural context and idioms are properly localized
+                - Keep honorific expressions consistent
+                - Preserve any technical terms with their correct Japanese equivalents
+                - Follow Japanese punctuation rules (。、「」etc.)
+
+                Guidelines:
+                - Output ONLY the Japanese translation
+                - Do not provide explanations or the original text
+                - Do not add notes or alternatives
+                - Maintain any formatting from the original text
+                - Keep paragraph breaks and line spacing intact
+
+                Remember: Your goal is to make the translation sound as if it was originally written in Japanese."
+            ];
+
+            $modelMessages = [
+                [
+                    'role' => 'user',
+                    'content' => $message_en
+                ]
+            ];
+
+            $mergedMessages = array_merge([$systemMessage], $modelMessages);
+
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . config('services.openai.api_key'),
+                'Content-Type' => 'application/json'
+            ])->post('https://api.openai.com/v1/chat/completions', [
+                'model' => 'gpt-4o-mini',
+                'messages' => $mergedMessages,
+            ]);
+
+            if ($response->successful()) {
+                Log::info('Translation API Response', [
+                    'status' => $response->status(),
+                    'response' => $response->json()
+                ]);
+                return $response->json();
+            }
+
+            // エラーの詳細をログに記録
+            Log::error('Translation API Error', [
+                'status' => $response->status(),
+                'body' => $response->json()
+            ]);
+
+            throw new \Exception('翻訳APIからの応答に失敗しました。');
+        } catch (\Exception $e) {
+            Log::error('Translation API Exception', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
+        }
+    }
 }
