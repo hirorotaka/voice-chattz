@@ -7,6 +7,7 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import { LanguageType, RoleType } from "@/types/types";
 import TextArea from "../TextArea";
+import { useAppContext } from "@/Contexts/AppContext";
 
 interface EditRoleFormProps {
     onClose: () => void;
@@ -38,6 +39,12 @@ export default function EditRoleForm({
         language_id: roleToEdit.language_id, // 初期値を空に設定
     });
 
+    const { showToast } = useAppContext();
+
+    const handleSuccess = () => {
+        showToast("役割を更新しました", "info");
+    };
+
     useEffect(() => {
         if (show) {
             // モーダルが表示されたときだけデータを更新
@@ -63,6 +70,7 @@ export default function EditRoleForm({
             preserveState: true,
             onSuccess: () => {
                 handleClose();
+                handleSuccess();
             },
         });
     };

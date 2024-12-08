@@ -1,5 +1,12 @@
 // resources/js/Contexts/LayoutContext.tsx
+import { Toast } from "@/Components/Utils/Toast";
 import { createContext, useContext, useState, ReactNode } from "react";
+
+// Toastの型定義を追加
+interface ToastType {
+    message: string;
+    type: "success" | "error" | "warning" | "info" | "delete";
+}
 
 interface AppContextType {
     isSidebarOpen: boolean;
@@ -10,6 +17,10 @@ interface AppContextType {
         event: React.ChangeEvent<HTMLInputElement>
     ) => void;
     handlePlaybackRateReset: () => void;
+    // Toast関連の型を追加
+    toast: ToastType | null;
+    showToast: (message: string, type: ToastType["type"]) => void;
+    hideToast: () => void;
 }
 
 interface AppProviderProps {
@@ -23,6 +34,9 @@ export function AppProvider({ children }: AppProviderProps) {
 
     // グローバル再生速度
     const [globalPlaybackRate, setGlobalPlaybackRate] = useState(1.0);
+
+    // Toastのstate追加
+    const [toast, setToast] = useState<ToastType | null>(null);
 
     const handlePlaybackRateChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -38,6 +52,18 @@ export function AppProvider({ children }: AppProviderProps) {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
+    // Toast関連の関数を追加
+    const showToast = (message: string, type: ToastType["type"] = "info") => {
+        setToast({ message, type });
+        setTimeout(() => {
+            setToast(null);
+        }, 2000);
+    };
+
+    const hideToast = () => {
+        setToast(null);
+    };
+
     const value: AppContextType = {
         isSidebarOpen,
         handleSidebarToggle,
@@ -45,9 +71,25 @@ export function AppProvider({ children }: AppProviderProps) {
         setGlobalPlaybackRate,
         handlePlaybackRateChange,
         handlePlaybackRateReset,
+        // Toast関連の値を追加
+        toast,
+        showToast,
+        hideToast,
     };
 
-    return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+    return (
+        <AppContext.Provider value={value}>
+            {children}
+            {/* Toastコンポーネントをここで描画 */}
+            {toast && (
+                <Toast
+                    message={toast.message}
+                    type={toast.type}
+                    onDismiss={hideToast}
+                />
+            )}
+        </AppContext.Provider>
+    );
 }
 
 export function useAppContext(): AppContextType {

@@ -3,6 +3,7 @@ import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { useForm } from "@inertiajs/react";
 import { FormEventHandler, useEffect } from "react";
+import { useAppContext } from "@/Contexts/AppContext";
 
 interface CreateThreadFormProps {
     onClose: () => void;
@@ -22,6 +23,12 @@ export default function EditThreadForm({
         id: threadToEdit.id,
         title: threadToEdit.title,
     });
+
+    const { showToast } = useAppContext();
+
+    const handleSuccess = () => {
+        showToast("スレッドを更新しました", "info");
+    };
 
     useEffect(() => {
         if (show) {
@@ -45,6 +52,7 @@ export default function EditThreadForm({
             preserveScroll: true,
             preserveState: true, // バリデーションエラー時にフォームの状態を保持
             onSuccess: () => {
+                handleSuccess();
                 handleClose();
             },
         });

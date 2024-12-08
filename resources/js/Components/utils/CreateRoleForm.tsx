@@ -7,6 +7,7 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import { LanguageType } from "@/types/types";
 import TextArea from "../TextArea";
+import { useAppContext } from "@/Contexts/AppContext";
 
 interface CreateRoleFormProps {
     onClose: () => void;
@@ -33,6 +34,12 @@ export default function CreateRoleForm({
         language_id: "", // 初期値を空に設定
     });
 
+    const { showToast } = useAppContext();
+
+    const handleSuccess = () => {
+        showToast("役割を作成しました", "success");
+    };
+
     const handleClose = () => {
         form.clearErrors();
         form.reset();
@@ -46,6 +53,7 @@ export default function CreateRoleForm({
             preserveState: true,
             onSuccess: () => {
                 handleClose();
+                handleSuccess();
             },
         });
     };

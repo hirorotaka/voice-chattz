@@ -5,6 +5,7 @@ import { useForm } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 import InputLabel from "@/Components/InputLabel";
 import { LanguageType, RoleType } from "@/types/types";
+import { useAppContext } from "@/Contexts/AppContext";
 
 interface CreateThreadFormProps {
     onClose: () => void;
@@ -32,6 +33,11 @@ export default function CreateThreadForm({
         role_id: null,
         language_id: null,
     });
+    const { showToast } = useAppContext();
+
+    const handleSuccess = () => {
+        showToast("スレッドを作成しました", "success");
+    };
 
     const handleClose = () => {
         form.clearErrors();
@@ -56,6 +62,7 @@ export default function CreateThreadForm({
             preserveScroll: true,
             preserveState: true,
             onSuccess: () => {
+                handleSuccess();
                 resetScroll();
                 handleClose();
             },

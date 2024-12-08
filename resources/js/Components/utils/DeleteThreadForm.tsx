@@ -1,6 +1,7 @@
 import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
+import { useAppContext } from "@/Contexts/AppContext";
 import { useForm } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 
@@ -19,13 +20,23 @@ export default function DeleteThreadForm({
 }: DeleteThreadFormProps) {
     const { delete: destroy, processing } = useForm({});
 
+    const { showToast } = useAppContext();
+
+    const handleSuccess = () => {
+        showToast("スレッドを削除しました", "delete");
+    };
+
     const deleteThread: FormEventHandler = (e) => {
         e.preventDefault();
 
         destroy(route("thread.destroy", { thread: threadId }), {
             preserveScroll: true,
             preserveState: true,
-            onSuccess: () => resetScroll(),
+            onSuccess: () => {
+                handleSuccess();
+                resetScroll();
+                onClose();
+            },
         });
     };
 

@@ -1,6 +1,7 @@
 import DangerButton from "@/Components/DangerButton";
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
+import { useAppContext } from "@/Contexts/AppContext";
 import { useForm } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 
@@ -17,6 +18,12 @@ export default function DeleteRoleForm({
 }: DeleteThreadFormProps) {
     const { delete: destroy, processing } = useForm({});
 
+    const { showToast } = useAppContext();
+
+    const handleSuccess = () => {
+        showToast("役割を削除しました", "delete");
+    };
+
     const deleteThread: FormEventHandler = (e) => {
         e.preventDefault();
 
@@ -25,6 +32,7 @@ export default function DeleteRoleForm({
             preserveState: true,
             onSuccess: () => {
                 onClose();
+                handleSuccess();
             },
         });
     };
