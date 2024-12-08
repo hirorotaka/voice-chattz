@@ -52,7 +52,10 @@ export default function CreateRoleForm({
 
     return (
         <Modal show={show} onClose={handleClose}>
-            <form onSubmit={createRole} className="p-6">
+            <form
+                onSubmit={createRole}
+                className="p-6  max-h-[90vh] max-w-[80vw] overflow-y-auto"
+            >
                 <h1 className="text-2xl font-medium text-gray-900">
                     役割を作成
                 </h1>
@@ -82,13 +85,13 @@ export default function CreateRoleForm({
                     <TextArea // TextArea を使用
                         id="first_message"
                         name="first_message"
-                        className="mt-1 block w-11/12 placeholder-gray-400"
+                        className="mt-1 block w-full h-24 md:h-28 lg:h-32 placeholder-gray-400" // 高さを小さく調整
                         value={form.data.first_message}
                         placeholder={`スレッド開始時にAIが最初に送信するメッセージを入力してください。\n例：「こんにちは！私は〇〇が得意なAIです。どんな〇〇をしたいですか？」`}
                         onChange={(e) =>
                             form.setData("first_message", e.target.value)
                         }
-                        rows={3}
+                        rows={5}
                     />
                     {form.errors.first_message && (
                         <div className="text-red-500 text-sm mt-1">
@@ -102,12 +105,12 @@ export default function CreateRoleForm({
                     <TextArea // TextArea を使用
                         id="description"
                         name="description"
-                        className="mt-1 block w-11/12 placeholder-gray-400"
+                        className="mt-1 block w-full h-32 md:h-36 lg:h-40 placeholder-gray-400" // 高さを小さく調整
                         value={form.data.description}
                         onChange={(e) =>
                             form.setData("description", e.target.value)
                         }
-                        rows={7}
+                        rows={10}
                         placeholder={`この役割がどのような役割なのか、\nどのような機能を持つのかを説明してください。\n\n例：「〇〇なAIです。〇〇ができます。」`}
                     />
                     {form.errors.description && (
@@ -176,7 +179,7 @@ export default function CreateRoleForm({
                     )}
                 </div>
 
-                <div className="mt-6 flex justify-end">
+                <div className="mt-6 flex justify-end ">
                     <SecondaryButton type="button" onClick={handleClose}>
                         キャンセル
                     </SecondaryButton>
