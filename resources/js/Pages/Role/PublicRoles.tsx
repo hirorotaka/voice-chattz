@@ -66,7 +66,7 @@ export default function PublicRoles({
                     {" "}
                     {/* ボタンの位置調整 */}
                     <p className="text-2xl sm:text-3xl font-semibold text-white text-center mr-5">
-                        役割一覧(公開中)
+                        役割一覧（公開プロンプト）
                     </p>
                     <div className="flex flex-row items-center gap-2 ">
                         <TextInput
