@@ -123,23 +123,47 @@ class RoleController extends Controller
         return to_route('roles.index');
     }
 
-    public function publicRoles()
+    public function publicRoles(Request $request)
     {
+
         $user = Auth::user();
 
-        // 公開中の全ロールのうち、自分がオーナーではないもの取得し、リレーションをロード
-        $publicRoles = Role::where('is_public', true)
+        $search_str = $request->input('search_str');
+
+
+
+        // 公開中の全ロールのベースクエリ
+        $query = Role::where('is_public', true)
             ->whereDoesntHave('users', function ($query) use ($user) {
                 $query->where('users.id', $user->id)
                     ->where('owner', 1);
             })
             ->with(['language', 'users' => function ($query) use ($user) {
                 $query->where('users.id', $user->id);
-            }])
-            ->get();
+            }]);
+
+        // 検索条件がある場合は追加
+        if ($search_str) {
+            $query->where(function ($q) use ($search_str) {
+                $q->where('name', 'LIKE', '%' . $search_str . '%')
+                    ->orWhere('description', 'LIKE', '%' . $search_str . '%');
+            });
+        }
+
+
+        // 公開中の全ロールのうち、自分がオーナーではないもの取得し、リレーションをロード
+        // $publicRoles = Role::where('is_public', true)
+        //     ->whereDoesntHave('users', function ($query) use ($user) {
+        //         $query->where('users.id', $user->id)
+        //             ->where('owner', 1);
+        //     })
+        //     ->with(['language', 'users' => function ($query) use ($user) {
+        //         $query->where('users.id', $user->id);
+        //     }])
+        //     ->get();
 
         // 各ロールに対して必要な情報を整形
-        $publicRoles = $publicRoles->map(function ($role) use ($user) {
+        $publicRoles = $query->get()->map(function ($role) use ($user) {
             // ユーザーがロールに紐づいているか
             $isRelatedToUser = $role->users->isNotEmpty();
 
@@ -186,6 +210,7 @@ class RoleController extends Controller
             'isUsingMyRoles' => $isUsingMyRoles,          // 使用中の自分のロール（非公開も含む）is_using が 1 のもの
             'threads' => $threads,
             'languages' => $languages,
+            'search_str' => $search_str,
         ]);
     }
 
