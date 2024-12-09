@@ -13,20 +13,33 @@ class LanguageSeeder extends Seeder
      */
     public function run(): void
     {
-
-        DB::table('languages')->insert([
+        $languages = [
             [
                 'locale' => 'en',
                 'name' => 'English',
-                'text_prompt' => 'You are a helpful assistant. Please converse in English. Keep your responses around 200 characters. Use a conversational tone while responding. Please provide about 2 examples in your responses.',
-                'audio_prompt' => 'Your task is to transcribe human speech from audio data. If human speech is detected: convert the audio to English text. If no human speech is detected: report "No sound". "No sound" refers to any non-human voice sounds (noise, music, silence, etc.).'
+                'text_prompt' => trans('prompts.text', [], 'en'),
+                'audio_prompt' => trans('prompts.audio', [], 'en'),
             ],
             [
                 'locale' => 'ja',
                 'name' => '日本語',
-                'text_prompt' => 'あなたは役に立つアシスタントです。日本語で会話をしてください。200文字程度で返信してください。また会話口調でやりとりしながら回答してください。事例は２つ程度でお願いします。',
-                'audio_prompt' => 'あなたのタスクは、音声データから人間の発話を書き起こすことです。もし人間の発話が検出された場合：音声を日本語のテキストに変換してください。もし人間の発話が検出されなかった場合：「無音です」と報告してください。「無音」とは、人間の音声以外の音（ノイズ、音楽、無音状態など）を指します。'
+                'text_prompt' => trans('prompts.text', [], 'ja'),
+                'audio_prompt' => trans('prompts.audio', [], 'ja'), //言語ファイルにアクセスするために必要
             ],
-        ]);
+            [
+                'locale' => 'ko',
+                'name' => '한국어',
+                'text_prompt' => trans('prompts.text', [], 'ko'),
+                'audio_prompt' => trans('prompts.audio', [], 'ko'),
+                'updated_at' => now(),
+            ],
+        ];
+
+        foreach ($languages as $language) {
+            DB::table('languages')->updateOrInsert(
+                ['locale' => $language['locale']],
+                $language
+            );
+        }
     }
 }
