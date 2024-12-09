@@ -1,4 +1,5 @@
 import PublicRoleToggleButton from "@/Components/Role/PublicRoleToggleButton";
+import TruncatedText from "@/Components/Utils/TruncatedText";
 import AppLayout from "@/Layouts/AppLayout";
 import {
     IsUsingRoleType,
@@ -50,31 +51,31 @@ export default function PublicRoles({
                                     <tr>
                                         <th
                                             scope="col"
-                                            className="px-2 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+                                            className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
                                         >
                                             役割名
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-2 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+                                            className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
                                         >
                                             初回メッセージ
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-2 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+                                            className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase tracking-wider"
                                         >
                                             説明
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-2 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap"
+                                            className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap"
                                         >
                                             言語モード
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-2 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap"
+                                            className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap"
                                         >
                                             公開中のもの
                                             <br />
@@ -88,14 +89,20 @@ export default function PublicRoles({
                                             key={role.id}
                                             className="hover:bg-gray-50"
                                         >
-                                            <td className="px-2 py-3 text-sm text-gray-500 break-words w-32">
+                                            <td className="px-2 py-3 text-sm text-gray-500 break-words w-24">
                                                 {role.name}
                                             </td>
-                                            <td className="px-2 py-3 text-sm text-gray-500 max-w-40">
-                                                {role.first_message}
+                                            <td className="px-2 py-3 text-sm text-gray-500 min-w-36">
+                                                <TruncatedText
+                                                    text={role.first_message}
+                                                    maxLength={100}
+                                                />
                                             </td>
-                                            <td className="px-2 py-3 text-sm text-gray-500 max-w-60">
-                                                {role.description}
+                                            <td className="px-2 py-3 text-sm text-gray-500 max-w-70">
+                                                <TruncatedText
+                                                    text={role.description}
+                                                    maxLength={200}
+                                                />
                                             </td>
                                             <td className="px-2 py-3 text-sm text-gray-500">
                                                 {role.language_name}
