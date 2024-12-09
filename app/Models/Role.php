@@ -21,10 +21,15 @@ class Role extends Model
         return $this->belongsTo(Language::class);
     }
 
+    protected $casts = [
+        'users.pivot.is_using' => 'boolean',
+    ];
+
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)->withPivot('owner')->withTimestamps();
+        return $this->belongsToMany(User::class)->withPivot('owner', 'is_using')->withTimestamps();
     }
+
 
     protected $fillable = [
         'name',

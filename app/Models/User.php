@@ -52,9 +52,14 @@ class User extends Authenticatable
         return $this->hasMany(Thread::class);
     }
 
+    protected $casts = [
+        'roles.pivot.is_using' => 'boolean',
+    ];
+
+
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class)->withPivot('owner')
+        return $this->belongsToMany(Role::class)->withPivot('owner', 'is_using')
             ->withTimestamps();
     }
 }

@@ -2,11 +2,11 @@ import { router } from "@inertiajs/react";
 import { useState } from "react";
 
 interface TogglePublicFormProps {
-    isPublic: 0 | 1;
+    isUsing: 0 | 1;
     roleId: number;
 }
 
-const RoleToggleButton = ({ isPublic, roleId }: TogglePublicFormProps) => {
+const PublicRoleToggleButton = ({ isUsing, roleId }: TogglePublicFormProps) => {
     const [isUpdating, setIsUpdating] = useState(false);
 
     const handlerolePublicToggle = async () => {
@@ -16,7 +16,7 @@ const RoleToggleButton = ({ isPublic, roleId }: TogglePublicFormProps) => {
         try {
             await router.put(
                 // PUTメソッドを使用
-                route("roles.toggle-public", { role: roleId }),
+                route("roles.toggle-public-is-using", { role: roleId }),
                 {}, // データを送信しない場合は空のオブジェクトでOK
                 {
                     preserveState: true,
@@ -38,28 +38,28 @@ const RoleToggleButton = ({ isPublic, roleId }: TogglePublicFormProps) => {
             className={`
                 relative inline-flex h-6 w-11 items-center rounded-full
                 transition-colors duration-200 ease-in-out focus:outline-none
-                ${isPublic === 1 ? "bg-blue-600" : "bg-gray-200"}
+                ${isUsing ? "bg-blue-600" : "bg-gray-200"}
                 ${
                     isUpdating
                         ? "opacity-50 cursor-not-allowed"
                         : "cursor-pointer"
                 }
             `}
-            aria-pressed={isPublic === 1}
-            aria-label={isPublic === 1 ? "公開" : "非公開"}
+            aria-pressed={isUsing === 1 ? "true" : "false"}
+            aria-label={isUsing === 1 ? "使用中" : "未使用"}
         >
             <span className="sr-only">
-                {isPublic === 1 ? "公開" : "非公開"}
+                {isUsing === 1 ? "使用中" : "未使用"}
             </span>
             <div
                 className={`
                     inline-block h-4 w-4 rounded-full bg-white shadow
                     transform transition-transform duration-200 ease-in-out
-                    ${isPublic === 1 ? "translate-x-6" : "translate-x-1"}
+                    ${isUsing === 1 ? "translate-x-6" : "translate-x-1"}
                 `}
             />
         </button>
     );
 };
 
-export default RoleToggleButton;
+export default PublicRoleToggleButton;

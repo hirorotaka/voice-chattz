@@ -3,31 +3,42 @@ import CreateRoleForm from "@/Components/Utils/CreateRoleForm";
 import DeleteRoleForm from "@/Components/Utils/DeleteRoleForm";
 import EditRoleForm from "@/Components/Utils/EditRoleForm";
 import AppLayout from "@/Layouts/AppLayout";
-import { LanguageType, RoleType, ThreadType } from "@/types/types";
+import {
+    IsUsingRoleType,
+    LanguageType,
+    MyRoleType,
+    ThreadType,
+} from "@/types/types";
 import { Tooltip } from "flowbite-react";
 import { useState } from "react";
 import { HiTrash, HiOutlinePencil } from "react-icons/hi2";
 
-interface TopProps {
+interface RoleIndexProps {
     threads: ThreadType[];
     languages: LanguageType[];
-    roles: RoleType[];
+    myRoles: MyRoleType[];
+    isUsingMyRoles: IsUsingRoleType[];
 }
 
-export default function Index({ threads, languages, roles }: TopProps) {
+export default function Index({
+    threads,
+    languages,
+    myRoles,
+    isUsingMyRoles,
+}: RoleIndexProps) {
     // 新規作成モーダル用のステート
     const [roleCreateModal, setRoleCreateModal] = useState(false);
 
     // 編集モーダル用のステート
     const [roleEditModal, setRoleEditModal] = useState(false);
-    const [roleToEdit, setRoleToEdit] = useState<RoleType>({
+    const [roleToEdit, setRoleToEdit] = useState<MyRoleType>({
         id: 0,
         name: "",
         is_public: 0,
         first_message: "",
         description: "",
         language_id: 0,
-        language: undefined, // language情報も含める
+        language: null,
         created_at: "",
         updated_at: "",
     });
@@ -44,7 +55,7 @@ export default function Index({ threads, languages, roles }: TopProps) {
         setRoleCreateModal(false);
     };
 
-    const handleClickOpenEditModal = (role: RoleType) => {
+    const handleClickOpenEditModal = (role: MyRoleType) => {
         setRoleToEdit(role);
         setRoleEditModal(true);
     };
@@ -60,7 +71,7 @@ export default function Index({ threads, languages, roles }: TopProps) {
             first_message: "",
             description: "",
             language_id: 0,
-            language: undefined,
+            language: null,
             created_at: "",
             updated_at: "",
         });
@@ -81,10 +92,10 @@ export default function Index({ threads, languages, roles }: TopProps) {
             title="roles"
             threads={threads}
             languages={languages}
-            roles={roles}
+            roles={isUsingMyRoles}
         >
             <div className="h-full flex flex-col p-5">
-                {roles.length === 0 ? (
+                {myRoles.length === 0 ? (
                     <div className="flex items-center flex-col justify-center h-full">
                         <p className="text-3xl text-white font-bold mb-10">
                             あなたが作成した役割が登録されていません。
@@ -104,7 +115,7 @@ export default function Index({ threads, languages, roles }: TopProps) {
                             {" "}
                             {/* ボタンの位置調整 */}
                             <p className="text-2xl sm:text-3xl font-semibold text-white text-center">
-                                役割一覧
+                                役割一覧(自分)
                             </p>
                             <button
                                 onClick={handleOpenCreateModal}
@@ -160,7 +171,7 @@ export default function Index({ threads, languages, roles }: TopProps) {
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
-                                    {roles.map((role) => (
+                                    {myRoles.map((role) => (
                                         <tr
                                             key={role.id}
                                             className="hover:bg-gray-50"
