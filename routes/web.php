@@ -54,5 +54,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{role}', [RoleController::class, 'destroy'])
             ->middleware('can:delete,role') // delete ポリシーの適用
             ->name('roles.destroy');
+
+        // is_publicのトグル用エンドポイントを追加
+        Route::put('/{role}/toggle-public', [RoleController::class, 'toggleRolePublic'])
+            ->middleware('can:update,role')
+            ->name('roles.toggle-public');
     });
 });

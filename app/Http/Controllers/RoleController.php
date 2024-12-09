@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
+
 class RoleController extends Controller
 {
     /**
@@ -18,7 +19,12 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Auth::user()->roles()->with('language')->get();
+        $roles = Role::where(function ($query) {
+            $query->where('is_public', true)
+                ->orWhereHas('users', function ($query) {
+                    $query->where('users.id', auth()->id());
+                });
+        })->with('language')->get();
 
         $threads = Thread::where('user_id', Auth::user()->id)
             ->orderBy('updated_at', 'desc')
@@ -88,5 +94,13 @@ class RoleController extends Controller
     {
         $role->delete();
         return redirect()->route('roles.index');
+    }
+
+    public function toggleRolePublic(Role $role)
+    {
+        $role->is_public = !$role->is_public;
+        $role->save();
+
+        return to_route('roles.index');
     }
 }

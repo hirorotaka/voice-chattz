@@ -1,3 +1,4 @@
+import ToggleButton from "@/Components/Role/RoleToggleButton";
 import CreateRoleForm from "@/Components/Utils/CreateRoleForm";
 import DeleteRoleForm from "@/Components/Utils/DeleteRoleForm";
 import EditRoleForm from "@/Components/Utils/EditRoleForm";
@@ -22,6 +23,7 @@ export default function Index({ threads, languages, roles }: TopProps) {
     const [roleToEdit, setRoleToEdit] = useState<RoleType>({
         id: 0,
         name: "",
+        is_public: 0,
         first_message: "",
         description: "",
         language_id: 0,
@@ -54,6 +56,7 @@ export default function Index({ threads, languages, roles }: TopProps) {
         setRoleToEdit({
             id: 0,
             name: "",
+            is_public: 0,
             first_message: "",
             description: "",
             language_id: 0,
@@ -138,6 +141,12 @@ export default function Index({ threads, languages, roles }: TopProps) {
                                         >
                                             言語モード
                                         </th>
+                                        <th
+                                            scope="col"
+                                            className="px-2 py-2 text-left text-xs font-medium text-gray-600 uppercase tracking-wider whitespace-nowrap"
+                                        >
+                                            公開状態
+                                        </th>
                                         <th scope="col">
                                             <span className="sr-only">
                                                 編集
@@ -167,6 +176,12 @@ export default function Index({ threads, languages, roles }: TopProps) {
                                             </td>
                                             <td className="px-2 py-3 text-sm text-gray-500">
                                                 {role.language?.name}
+                                            </td>
+                                            <td className="px-2 py-3 text-sm text-gray-500">
+                                                <ToggleButton
+                                                    isPublic={role.is_public}
+                                                    roleId={role.id}
+                                                />
                                             </td>
                                             <td className="text-right text-sm">
                                                 <Tooltip

@@ -40,6 +40,7 @@ export interface LanguageType {
 export interface RoleType {
     id: number;
     name: string;
+    is_public: 0 | 1;
     first_message: string; // first_message を追加
     description: string;
     language?: LanguageType;

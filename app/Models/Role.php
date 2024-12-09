@@ -30,6 +30,7 @@ class Role extends Model
         'name',
         'first_message',
         'description',
-        'language_id'
+        'language_id',
+        'is_public',
     ];
 }
