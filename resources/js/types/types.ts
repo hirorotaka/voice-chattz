@@ -33,18 +33,41 @@ export interface LanguageType {
     locale: string;
     text_prompt: string;
     audio_prompt: string;
-    created_at: string;
-    updated_at: string;
+    created_at: string | null;
+    updated_at: string | null;
 }
 
-export interface RoleType {
+// 自分の役割と公開役割（is_using = 1）の型
+export interface IsUsingRoleType {
     id: number;
     name: string;
-    is_public: 0 | 1;
     first_message: string; // first_message を追加
     description: string;
-    language?: LanguageType;
+    language: LanguageType;
+    is_using: 0 | 1;
+    is_public: 0 | 1;
+    is_owned: 0 | 1;
+}
+
+//公開役割一覧の型
+export interface PublicRoleType {
+    id: number;
+    name: string;
+    first_message: string; // first_message を追加
+    description: string;
+    language_name: string;
+    is_using: 0 | 1;
+}
+
+//役割一覧の型
+export interface MyRoleType {
+    id: number;
+    name: string;
+    first_message: string; // first_message を追加
+    description: string;
     language_id: number;
+    is_public: 0 | 1;
+    language: LanguageType | null;
     created_at: string;
     updated_at: string;
 }
