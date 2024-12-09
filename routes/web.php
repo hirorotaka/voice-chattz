@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
                 ->middleware('can:delete,thread')
                 ->name('thread.destroy');
 
-            Route::post('/favorite', [ThreadController::class, 'toggleFavorite'])->name('thread.toggleFavorite');
+            Route::put('/favorite', [ThreadController::class, 'toggleFavorite'])->name('thread.toggleFavorite');
 
             Route::post('/message', [MessageController::class, 'store'])->name('message.store');
 
