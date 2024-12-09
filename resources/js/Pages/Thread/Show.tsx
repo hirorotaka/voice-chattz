@@ -1,8 +1,11 @@
 import AppLayout from "@/Layouts/AppLayout";
 import ChatContainer from "@/Components/Chat/ChatContainer";
-import { LanguageType, MessageType, RoleType, ThreadType } from "@/types/types";
-import { useEffect } from "react";
-import { useAppContext } from "@/Contexts/AppContext";
+import {
+    IsUsingRoleType,
+    LanguageType,
+    MessageType,
+    ThreadType,
+} from "@/types/types";
 
 interface ShowProps {
     thread: ThreadType;
@@ -10,7 +13,7 @@ interface ShowProps {
     messages: MessageType[];
     activeThreadId: number;
     languages: LanguageType[];
-    roles: RoleType[];
+    isUsingMyRoles: IsUsingRoleType[];
 }
 
 export default function Show({
@@ -19,7 +22,7 @@ export default function Show({
     messages,
     activeThreadId,
     languages,
-    roles,
+    isUsingMyRoles,
 }: ShowProps) {
     return (
         <AppLayout
@@ -28,7 +31,7 @@ export default function Show({
             threads={threads}
             activeThreadId={activeThreadId}
             languages={languages}
-            roles={roles}
+            roles={isUsingMyRoles}
         >
             <ChatContainer
                 thread={thread}

@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('roles')->group(function () {
         Route::get('/', [RoleController::class, 'index'])->name('roles.index');
+        Route::get('/public', [RoleController::class, 'publicRoles'])->name('roles.public');
 
         Route::post('/', [RoleController::class, 'store'])
             ->name('roles.store');
@@ -59,5 +60,9 @@ Route::middleware('auth')->group(function () {
         Route::put('/{role}/toggle-public', [RoleController::class, 'toggleRolePublic'])
             ->middleware('can:update,role')
             ->name('roles.toggle-public');
+
+        // 公開中のロールを使用可能にするトグル用エンドポイントを追加
+        Route::put('/{role}/toggle-public-is-using', [RoleController::class, 'toggleRolePublicIsUsing'])
+            ->name('roles.toggle-public-is-using');
     });
 });

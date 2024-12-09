@@ -4,7 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import { useForm } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 import InputLabel from "@/Components/InputLabel";
-import { LanguageType, RoleType } from "@/types/types";
+import { IsUsingRoleType, LanguageType } from "@/types/types";
 import { useAppContext } from "@/Contexts/AppContext";
 
 interface CreateThreadFormProps {
@@ -12,7 +12,7 @@ interface CreateThreadFormProps {
     show: boolean;
     resetScroll: () => void;
     languages: LanguageType[];
-    roles: RoleType[];
+    roles: IsUsingRoleType[];
 }
 
 interface FormData {
@@ -150,7 +150,7 @@ export default function CreateThreadForm({
                         {roles
                             .filter(
                                 (role) =>
-                                    role.language_id === form.data.language_id
+                                    role.language?.id === form.data.language_id
                             )
                             .map((role) => (
                                 <option key={role.id} value={role.id}>

@@ -4,7 +4,7 @@ import { BsFillPinAngleFill, BsTypeH1 } from "react-icons/bs";
 import { Link, router } from "@inertiajs/react";
 import SideToggleButton from "./SideToggleButton";
 import { LogoutButton } from "../Utils/LogoutButton";
-import { LanguageType, RoleType, ThreadType } from "@/types/types";
+import { IsUsingRoleType, LanguageType, ThreadType } from "@/types/types";
 import { useEffect, useRef, useState } from "react";
 import DeleteThreadForm from "../Utils/DeleteThreadForm";
 import CreateThreadForm from "../Utils/CreateThreadForm";
@@ -15,7 +15,7 @@ interface SideMenuProps {
     threads: ThreadType[];
     activeThreadId?: number | null;
     languages: LanguageType[];
-    roles: RoleType[];
+    roles: IsUsingRoleType[];
 }
 
 export const SideMenu = ({
