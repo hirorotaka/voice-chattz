@@ -211,30 +211,12 @@ class ApiService
         }
     }
 
-    public function callTranslationApi(string $message_en): array
+    public function callTranslationApi(string $message_en, string $translate_prompt): array
     {
         try {
             $systemMessage = [
                 'role' => 'system',
-                'content' => "You are a professional translator with expertise in English to Japanese translation.
-
-                Your task:
-                - Translate the English input into natural, fluent Japanese
-                - Maintain the original tone and nuance of the text
-                - Use appropriate levels of formality (尊敬語, 謙譲語, 丁寧語 when needed)
-                - Ensure cultural context and idioms are properly localized
-                - Keep honorific expressions consistent
-                - Preserve any technical terms with their correct Japanese equivalents
-                - Follow Japanese punctuation rules (。、「」etc.)
-
-                Guidelines:
-                - Output ONLY the Japanese translation
-                - Do not provide explanations or the original text
-                - Do not add notes or alternatives
-                - Maintain any formatting from the original text
-                - Keep paragraph breaks and line spacing intact
-
-                Remember: Your goal is to make the translation sound as if it was originally written in Japanese."
+                'content' => $translate_prompt
             ];
 
             $modelMessages = [

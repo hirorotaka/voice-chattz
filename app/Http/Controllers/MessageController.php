@@ -98,6 +98,7 @@ class MessageController extends Controller
 
         $message = Message::findOrFail($messageId);
 
+        $language = Thread::findOrFail($threadId)->language;
 
         if ($message->message_ja) {
             return back()->with([
@@ -106,9 +107,10 @@ class MessageController extends Controller
         }
 
         $message_en = $message->message_en;
+        $translate_prompt = $language->translate_prompt;
 
         $apiService = new ApiService();
-        $response = $apiService->callTranslationApi($message_en);
+        $response = $apiService->callTranslationApi($message_en, $translate_prompt);
 
         // 翻訳結果を保存する
         $message->message_ja = $response['choices'][0]['message']['content'];

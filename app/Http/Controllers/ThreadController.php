@@ -9,11 +9,9 @@ use App\Models\Message;
 use App\Models\Prompt;
 use App\Models\Role;
 use App\Models\Thread;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\Rules\In;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 
@@ -92,22 +90,26 @@ class ThreadController extends Controller
                     'description' => ''
                 ]);
 
-                // 初期メッセージを作成
-                $defaultMessage_en = "Hello! I'm your AI assistant. How can I help you today? I can engage in conversations on a wide range of topics, so please feel free to ask me anything.";
-                $defaultMessage_ja = "こんにちは！私はAIアシスタントです。どのようなお手伝いができますか？幅広い話題について会話ができますので、気軽にお話しください。";
+                // 各言語のデフォルトメッセージを定義
+                $defaultMessages = [
+                    1 => "Hello! I'm your AI assistant. How can I help you today? I can engage in conversations on a wide range of topics, so please feel free to ask me anything.",
+                    2 => "こんにちは！私はAIアシスタントです。どのようなお手伝いができますか？幅広い話題について会話ができますので、気軽にお話しください。",
+                    3 => "안녕하세요! 저는 AI 어시스턴트입니다. 어떤 도움이 필요하신가요? 다양한 주제에 대해 대화를 나눌 수 있으니 편하게 말씀해 주세요."
+                ];
+
+                // 言語IDに基づいてメッセージを選択（存在しない場合は日本語をデフォルトとする）
+                $selectedMessage = $defaultMessages[$thread->language_id] ?? $defaultMessages[2];
 
                 Message::create(
                     [
                         'thread_id' => $thread->id,
-                        'message_en' => $thread->language_id == 1 ? $defaultMessage_en : $defaultMessage_ja,
-                        'message_ja' => "",
+                        'message_en' => $selectedMessage,
+                        'message_ja' => '',
                         'audio_file_path' => "",
                         'sender' => 2,
                     ]
                 );
             }
-
-            // 音声データを保存する
 
 
             return redirect()->route('thread.show', $thread);
