@@ -33,46 +33,51 @@ export default function Login({
             <Head title="ログイン" />
 
             {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
+                <div className="mb-4 text-sm font-medium text-green-400">
                     {status}
                 </div>
             )}
 
-            <form onSubmit={submit}>
+            <form onSubmit={submit} className="space-y-6">
                 <div>
-                    <InputLabel htmlFor="email" value="メールアドレス" />
-
+                    <InputLabel
+                        htmlFor="email"
+                        value="メールアドレス"
+                        className="text-slate-100"
+                    />
                     <TextInput
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-white/5 border-gray-700 focus:border-indigo-500 text-white placeholder-gray-500"
                         autoComplete="username"
                         isFocused={true}
                         onChange={(e) => setData("email", e.target.value)}
+                        placeholder="your@email.com"
                     />
-
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="パスワード" />
-
+                <div>
+                    <InputLabel
+                        htmlFor="password"
+                        value="パスワード"
+                        className="text-slate-100"
+                    />
                     <TextInput
                         id="password"
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="mt-1 block w-full bg-white/5 border-gray-700 focus:border-indigo-500 text-white"
                         autoComplete="current-password"
                         onChange={(e) => setData("password", e.target.value)}
                     />
-
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="mt-4 block">
+                <div className="flex items-center justify-between">
                     <label className="flex items-center">
                         <Checkbox
                             name="remember"
@@ -80,33 +85,39 @@ export default function Login({
                             onChange={(e) =>
                                 setData("remember", e.target.checked)
                             }
+                            className="border-gray-700 text-indigo-500 focus:ring-indigo-500"
                         />
-                        <span className="ms-2 text-sm text-gray-600">
-                            ログイン状態を保持する
+                        <span className="ms-2 text-sm text-gray-300">
+                            ログイン状態を保持
                         </span>
                     </label>
-                </div>
 
-                <div className="mt-4 flex items-center justify-end">
                     {canResetPassword && (
                         <Link
                             href={route("password.request")}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="text-sm text-gray-400 hover:text-gray-300 transition-colors"
                         >
                             パスワードをお忘れの方
                         </Link>
                     )}
+                </div>
 
+                <div>
+                    <PrimaryButton
+                        className="w-full justify-center py-3 bg-indigo-600 hover:bg-indigo-500 transition-colors"
+                        disabled={processing}
+                    >
+                        ログイン
+                    </PrimaryButton>
+                </div>
+
+                <div className="text-center">
                     <Link
                         href={route("register")}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
                     >
                         アカウントをお持ちではない方はこちら
                     </Link>
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        ログイン
-                    </PrimaryButton>
                 </div>
             </form>
         </GuestLayout>

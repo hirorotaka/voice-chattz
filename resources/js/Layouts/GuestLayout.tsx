@@ -1,18 +1,43 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link } from '@inertiajs/react';
-import { PropsWithChildren } from 'react';
+import { Link } from "@inertiajs/react";
+import { PropsWithChildren } from "react";
+import { HiMicrophone } from "react-icons/hi2";
 
 export default function Guest({ children }: PropsWithChildren) {
     return (
-        <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0">
-            <div>
-                <Link href="/">
-                    <ApplicationLogo className="h-20 w-20 fill-current text-gray-500" />
-                </Link>
-            </div>
+        <div className="min-h-screen bg-gray-900 px-4">
+            {/* メインコンテンツ */}
+            <div className="relative min-h-screen flex flex-col items-center justify-center">
+                <div className="w-full max-w-md space-y-8">
+                    {/* ロゴ */}
+                    <div className="text-center">
+                        <Link href="/" className="inline-block group">
+                            <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white/10 rounded-2xl backdrop-blur-lg transition-all duration-300 group-hover:scale-105">
+                                <HiMicrophone className="w-8 h-8 text-indigo-400" />
+                            </div>
+                            <div className="mt-4">
+                                <h1 className="text-2xl font-bold text-white">
+                                    voice chattz
+                                </h1>
+                                <p className="text-sm text-gray-400">
+                                    AIと育む語学力
+                                </p>
+                            </div>
+                        </Link>
+                    </div>
 
-            <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
-                {children}
+                    {/* フォームコンテナ */}
+                    <div className="relative">
+                        <div className="absolute inset-0 rounded-2xl blur-xl" />
+                        <div className="relative bg-white/5 backdrop-blur-lg p-8 shadow-2xl rounded-2xl">
+                            {children}
+                        </div>
+                    </div>
+
+                    {/* フッター */}
+                    <div className="text-center text-sm text-gray-400">
+                        © 2024 voice chattz. All rights reserved.
+                    </div>
+                </div>
             </div>
         </div>
     );
