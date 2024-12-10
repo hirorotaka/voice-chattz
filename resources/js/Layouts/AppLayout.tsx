@@ -116,10 +116,10 @@ export default function AppLayout({
                             {thread && (
                                 <>
                                     <div>
-                                        <div className="text-white font-bold text-base">
+                                        <div className="text-white font-bold text-xs sm:text-base">
                                             {getLanguageModeText(currentLocale)}
                                         </div>
-                                        <div className="text-white font-bold text-base">
+                                        <div className="text-white font-bold text-xs sm:text-base">
                                             {getRoleText(currentLocale)}
                                             {thread.prompt?.name ||
                                                 getDefaultRoleText(

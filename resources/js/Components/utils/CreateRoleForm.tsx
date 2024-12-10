@@ -93,7 +93,7 @@ export default function CreateRoleForm({
                     <TextArea // TextArea を使用
                         id="first_message"
                         name="first_message"
-                        className="mt-1 block w-full h-24 md:h-28 lg:h-32 placeholder-gray-400" // 高さを小さく調整
+                        className="mt-1 block w-full h-24 md:h-28 lg:h-32 placeholder-gray-400 sm:placeholder:text-sm placeholder:text-xs" // 高さを小さく調整
                         value={form.data.first_message}
                         placeholder={`スレッド開始時にAIが最初に送信するメッセージを入力してください。\n例：「こんにちは！私は〇〇が得意なAIです。どんな〇〇をしたいですか？」`}
                         onChange={(e) =>
@@ -113,7 +113,7 @@ export default function CreateRoleForm({
                     <TextArea // TextArea を使用
                         id="description"
                         name="description"
-                        className="mt-1 block w-full h-32 md:h-36 lg:h-40 placeholder-gray-400" // 高さを小さく調整
+                        className="mt-1 block w-full h-32 md:h-36 lg:h-40 placeholder-gray-400 sm:placeholder:text-sm placeholder:text-xs" // 高さを小さく調整
                         value={form.data.description}
                         onChange={(e) =>
                             form.setData("description", e.target.value)
@@ -130,7 +130,7 @@ export default function CreateRoleForm({
 
                 <div className="mt-6">
                     <InputLabel value="対話モード *" />
-                    <p className="text-sm text-gray-500 mb-4">
+                    <p className="text-xs sm:text-sm text-gray-500 mb-4">
                         使用する言語モードを選択してください。
                         <br />
                         英語用には英語モード、日本語用には日本語モードを選択してください。

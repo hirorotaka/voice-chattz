@@ -76,7 +76,7 @@ export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
             languages={languages}
             roles={isUsingMyRoles}
         >
-            <div className="p-10 flex flex-col items-center justify-around">
+            <div className="p-5 flex flex-col items-center ">
                 {/* ヒーローセクション */}
                 <div className="text-center mb-10">
                     <h1 className="text-4xl font-bold text-white mb-6 leading-tight">
@@ -108,7 +108,7 @@ export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
                 </div>
 
                 {/* 特徴セクション */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
                     {features.map((feature, index) => (
                         <FeatureCard key={index} {...feature} />
                     ))}

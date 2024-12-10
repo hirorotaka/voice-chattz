@@ -426,7 +426,7 @@ const ChatContainer = ({
             <div className="flex items-center justify-end mr-4">
                 {/* 録音中は表示しない */}
                 {!isRecording && (
-                    <div className="flex items-center mr-auto pl-10">
+                    <div className="flex items-center mr-auto pl-5">
                         {/* 再生速度調整スライダー */}
                         <input
                             type="range"
@@ -436,7 +436,7 @@ const ChatContainer = ({
                             value={globalPlaybackRate}
                             onInput={handlePlaybackRateChange}
                             aria-label="再生速度"
-                            className="w-40 h-2 bg-gray-400 rounded-full appearance-none block"
+                            className="sm:w-40 h-2 bg-gray-400 rounded-full appearance-none block"
                         />
                         {/* 再生速度表示 */}
                         <div className="ml-2 text-white text-lg w-8">

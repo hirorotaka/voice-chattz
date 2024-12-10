@@ -130,7 +130,7 @@ export default function CreateThreadForm({
                 </div>
 
                 {/* 役割選択 */}
-                <div className="mt-6">
+                {/* <div className="mt-6">
                     <InputLabel value="役割選択 *" />
                     <p className="text-sm text-gray-500 mb-4">
                         AIに特定の役割や専門性を持たせることができます。
@@ -145,7 +145,7 @@ export default function CreateThreadForm({
                         onChange={(e) =>
                             form.setData("role_id", Number(e.target.value))
                         }
-                        className="w-10/12 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        className="w-10/12 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 max-h-60"
                     >
                         <option value="">デフォルト（フリートーク）</option>
                         {roles
@@ -164,6 +164,75 @@ export default function CreateThreadForm({
                             {form.errors.role_id}
                         </div>
                     )}
+                </div> */}
+                <div className="mt-6">
+                    <InputLabel value="役割選択 *" />
+                    <p className="text-sm text-gray-500 mb-4">
+                        AIに特定の役割や専門性を持たせることができます。
+                    </p>
+
+                    <div className="relative inline-block w-full">
+                        <div className="relative  h-48 overflow-y-auto w-96">
+                            {/* デフォルトオプション */}
+                            <label
+                                className={`block w-full px-4 py-2 text-left border rounded-md cursor-pointer
+                                ${
+                                    !form.data.role_id
+                                        ? "bg-gray-100"
+                                        : "bg-white"
+                                }`}
+                            >
+                                <input
+                                    type="radio"
+                                    name="role_id"
+                                    value=""
+                                    checked={!form.data.role_id}
+                                    onChange={() =>
+                                        form.setData("role_id", null)
+                                    }
+                                    className="mr-2"
+                                />
+                                デフォルト（フリートーク）
+                            </label>
+
+                            {/* 役割オプション */}
+                            {roles
+                                .filter(
+                                    (role) =>
+                                        role.language?.id ===
+                                        form.data.language_id
+                                )
+                                .map((role) => (
+                                    <label
+                                        key={role.id}
+                                        className={`block w-full px-4 py-2 text-left border-x border-b cursor-pointer
+                            ${
+                                Number(form.data.role_id) === Number(role.id)
+                                    ? "bg-gray-100"
+                                    : "bg-white"
+                            }`}
+                                    >
+                                        <input
+                                            type="radio"
+                                            name="role_id"
+                                            value={role.id}
+                                            checked={
+                                                Number(form.data.role_id) ===
+                                                Number(role.id)
+                                            }
+                                            onChange={(e) =>
+                                                form.setData(
+                                                    "role_id",
+                                                    Number(e.target.value)
+                                                )
+                                            }
+                                            className="mr-2"
+                                        />
+                                        {role.name}
+                                    </label>
+                                ))}
+                        </div>
+                    </div>
                 </div>
 
                 <div className="mt-6 flex justify-end">

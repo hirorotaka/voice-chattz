@@ -11,7 +11,11 @@ const ProfileDropdown = () => {
 
     return (
         <Dropdown
-            label={auth.user?.name || "メニュー"}
+            label={
+                <span className="hidden sm:block">
+                    {auth.user?.name || "メニュー"}
+                </span>
+            }
             dismissOnClick={false}
             inline
         >
