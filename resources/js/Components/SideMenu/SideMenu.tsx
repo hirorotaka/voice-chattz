@@ -154,6 +154,14 @@ export const SideMenu = ({
                         />
                     </div>
 
+                    <Link href={route("how-to-use")}>
+                        <div className="p-4 space-x-2 mb-14 text-white bg-indigo-800 rounded-lg">
+                            <span className="text-lg font-medium">
+                                使い方ガイド
+                            </span>
+                        </div>
+                    </Link>
+
                     {/* 新規スレッド作成ボタン */}
                     <button
                         onClick={handleCreateThread}

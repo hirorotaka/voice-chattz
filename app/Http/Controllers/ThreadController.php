@@ -213,4 +213,37 @@ class ThreadController extends Controller
 
         return to_route('thread.show', $thread);
     }
+
+
+    public function howToUse(): InertiaResponse
+    {
+
+        $user = Auth::user();
+
+        $threads = Thread::where('user_id', Auth::user()->id)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        $languages = Language::all();
+
+        // 自分のロールのうち、is_using が 1 のものだけを取得（非公開も含む）
+        $isUsingMyRoles = $user->roles()
+            ->with('language')
+            ->wherePivot('is_using', 1) // is_using が 1 のものだけを取得
+            ->get()
+            ->map(function ($role) {
+                return [
+                    'id' => $role->id,
+                    'name' => $role->name,
+                    'first_message' => $role->first_message,
+                    'description' => $role->description,
+                    'language' => $role->language,
+                    'is_owned' => $role->pivot->owner,
+                    'is_using' => $role->pivot->is_using, // 常に 1
+                    'is_public' => $role->is_public,
+                ];
+            });
+
+        return Inertia::render('HowToUse', ['threads' => $threads, 'languages' => $languages, 'isUsingMyRoles' => $isUsingMyRoles]);
+    }
 }

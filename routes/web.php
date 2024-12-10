@@ -10,6 +10,7 @@ require __DIR__ . '/auth.php';
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [ThreadController::class, 'index'])->name('top');
+    Route::get('/how-to-use', [ThreadController::class, 'howToUse'])->name('how-to-use');
 
     Route::prefix('thread')->group(function () {
         Route::post('/', [ThreadController::class, 'store'])->name('thread.store');
