@@ -1,20 +1,20 @@
 import AppLayout from "@/Layouts/AppLayout";
 import { LearningGrid } from "@/Components/LearningGrid";
-import { LanguageType, RoleType, ThreadType } from "@/types/types";
+import { IsUsingRoleType, LanguageType, ThreadType } from "@/types/types";
 
 interface TopProps {
     threads: ThreadType[];
     languages: LanguageType[];
-    roles: RoleType[];
+    isUsingMyRoles: IsUsingRoleType[];
 }
 
-export default function Top({ threads, languages, roles }: TopProps) {
+export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
     return (
         <AppLayout
             title="Top"
             threads={threads}
             languages={languages}
-            roles={roles}
+            roles={isUsingMyRoles}
         >
             <div className="h-full flex flex-col">
                 <h2 className="text-2xl sm:text-3xl font-semibold mb-6 text-white">

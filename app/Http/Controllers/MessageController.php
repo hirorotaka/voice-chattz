@@ -33,13 +33,13 @@ class MessageController extends Controller
             return back()->with('flashData', 'noSound');
         }
 
-        $message_en = $response['text'];
+        $content = $response['text'];
 
         // 音声データを保存する
         $message = Message::create(
             [
                 'thread_id' => $threadId,
-                'message_en' => $message_en,
+                'content' => $content,
                 'message_ja' => "",
                 'audio_file_path' => $path,
                 'sender' => 1,
@@ -79,7 +79,7 @@ class MessageController extends Controller
         // AIメッセージを保存
         $aiMessage = Message::create([
             'thread_id' => $threadId,
-            'message_en' => $aiMessageText,
+            'content' => $aiMessageText,
             'message_ja' => "",
             'audio_file_path' => $aiAudioFilePath,
             'sender' => 2,
@@ -106,11 +106,11 @@ class MessageController extends Controller
             ]);
         }
 
-        $message_en = $message->message_en;
+        $content = $message->content;
         $translate_prompt = $language->translate_prompt;
 
         $apiService = new ApiService();
-        $response = $apiService->callTranslationApi($message_en, $translate_prompt);
+        $response = $apiService->callTranslationApi($content, $translate_prompt);
 
         // 翻訳結果を保存する
         $message->message_ja = $response['choices'][0]['message']['content'];

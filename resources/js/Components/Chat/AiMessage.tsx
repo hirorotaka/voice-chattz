@@ -117,8 +117,7 @@ const AiMessage = ({
                 <div className="p-2 rounded-lg bg-gray-200">
                     <MessageDisplay
                         content={
-                            message?.message_en ||
-                            "メッセージを作成しています..."
+                            message?.content || "メッセージを作成しています..."
                         }
                     />
                     {/* 日本語訳の条件付きレンダリング */}

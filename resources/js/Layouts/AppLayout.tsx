@@ -1,11 +1,10 @@
-import { Head, router } from "@inertiajs/react";
-import { ReactNode, useState } from "react";
+import { Head } from "@inertiajs/react";
+import { ReactNode } from "react";
 import { SideMenu } from "@/Components/SideMenu/SideMenu";
 import { SideToggleButton } from "@/Components/SideMenu/SideToggleButton";
 import ProfileDropdown from "@/Components/Header/ProfileDropdown";
 import { useAppContext } from "@/Contexts/AppContext";
 import { IsUsingRoleType, LanguageType, ThreadType } from "@/types/types";
-import { HiOutlineStar, HiStar } from "react-icons/hi2";
 import { FavoriteButton } from "@/Components/Utils/FavoriteButton";
 import { Tooltip } from "flowbite-react";
 

@@ -110,7 +110,7 @@ class ApiService
 
             $modelMessages = $modelMessages->map(fn($message) => [
                 'role' => $message->sender === 1 ? 'user' : 'assistant',
-                'content' => $message->message_en
+                'content' => $message->content
             ])->toArray();
 
             $mergedMessages = array_merge([$systemMessage], $modelMessages);
@@ -211,7 +211,7 @@ class ApiService
         }
     }
 
-    public function callTranslationApi(string $message_en, string $translate_prompt): array
+    public function callTranslationApi(string $content, string $translate_prompt): array
     {
         try {
             $systemMessage = [
@@ -222,7 +222,7 @@ class ApiService
             $modelMessages = [
                 [
                     'role' => 'user',
-                    'content' => $message_en
+                    'content' => $content
                 ]
             ];
 

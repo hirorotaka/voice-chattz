@@ -21,7 +21,7 @@ class Message extends Model
 
     protected $fillable = [
         'thread_id',
-        'message_en',
+        'content',
         'message_ja',
         'sender',
         'audio_file_path',

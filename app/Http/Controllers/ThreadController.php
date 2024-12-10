@@ -23,15 +23,33 @@ class ThreadController extends Controller
     public function index(): InertiaResponse
     {
 
+        $user = Auth::user();
+
         $threads = Thread::where('user_id', Auth::user()->id)
             ->orderBy('updated_at', 'desc')
             ->get();
 
         $languages = Language::all();
 
-        $roles = Auth::user()->roles()->with('language')->get();
+        // 自分のロールのうち、is_using が 1 のものだけを取得（非公開も含む）
+        $isUsingMyRoles = $user->roles()
+            ->with('language')
+            ->wherePivot('is_using', 1) // is_using が 1 のものだけを取得
+            ->get()
+            ->map(function ($role) {
+                return [
+                    'id' => $role->id,
+                    'name' => $role->name,
+                    'first_message' => $role->first_message,
+                    'description' => $role->description,
+                    'language' => $role->language,
+                    'is_owned' => $role->pivot->owner,
+                    'is_using' => $role->pivot->is_using, // 常に 1
+                    'is_public' => $role->is_public,
+                ];
+            });
 
-        return Inertia::render('Top', ['threads' => $threads, 'languages' => $languages, 'roles' => $roles]);
+        return Inertia::render('Top', ['threads' => $threads, 'languages' => $languages, 'isUsingMyRoles' => $isUsingMyRoles]);
     }
 
     /**
@@ -76,7 +94,7 @@ class ThreadController extends Controller
                 Message::create(
                     [
                         'thread_id' => $thread->id,
-                        'message_en' => $role->first_message,
+                        'content' => $role->first_message,
                         'message_ja' => "",
                         'audio_file_path' => "",
                         'sender' => 2,
@@ -103,7 +121,7 @@ class ThreadController extends Controller
                 Message::create(
                     [
                         'thread_id' => $thread->id,
-                        'message_en' => $selectedMessage,
+                        'content' => $selectedMessage,
                         'message_ja' => '',
                         'audio_file_path' => "",
                         'sender' => 2,

@@ -20,7 +20,7 @@ class MessageSeeder extends Seeder
 
             Message::create([
                 'thread_id' => 1,
-                'message_en' => 'hello world-' . ($i + 1),
+                'content' => 'hello world-' . ($i + 1),
                 'message_ja' => '日本語メッセージ' . ($i + 1),
                 'sender' => $sender,
                 'audio_file_path' => '/audios/message' . ($i + 1) . '.mp3',

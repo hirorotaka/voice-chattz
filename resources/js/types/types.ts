@@ -2,7 +2,7 @@
 export type MessageType = {
     id: number;
     thread_id: number;
-    message_en: string;
+    content: string;
     message_ja: string;
     sender: 1 | 2; // 1: user, 2: AI
     audio_file_path: string | null;
