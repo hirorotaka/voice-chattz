@@ -130,41 +130,6 @@ export default function CreateThreadForm({
                 </div>
 
                 {/* 役割選択 */}
-                {/* <div className="mt-6">
-                    <InputLabel value="役割選択 *" />
-                    <p className="text-sm text-gray-500 mb-4">
-                        AIに特定の役割や専門性を持たせることができます。
-                        <br />
-                        例えば、プログラマー役で技術的な会話や、ライター役で文章作成の相談など、
-                        <br />
-                        目的に応じて選択してください。
-                        選択しない場合は、汎用的なAIとして会話します。
-                    </p>
-                    <select
-                        value={form.data.role_id || ""}
-                        onChange={(e) =>
-                            form.setData("role_id", Number(e.target.value))
-                        }
-                        className="w-10/12 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 max-h-60"
-                    >
-                        <option value="">デフォルト（フリートーク）</option>
-                        {roles
-                            .filter(
-                                (role) =>
-                                    role.language?.id === form.data.language_id
-                            )
-                            .map((role) => (
-                                <option key={role.id} value={role.id}>
-                                    {role.name}
-                                </option>
-                            ))}
-                    </select>
-                    {form.errors.role_id && (
-                        <div className="text-red-500 text-sm mt-1">
-                            {form.errors.role_id}
-                        </div>
-                    )}
-                </div> */}
                 <div className="mt-6">
                     <InputLabel value="役割選択 *" />
                     <p className="text-sm text-gray-500 mb-4">
@@ -172,14 +137,14 @@ export default function CreateThreadForm({
                     </p>
 
                     <div className="relative inline-block w-full">
-                        <div className="relative  h-48 overflow-y-auto w-96">
+                        <div className="relative h-48 overflow-y-auto w-96">
                             {/* デフォルトオプション */}
                             <label
-                                className={`block w-full px-4 py-2 text-left border rounded-md cursor-pointer
+                                className={`block w-full px-4 py-2 text-left border rounded-t-md cursor-pointer transition-colors duration-200
                                 ${
                                     !form.data.role_id
-                                        ? "bg-gray-100"
-                                        : "bg-white"
+                                        ? "bg-indigo-100 text-indigo-800"
+                                        : "bg-white hover:bg-gray-50"
                                 }`}
                             >
                                 <input
@@ -190,7 +155,7 @@ export default function CreateThreadForm({
                                     onChange={() =>
                                         form.setData("role_id", null)
                                     }
-                                    className="mr-2"
+                                    className="sr-only"
                                 />
                                 デフォルト（フリートーク）
                             </label>
@@ -205,12 +170,19 @@ export default function CreateThreadForm({
                                 .map((role) => (
                                     <label
                                         key={role.id}
-                                        className={`block w-full px-4 py-2 text-left border-x border-b cursor-pointer
-                            ${
-                                Number(form.data.role_id) === Number(role.id)
-                                    ? "bg-gray-100"
-                                    : "bg-white"
-                            }`}
+                                        className={`block w-full px-4 py-2 text-left border-x border-b cursor-pointer transition-colors duration-200
+                                            ${
+                                                Number(form.data.role_id) ===
+                                                Number(role.id)
+                                                    ? "bg-indigo-100 text-indigo-800"
+                                                    : "bg-white hover:bg-gray-50"
+                                            }
+                                            ${
+                                                role.id ===
+                                                roles[roles.length - 1]?.id
+                                                    ? "rounded-b-md"
+                                                    : ""
+                                            }`}
                                     >
                                         <input
                                             type="radio"
@@ -226,7 +198,7 @@ export default function CreateThreadForm({
                                                     Number(e.target.value)
                                                 )
                                             }
-                                            className="mr-2"
+                                            className="sr-only"
                                         />
                                         {role.name}
                                     </label>
