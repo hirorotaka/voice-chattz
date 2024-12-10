@@ -6,6 +6,7 @@ import { FormEventHandler } from "react";
 import InputLabel from "@/Components/InputLabel";
 import { IsUsingRoleType, LanguageType } from "@/types/types";
 import { useAppContext } from "@/Contexts/AppContext";
+import { getDefaultTitle } from "@/constants/languages";
 
 interface CreateThreadFormProps {
     onClose: () => void;
@@ -29,7 +30,7 @@ export default function CreateThreadForm({
     roles,
 }: CreateThreadFormProps) {
     const form = useForm<FormData>({
-        title: "無題のスレッド", // デフォルトタイトルを設定
+        title: getDefaultTitle(2), // デフォルトは日本語
         role_id: null,
         language_id: null,
     });
@@ -46,11 +47,11 @@ export default function CreateThreadForm({
     };
 
     // 言語選択時に両方のデータを更新
-    const handleLanguageChange = (value: number) => {
+    const handleLanguageChange = (languageId: number) => {
         form.setData({
             role_id: null,
-            language_id: value,
-            title: value === 2 ? "無題のスレッド" : "Untitled Thread",
+            language_id: languageId,
+            title: getDefaultTitle(languageId),
         });
     };
 
@@ -69,7 +70,7 @@ export default function CreateThreadForm({
         });
     };
 
-    console.log(form.data);
+    console.log(languages);
 
     return (
         <Modal show={show} onClose={handleClose}>
@@ -84,7 +85,7 @@ export default function CreateThreadForm({
                     <p className="text-sm text-gray-500 mb-4">
                         使用する言語を選択してください
                     </p>
-                    <div className="grid grid-cols-2 gap-3 max-w-80">
+                    <div className="grid grid-cols-3 gap-3 max-w-80">
                         {languages?.map((language) => (
                             <label
                                 key={language.locale}

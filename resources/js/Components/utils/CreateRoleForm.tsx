@@ -137,7 +137,7 @@ export default function CreateRoleForm({
                         <br />
                         合わせることで精度が高くなります。
                     </p>
-                    <div className="grid grid-cols-2 gap-3 max-w-80">
+                    <div className="grid grid-cols-3 gap-3 max-w-80">
                         {languages?.map((language) => (
                             <label
                                 key={language.locale}
