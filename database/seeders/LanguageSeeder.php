@@ -19,18 +19,21 @@ class LanguageSeeder extends Seeder
                 'name' => 'English',
                 'text_prompt' => trans('prompts.text', [], 'en'),
                 'audio_prompt' => trans('prompts.audio', [], 'en'),
+                'translate_prompt' => trans('prompts.translate', [], 'en'),
             ],
             [
                 'locale' => 'ja',
                 'name' => '日本語',
                 'text_prompt' => trans('prompts.text', [], 'ja'),
                 'audio_prompt' => trans('prompts.audio', [], 'ja'), //言語ファイルにアクセスするために必要
+                'translate_prompt' => trans('prompts.translate', [], 'ja'), //言語ファイルにアクセスするために必要
             ],
             [
                 'locale' => 'ko',
                 'name' => '한국어',
                 'text_prompt' => trans('prompts.text', [], 'ko'),
                 'audio_prompt' => trans('prompts.audio', [], 'ko'),
+                'translate_prompt' => trans('prompts.translate', [], 'ko'),
                 'updated_at' => now(),
             ],
         ];
