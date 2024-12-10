@@ -148,7 +148,7 @@ const AiMessage = ({
                                 <HiSpeakerWave className="w-5 h-5" />
                             </button>
                             {/* 英語の場合のみ翻訳関連のボタンを表示 */}
-                            {thread?.language_id === 1 && (
+                            {thread?.language_id !== 2 && (
                                 <>
                                     {message?.message_ja ? (
                                         <button
@@ -171,6 +171,7 @@ const AiMessage = ({
                                         </button>
                                     ) : (
                                         <TranslateButton
+                                            thread={thread}
                                             threadId={message.thread_id}
                                             messageId={message.id}
                                             setShowJapanese={setShowJapanese}

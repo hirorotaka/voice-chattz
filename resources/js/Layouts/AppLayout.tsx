@@ -19,6 +19,32 @@ interface AppLayoutProps {
     roles: IsUsingRoleType[];
 }
 
+// 言語ロケールの型定義
+type LocaleType = "en" | "ja" | "ko";
+
+type LanguageTexts = {
+    [key in LocaleType]: string;
+};
+
+// 言語モードと役割の表示テキストを定義
+const languageModeText: LanguageTexts = {
+    en: "Language Mode: English",
+    ja: "言語モード：日本語",
+    ko: "언어 모드: 한국어",
+};
+
+const roleText: LanguageTexts = {
+    en: "Role: ",
+    ja: "役割：",
+    ko: "역할: ",
+};
+
+const defaultRoleText: LanguageTexts = {
+    en: "Default",
+    ja: "デフォルト",
+    ko: "기본",
+};
+
 export default function AppLayout({
     title,
     children,
@@ -29,6 +55,25 @@ export default function AppLayout({
     roles,
 }: AppLayoutProps) {
     const { isSidebarOpen, handleSidebarToggle } = useAppContext();
+
+    // 言語に基づいて表示テキストを取得する関数
+    const getLanguageModeText = (locale: string | undefined): string => {
+        if (!locale) return languageModeText.ja; // デフォルトは日本語
+        return languageModeText[locale as LocaleType] || languageModeText.ja;
+    };
+
+    const getRoleText = (locale: string | undefined): string => {
+        if (!locale) return roleText.ja; // デフォルトは日本語
+        return roleText[locale as LocaleType] || roleText.ja;
+    };
+
+    const getDefaultRoleText = (locale: string | undefined): string => {
+        if (!locale) return defaultRoleText.ja; // デフォルトは日本語
+        return defaultRoleText[locale as LocaleType] || defaultRoleText.ja;
+    };
+
+    // 現在の言語ロケールを安全に取得
+    const currentLocale = thread?.language?.locale;
 
     return (
         <>
@@ -73,27 +118,14 @@ export default function AppLayout({
                                 <>
                                     <div>
                                         <div className="text-white font-bold text-base">
-                                            {thread?.language?.locale === "en"
-                                                ? "Language Mode:English"
-                                                : "言語モード:日本語"}
+                                            {getLanguageModeText(currentLocale)}
                                         </div>
                                         <div className="text-white font-bold text-base">
-                                            {thread?.language?.locale ===
-                                            "en" ? (
-                                                // 英語の場合
-                                                <>
-                                                    Role:{" "}
-                                                    {thread.prompt?.name ||
-                                                        "Default"}
-                                                </>
-                                            ) : (
-                                                // 日本語の場合
-                                                <>
-                                                    役割：
-                                                    {thread.prompt?.name ||
-                                                        "デフォルト"}
-                                                </>
-                                            )}
+                                            {getRoleText(currentLocale)}
+                                            {thread.prompt?.name ||
+                                                getDefaultRoleText(
+                                                    currentLocale
+                                                )}
                                         </div>
                                     </div>
                                 </>

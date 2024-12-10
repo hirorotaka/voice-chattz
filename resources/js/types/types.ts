@@ -78,3 +78,10 @@ export interface PromptType {
     description: string;
     thread_id: number;
 }
+
+export interface LanguageSelectType {
+    id: number;
+    locale: string;
+    name: string;
+    defaultTitle: string;
+}
