@@ -90,7 +90,7 @@ export default function Index({
 
     return (
         <AppLayout
-            title="roles"
+            title="役割一覧(自分)"
             threads={threads}
             languages={languages}
             roles={isUsingMyRoles}

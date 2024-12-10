@@ -26,7 +26,7 @@ export default function Show({
 }: ShowProps) {
     return (
         <AppLayout
-            title="show"
+            title="スレッド"
             thread={thread}
             threads={threads}
             activeThreadId={activeThreadId}

@@ -11,7 +11,7 @@ interface TopProps {
 export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
     return (
         <AppLayout
-            title="Top"
+            title="トップページ"
             threads={threads}
             languages={languages}
             roles={isUsingMyRoles}

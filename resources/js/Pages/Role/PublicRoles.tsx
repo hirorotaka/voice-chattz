@@ -56,7 +56,7 @@ export default function PublicRoles({
 
     return (
         <AppLayout
-            title="public roles"
+            title="公開プロンプト一覧"
             threads={threads}
             languages={languages}
             roles={isUsingMyRoles}
