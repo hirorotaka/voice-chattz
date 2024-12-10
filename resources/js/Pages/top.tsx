@@ -22,9 +22,11 @@ interface FeatureCardProps {
 }
 
 const FeatureCard = ({ icon, title, description }: FeatureCardProps) => (
-    <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl">
-        <div className="text-indigo-400 text-3xl mb-4">{icon}</div>
-        <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
+    <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl">
+        <div className="flex mb-4">
+            <div className="text-indigo-400 text-2xl mr-4">{icon}</div>
+            <h3 className="text-base font-bold text-white mb-2">{title}</h3>
+        </div>
         <p className="text-gray-300">{description}</p>
     </div>
 );
@@ -57,7 +59,7 @@ export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
         },
         {
             icon: <HiUserGroup />,
-            title: "コミュニティの活用",
+            title: "公開キャラクターの活用",
             description:
                 "他のユーザーが作成したAIキャラクターを使用可能。様々な学習スタイルや場面に応じた会話練習ができます。",
         },
@@ -76,9 +78,9 @@ export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
             languages={languages}
             roles={isUsingMyRoles}
         >
-            <div className="p-5 flex flex-col items-center ">
+            <div className="px-5 flex flex-col items-center">
                 {/* ヒーローセクション */}
-                <div className="text-center mb-10">
+                <div className="text-center">
                     <h1 className="text-4xl font-bold text-white mb-6 leading-tight">
                         会話を、学びを、もっと自由に
                         <span className="block text-indigo-400">
@@ -90,14 +92,11 @@ export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
                         <br />
                         あなたの声から始まる、革新的な学習体験。
                     </p>
-                    <p className="text-gray-300 mt-10 text-lg font-bold">
-                        「新規スレッド作成」をクリックですぐに始めることができます
-                    </p>
                 </div>
 
                 {/* イラストレーション */}
                 <div className="flex justify-center mb-10">
-                    <div className="relative w-full max-w-2xl">
+                    <div className="relative w-full sm:max-w-xl">
                         <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
                         <img
                             src="/storage/images/app_image.svg"
