@@ -22,7 +22,7 @@ class RedirectIfAuthenticated
             // 各ガードでの認証チェック
             if (Auth::guard($guard)->check()) {
                 // ルート名で条件分岐
-                if ($request->route()->named('login')) {
+                if ($request->route()->named('login') || $request->route()->named('register')) {
                     return redirect()->route('top');
                 }
             }
