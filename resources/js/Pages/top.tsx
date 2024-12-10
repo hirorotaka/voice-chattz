@@ -55,41 +55,39 @@ export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
             languages={languages}
             roles={isUsingMyRoles}
         >
-            <div className="min-h-screen bg-gradient-to-b from-blue-950 to-indigo-950">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-                    {/* ヒーローセクション */}
-                    <div className="text-center mb-20">
-                        <h1 className="text-5xl font-bold text-white mb-6 leading-tight">
-                            会話を、学びを、もっと自由に
-                            <span className="block text-indigo-400">
-                                AI Powered Language Learning
-                            </span>
-                        </h1>
-                        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                            音声認識とAIを組み合わせた新しい言語学習プラットフォーム。
-                            <br />
-                            あなたの声から始まる、革新的な学習体験。
-                        </p>
-                    </div>
+            <div className="p-10 flex flex-col items-center justify-around">
+                {/* ヒーローセクション */}
+                <div className="text-center mb-10">
+                    <h1 className="text-4xl font-bold text-white mb-6 leading-tight">
+                        会話を、学びを、もっと自由に
+                        <span className="block text-indigo-400">
+                            AI Powered Language Learning
+                        </span>
+                    </h1>
+                    <p className="text-xl text-gray-300  mx-auto">
+                        音声認識とAIを組み合わせた新しい言語学習プラットフォーム。
+                        <br />
+                        あなたの声から始まる、革新的な学習体験。
+                    </p>
+                </div>
 
-                    {/* イラストレーション */}
-                    <div className="flex justify-center mb-20">
-                        <div className="relative w-full max-w-4xl">
-                            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
-                            <img
-                                src="/storage/images/app_image.svg"
-                                alt="アプリケーションイメージ"
-                                className="relative rounded-3xl shadow-2xl"
-                            />
-                        </div>
+                {/* イラストレーション */}
+                <div className="flex justify-center mb-10">
+                    <div className="relative w-full max-w-2xl">
+                        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
+                        <img
+                            src="/storage/images/app_image.svg"
+                            alt="アプリケーションイメージ"
+                            className="relative rounded-3xl shadow-2xl"
+                        />
                     </div>
+                </div>
 
-                    {/* 特徴セクション */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                        {features.map((feature, index) => (
-                            <FeatureCard key={index} {...feature} />
-                        ))}
-                    </div>
+                {/* 特徴セクション */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12">
+                    {features.map((feature, index) => (
+                        <FeatureCard key={index} {...feature} />
+                    ))}
                 </div>
             </div>
         </AppLayout>
