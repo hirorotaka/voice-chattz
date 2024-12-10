@@ -145,7 +145,7 @@ export const SideMenu = ({
                         <Link href={route("top")} className="flex items-center">
                             <HiOutlineChatAlt2 className="h-6 w-6 mr-2" />
                             <h1 className="text-lg font-semibold">
-                                MyEnglishApp
+                                voice chattz
                             </h1>
                         </Link>
                         <SideToggleButton
