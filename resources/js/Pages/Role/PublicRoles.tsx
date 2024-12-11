@@ -73,10 +73,13 @@ const DesktopTable = ({ publicRoles }: DesktopTableProps) => (
                         説明
                     </th>
                     <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
-                        言語モード
+                        言語 <br />
+                        モード
                     </th>
                     <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
-                        使用する
+                        使用
+                        <br />
+                        する
                     </th>
                 </tr>
             </thead>

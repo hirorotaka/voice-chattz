@@ -64,7 +64,7 @@ export default function CreateRoleForm({
                 onSubmit={createRole}
                 className="p-6  max-h-[90vh] max-w-[80vw] overflow-y-auto"
             >
-                <h1 className="text-2xl font-medium text-gray-900">
+                <h1 className="text-lg sm:text-2xl font-medium text-gray-900">
                     役割を作成
                 </h1>
 
@@ -142,7 +142,7 @@ export default function CreateRoleForm({
                             <label
                                 key={language.locale}
                                 className={`
-                    relative flex items-center justify-center p-4 rounded-xl cursor-pointer
+                    relative flex items-center justify-center p-2 sm:p-4 rounded-xl cursor-pointer
                     transition-all duration-200 ease-in-out
                     ${
                         form.data.language_id === String(language.id)

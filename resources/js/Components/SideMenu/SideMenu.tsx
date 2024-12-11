@@ -1,6 +1,10 @@
 import { HiPlus, HiOutlineChatAlt2 } from "react-icons/hi";
 import { HiTrash, HiOutlinePencil } from "react-icons/hi2";
-import { BsFillPinAngleFill, BsTypeH1 } from "react-icons/bs";
+import {
+    BsFillPinAngleFill,
+    BsQuestionCircleFill,
+    BsTypeH1,
+} from "react-icons/bs";
 import { Link, router } from "@inertiajs/react";
 import SideToggleButton from "./SideToggleButton";
 import { LogoutButton } from "../Utils/LogoutButton";
@@ -155,8 +159,9 @@ export const SideMenu = ({
                     </div>
 
                     <Link href={route("how-to-use")}>
-                        <div className="p-4 space-x-2 mb-14 text-white bg-indigo-800 rounded-lg">
-                            <span className="text-lg font-medium">
+                        <div className="flex items-center p-3 mb-8 text-white bg-blue-700 hover:bg-blue-600 rounded-lg shadow-md transition-colors duration-300">
+                            <BsQuestionCircleFill className="h-5 w-5 mr-2 flex-shrink-0" />
+                            <span className="text-base font-medium">
                                 使い方ガイド
                             </span>
                         </div>
@@ -165,7 +170,7 @@ export const SideMenu = ({
                     {/* 新規スレッド作成ボタン */}
                     <button
                         onClick={handleCreateThread}
-                        className="w-full mb-6 p-3 bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
+                        className="w-full mb-6 p-3 bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition-colors duration-300 shadow-lg hover:shadow-xl"
                     >
                         <div className="flex items-center justify-center space-x-2">
                             <HiPlus className="h-6 w-6 flex-shrink-0" />{" "}

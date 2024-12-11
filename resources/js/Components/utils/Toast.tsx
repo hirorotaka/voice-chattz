@@ -27,7 +27,7 @@ export const Toast = ({ message, type, onDismiss }: ToastProps) => {
     return (
         <div className="fixed bottom-10 left-1/2 transform -translate-x-1/2 z-50 animate-[fade-in_0.3s_ease-in-out]">
             <div
-                className={`flex items-center p-3 gap-3 min-w-[400px] bg-white/90 backdrop-blur-sm shadow-lg rounded-xl ${
+                className={`flex items-center p-3 gap-3 min-w-[300px] sm:min-w-[400px] bg-white/90 backdrop-blur-sm shadow-lg rounded-xl ${
                     type === "success"
                         ? "border-l-4 border-l-green-500"
                         : type === "error"
@@ -66,7 +66,7 @@ export const Toast = ({ message, type, onDismiss }: ToastProps) => {
                         }`}
                     />
                 </div>
-                <div className="text-xl  text-black">{message}</div>
+                <div className="text-sm sm:text-xl  text-black">{message}</div>
                 <button
                     onClick={onDismiss}
                     className="ml-auto p-1.5 rounded-lg bg-red-50 hover:bg-red-100 transition-colors"

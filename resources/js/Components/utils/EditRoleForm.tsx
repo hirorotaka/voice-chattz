@@ -91,7 +91,7 @@ export default function EditRoleForm({
                         id="name"
                         name="name"
                         type="text"
-                        className="mt-1 block w-11/12"
+                        className="text-xs sm:text-base mt-1 block w-11/12"
                         v-model={form.data.name}
                         onChange={(e) => form.setData("name", e.target.value)} // nameの更新
                         value={form.data.name}
@@ -111,7 +111,7 @@ export default function EditRoleForm({
                     <TextArea // TextArea を使用
                         id="first_message"
                         name="first_message"
-                        className="mt-1 block w-full h-24 md:h-28 lg:h-32 placeholder-gray-400" // 高さを小さく調整
+                        className="text-xs sm:text-base mt-1 block w-full h-24 md:h-28 lg:h-32 placeholder-gray-400" // 高さを小さく調整
                         value={form.data.first_message}
                         placeholder={`スレッド開始時にAIが最初に送信するメッセージを入力してください。\n例：「こんにちは！私は〇〇が得意なAIです。どんな〇〇をしたいですか？」`}
                         onChange={(e) =>
@@ -131,7 +131,7 @@ export default function EditRoleForm({
                     <TextArea // TextArea を使用
                         id="description"
                         name="description"
-                        className="mt-1 block w-full h-32 md:h-36 lg:h-40 placeholder-gray-400" // 高さを小さく調整
+                        className="text-xs sm:text-base mt-1 block w-full h-32 md:h-36 lg:h-40 placeholder-gray-400" // 高さを小さく調整
                         value={form.data.description}
                         onChange={(e) =>
                             form.setData("description", e.target.value)
@@ -148,19 +148,19 @@ export default function EditRoleForm({
 
                 <div className="mt-6">
                     <InputLabel value="対話モード *" />
-                    <p className="text-sm text-gray-500 mb-4">
+                    <p className="text-xs sm:text-sm text-gray-500 mb-4">
                         使用する言語モードを選択してください。
                         <br />
                         英語用には英語モード、日本語用には日本語モードを選択してください。
                         <br />
                         合わせることで精度が高くなります。
                     </p>
-                    <div className="grid grid-cols-3 gap-3 max-w-80">
+                    <div className="grid grid-cols-3 gap-2 max-w-80">
                         {languages?.map((language) => (
                             <label
                                 key={language.locale}
                                 className={`
-                    relative flex items-center justify-center p-4 rounded-xl cursor-pointer
+                    relative flex items-center justify-center p-2 rounded-xl cursor-pointer
                     transition-all duration-200 ease-in-out
                     ${
                         String(form.data.language_id) === String(language.id)
