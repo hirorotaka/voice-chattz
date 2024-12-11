@@ -106,7 +106,7 @@ export default function HowToUse({
                 {/* Main content */}
                 <div className="max-w-full mx-auto">
                     <div className="bg-blue-900 rounded-lg shadow-lg">
-                        <div className="p-6 md:p-8">
+                        <div className="p-6 md:p-8 sm:h-fit">
                             <div className="grid md:grid-cols-2 gap-6">
                                 {/* Image section */}
                                 <div className="relative aspect-video bg-blue-800 rounded-lg overflow-hidden">

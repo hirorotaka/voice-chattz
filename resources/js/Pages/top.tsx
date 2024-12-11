@@ -81,13 +81,13 @@ export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
             <div className="px-5 flex flex-col items-center">
                 {/* ヒーローセクション */}
                 <div className="text-center">
-                    <h1 className="text-4xl font-bold text-white mb-6 leading-tight">
+                    <h1 className="text-xl sm:text-4xl font-bold text-white mb-6 leading-tight">
                         会話を、学びを、もっと自由に
                         <span className="block text-indigo-400">
                             AI Powered Language Learning
                         </span>
                     </h1>
-                    <p className="text-xl text-gray-300  mx-auto">
+                    <p className="text-xs sm:text-xl text-gray-300  mx-auto">
                         音声認識とAIを組み合わせた新しい言語学習プラットフォーム。
                         <br />
                         あなたの声から始まる、革新的な学習体験。

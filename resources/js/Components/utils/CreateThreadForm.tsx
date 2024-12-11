@@ -2,7 +2,7 @@ import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { useForm } from "@inertiajs/react";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useEffect, useRef, useState } from "react";
 import InputLabel from "@/Components/InputLabel";
 import { IsUsingRoleType, LanguageType } from "@/types/types";
 import { useAppContext } from "@/Contexts/AppContext";
@@ -70,7 +70,24 @@ export default function CreateThreadForm({
         });
     };
 
-    console.log(languages);
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // クリックアウトサイドで閉じる
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node)
+            ) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
     return (
         <Modal show={show} onClose={handleClose}>
@@ -129,81 +146,68 @@ export default function CreateThreadForm({
                     </div>
                 </div>
 
-                {/* 役割選択 */}
                 <div className="mt-6">
                     <InputLabel value="役割選択 *" />
                     <p className="text-xs sm:text-sm text-gray-500 mb-4">
                         AIに特定の役割や専門性を持たせることができます。
                     </p>
 
-                    <div className="relative inline-block w-full">
-                        <div className="relative h-48 overflow-y-auto w-60 sm:w-96">
-                            {/* デフォルトオプション */}
-                            <label
-                                className={`block w-full px-4 py-2 text-left border rounded-t-md cursor-pointer transition-colors duration-200
-                                ${
-                                    !form.data.role_id
-                                        ? "bg-indigo-100 text-indigo-800"
-                                        : "bg-white hover:bg-gray-50"
-                                }`}
-                            >
-                                <input
-                                    type="radio"
-                                    name="role_id"
-                                    value=""
-                                    checked={!form.data.role_id}
-                                    onChange={() =>
-                                        form.setData("role_id", null)
-                                    }
-                                    className="sr-only"
-                                />
-                                デフォルト（フリートーク）
-                            </label>
+                    <div
+                        className="relative w-60  h-72 sm:h-60 sm:w-96"
+                        ref={dropdownRef}
+                    >
+                        {/* トリガーボタン */}
+                        <button
+                            type="button"
+                            onClick={() => setIsOpen(!isOpen)}
+                            className="w-full px-3 py-2 bg-white border rounded-md text-left flex justify-between items-center"
+                        >
+                            <span>
+                                {form.data.role_id
+                                    ? roles.find(
+                                          (role) =>
+                                              role.id === form.data.role_id
+                                      )?.name
+                                    : "デフォルト（フリートーク）"}
+                            </span>
+                            <span className="text-gray-400">▼</span>
+                        </button>
 
-                            {/* 役割オプション */}
-                            {roles
-                                .filter(
-                                    (role) =>
-                                        role.language?.id ===
-                                        form.data.language_id
-                                )
-                                .map((role) => (
-                                    <label
-                                        key={role.id}
-                                        className={`block w-full px-4 py-2 text-left border-x border-b cursor-pointer transition-colors duration-200
-                                            ${
-                                                Number(form.data.role_id) ===
-                                                Number(role.id)
-                                                    ? "bg-indigo-100 text-indigo-800"
-                                                    : "bg-white hover:bg-gray-50"
-                                            }
-                                            ${
-                                                role.id ===
-                                                roles[roles.length - 1]?.id
-                                                    ? "rounded-b-md"
-                                                    : ""
-                                            }`}
-                                    >
-                                        <input
-                                            type="radio"
-                                            name="role_id"
-                                            value={role.id}
-                                            checked={
-                                                Number(form.data.role_id) ===
-                                                Number(role.id)
-                                            }
-                                            onChange={(e) =>
+                        {/* オプションリスト */}
+                        {isOpen && (
+                            <div className="absolute left-0 right-0 mt-1 bg-white border rounded-md shadow-sm overflow-y-auto max-h-60">
+                                <div
+                                    className="cursor-pointer px-3 py-2 hover:bg-gray-200"
+                                    onClick={() => {
+                                        form.setData("role_id", null);
+                                        setIsOpen(false);
+                                    }}
+                                >
+                                    デフォルト（フリートーク）
+                                </div>
+                                {roles
+                                    .filter(
+                                        (role) =>
+                                            role.language?.id ===
+                                            form.data.language_id
+                                    )
+                                    .map((role) => (
+                                        <div
+                                            key={role.id}
+                                            className="cursor-pointer px-3 py-2 hover:bg-gray-200"
+                                            onClick={() => {
                                                 form.setData(
                                                     "role_id",
-                                                    Number(e.target.value)
-                                                )
-                                            }
-                                            className="sr-only"
-                                        />
-                                        {role.name}
-                                    </label>
-                                ))}
-                        </div>
+                                                    role.id
+                                                );
+                                                setIsOpen(false);
+                                            }}
+                                        >
+                                            {role.name}
+                                        </div>
+                                    ))}
+                            </div>
+                        )}
                     </div>
                 </div>
 
