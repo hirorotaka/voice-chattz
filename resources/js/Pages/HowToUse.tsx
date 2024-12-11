@@ -54,7 +54,7 @@ const slides: SlideType[] = [
     {
         title: "注意点: ブラウザからのマイクのアクセス許可(chrome,edge)",
         description:
-            "ブラウザからマイクのアクセス許可のポップアップが出る方は、\n許可をクリックしてください。\n拒否を押してしまった方は、URL欄左端にあるアイコンを\nクリックしてマイクの許可をしてください。",
+            "ブラウザからマイクのアクセス許可のポップアップが出る方は、許可をクリックしてください。\n拒否を押してしまった方は、URL欄左端にあるアイコンをクリックしてマイクの許可をしてください。",
         image: "/storage/images/step1.png",
     },
     {
@@ -106,7 +106,7 @@ export default function HowToUse({
                 {/* Main content */}
                 <div className="max-w-full mx-auto">
                     <div className="bg-blue-900 rounded-lg shadow-lg">
-                        <div className="p-6 md:p-8 sm:h-fit">
+                        <div className="p-6 md:p-8 sm:min-h-96">
                             <div className="grid md:grid-cols-2 gap-6">
                                 {/* Image section */}
                                 <div className="relative aspect-video bg-blue-800 rounded-lg overflow-hidden">
@@ -122,7 +122,7 @@ export default function HowToUse({
                                     <h2 className="text-base sm:text-xl md:text-2xl lg:text-3xl font-bold mb-4 md:mb-6">
                                         {slides[currentSlide].title}
                                     </h2>
-                                    <p className="text-sm md:text-base lg:text-lg whitespace-pre-line">
+                                    <p className="sm:text-xs md:text-sm lg:text-base whitespace-pre-line">
                                         {slides[currentSlide].description}
                                     </p>
                                 </div>
