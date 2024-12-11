@@ -59,7 +59,7 @@ interface DesktopTableProps {
 }
 
 const DesktopTable = ({ publicRoles }: DesktopTableProps) => (
-    <div className="overflow-x-auto  overflow-y-auto rounded-lg shadow-md bg-gray-300">
+    <div className="overflow-x-auto  overflow-y-auto rounded-lg shadow-md">
         <div className="overflow-x-auto h-[calc(100vh-300px)]">
             <table className="min-w-full divide-y divide-gray-300">
                 <thead className="bg-gray-200">
@@ -87,25 +87,25 @@ const DesktopTable = ({ publicRoles }: DesktopTableProps) => (
                 <tbody className="bg-white divide-y divide-gray-200">
                     {publicRoles.map((role) => (
                         <tr key={role.id} className="hover:bg-gray-50">
-                            <td className="px-2 py-3 text-sm text-gray-500 break-words w-24">
+                            <td className="px-2 py-3 text-xs text-gray-500 break-words w-24">
                                 {role.name}
                             </td>
-                            <td className="px-2 py-3 text-sm text-gray-500 min-w-36">
+                            <td className="px-2 py-3 text-xs text-gray-500 min-w-36">
                                 <TruncatedText
                                     text={role.first_message}
                                     maxLength={100}
                                 />
                             </td>
-                            <td className="px-2 py-3 text-sm text-gray-500 max-w-70">
+                            <td className="px-2 py-3 text-xs text-gray-500 max-w-70">
                                 <TruncatedText
                                     text={role.description}
                                     maxLength={200}
                                 />
                             </td>
-                            <td className="px-2 py-3 text-sm text-gray-500">
+                            <td className="px-2 py-3 text-xs text-gray-500 min-w-16">
                                 {role.language_name}
                             </td>
-                            <td className="px-2 py-3 text-sm text-gray-500">
+                            <td className="px-2 py-3 text-xs text-gray-500">
                                 <PublicRoleToggleButton
                                     isUsing={role.is_using}
                                     roleId={role.id}

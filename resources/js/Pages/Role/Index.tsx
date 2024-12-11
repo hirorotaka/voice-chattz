@@ -138,25 +138,25 @@ const DesktopTable: React.FC<DesktopTableProps> = ({
                 <tbody className="bg-white divide-y divide-gray-200">
                     {myRoles.map((role) => (
                         <tr key={role.id} className="hover:bg-gray-50">
-                            <td className="px-2 py-3 text-sm text-gray-500 break-words w-24">
+                            <td className="px-2 py-3 text-xs text-gray-500 break-words w-24">
                                 {role.name}
                             </td>
-                            <td className="px-2 py-3 text-sm text-gray-500 min-w-40">
+                            <td className="px-2 py-3 text-xs text-gray-500 min-w-40">
                                 <TruncatedText
                                     text={role.first_message}
                                     maxLength={100}
                                 />
                             </td>
-                            <td className="px-2 py-3 text-sm text-gray-500 max-w-70">
+                            <td className="px-2 py-3 text-xs text-gray-500 max-w-70">
                                 <TruncatedText
                                     text={role.description}
                                     maxLength={200}
                                 />
                             </td>
-                            <td className="px-2 py-3 text-sm text-gray-500">
+                            <td className="px-2 py-3 text-xs text-gray-500">
                                 {role.language?.name}
                             </td>
-                            <td className="px-2 py-3 text-sm text-gray-500">
+                            <td className="px-2 py-3 text-xs text-gray-500">
                                 <ToggleButton
                                     isPublic={role.is_public}
                                     roleId={role.id}
