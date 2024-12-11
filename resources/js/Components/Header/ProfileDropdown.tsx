@@ -7,8 +7,6 @@ const ProfileDropdown = () => {
         router.post(route("logout"));
     };
 
-    console.log(auth);
-
     return (
         <Dropdown
             label={

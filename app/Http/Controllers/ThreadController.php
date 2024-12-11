@@ -22,6 +22,9 @@ class ThreadController extends Controller
      */
     public function index(): InertiaResponse
     {
+        if ((Auth::check()) === false) {
+            return Inertia::render('GuestTop');
+        }
 
         $user = Auth::user();
 
@@ -217,6 +220,9 @@ class ThreadController extends Controller
 
     public function howToUse(): InertiaResponse
     {
+        if ((Auth::check()) === false) {
+            return Inertia::render('GuestHowToUse');
+        }
 
         $user = Auth::user();
 
