@@ -45,14 +45,14 @@ const ChatContainer = ({
     const isCancelledRef = useRef(false);
 
     // プラッシュデータを取得
-    const { flashData, error } = usePage().props.flash as flashType;
+    const { flashData, error, errorId } = usePage().props.flash as flashType;
 
     // エラーメッセージの監視
     useEffect(() => {
-        if (error) {
+        if (error && errorId) {
             apiErrorshowToast(error, "error");
         }
-    }, [error]);
+    }, [errorId]); // errorIdの変更を監視
 
     const [isActiveAiSound, setIsActiveAiSound] = useState<null | number>(null);
 

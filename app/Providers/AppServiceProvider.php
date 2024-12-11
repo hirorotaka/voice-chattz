@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
                     'success' => session()->get('success'),
                     'error' => session()->get('error'),
                     'flashData' => session()->get('flashData'),
+                    'errorId' => session()->get('error') ? uniqid() : null,
                 ];
             },
         ]);

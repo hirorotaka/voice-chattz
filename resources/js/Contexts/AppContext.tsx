@@ -77,7 +77,7 @@ export function AppProvider({ children }: AppProviderProps) {
         setToast({ message, type });
         setTimeout(() => {
             setToast(null);
-        }, 10000);
+        }, 5000);
     };
 
     const apiErrorhideToast = () => {

@@ -27,6 +27,7 @@ export interface flashType {
     success: boolean | null;
     flashData: number | string | null;
     error: string | null;
+    errorId: string | null;
 }
 export interface LanguageType {
     id: number;
