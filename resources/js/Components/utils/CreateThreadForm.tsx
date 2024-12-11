@@ -19,7 +19,7 @@ interface CreateThreadFormProps {
 interface FormData {
     title: string;
     role_id: number | null;
-    language_id: number | null;
+    language_id: number | null | undefined;
 }
 
 export default function CreateThreadForm({
@@ -32,7 +32,7 @@ export default function CreateThreadForm({
     const form = useForm<FormData>({
         title: getDefaultTitle(2), // デフォルトは日本語
         role_id: null,
-        language_id: null,
+        language_id: undefined,
     });
     const { showToast } = useAppContext();
 
@@ -90,7 +90,7 @@ export default function CreateThreadForm({
                             <label
                                 key={language.locale}
                                 className={`
-                    relative flex items-center justify-center p-4 rounded-xl cursor-pointer
+                    relative flex items-center justify-center p-2 sm:p-4 rounded-xl cursor-pointer
                     transition-all duration-200 ease-in-out
                     ${
                         Number(form.data.language_id) === Number(language.id)
@@ -132,12 +132,12 @@ export default function CreateThreadForm({
                 {/* 役割選択 */}
                 <div className="mt-6">
                     <InputLabel value="役割選択 *" />
-                    <p className="text-sm text-gray-500 mb-4">
+                    <p className="text-xs sm:text-sm text-gray-500 mb-4">
                         AIに特定の役割や専門性を持たせることができます。
                     </p>
 
                     <div className="relative inline-block w-full">
-                        <div className="relative h-48 overflow-y-auto w-96">
+                        <div className="relative h-48 overflow-y-auto w-60 sm:w-96">
                             {/* デフォルトオプション */}
                             <label
                                 className={`block w-full px-4 py-2 text-left border rounded-t-md cursor-pointer transition-colors duration-200
