@@ -21,6 +21,9 @@ interface AppContextType {
     toast: ToastType | null;
     showToast: (message: string, type: ToastType["type"]) => void;
     hideToast: () => void;
+    apiErrorToast: ToastType | null;
+    apiErrorshowToast: (message: string, type: ToastType["type"]) => void;
+    apiErrorhideToast: () => void;
 }
 
 interface AppProviderProps {
@@ -37,6 +40,8 @@ export function AppProvider({ children }: AppProviderProps) {
 
     // Toastのstate追加
     const [toast, setToast] = useState<ToastType | null>(null);
+    // Toastのstate追加
+    const [apiErrorToast, setApiErrorToast] = useState<ToastType | null>(null);
 
     const handlePlaybackRateChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -64,6 +69,21 @@ export function AppProvider({ children }: AppProviderProps) {
         setToast(null);
     };
 
+    // Toast関連の関数を追加
+    const apiErrorshowToast = (
+        message: string,
+        type: ToastType["type"] = "info"
+    ) => {
+        setToast({ message, type });
+        setTimeout(() => {
+            setToast(null);
+        }, 10000);
+    };
+
+    const apiErrorhideToast = () => {
+        setToast(null);
+    };
+
     const value: AppContextType = {
         isSidebarOpen,
         handleSidebarToggle,
@@ -75,6 +95,10 @@ export function AppProvider({ children }: AppProviderProps) {
         toast,
         showToast,
         hideToast,
+        // apiToast関連の値を追加
+        apiErrorToast,
+        apiErrorshowToast,
+        apiErrorhideToast,
     };
 
     return (

@@ -23,6 +23,7 @@ const ChatContainer = ({
         globalPlaybackRate,
         handlePlaybackRateChange,
         handlePlaybackRateReset,
+        apiErrorshowToast,
     } = useAppContext();
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -44,7 +45,14 @@ const ChatContainer = ({
     const isCancelledRef = useRef(false);
 
     // プラッシュデータを取得
-    const { flashData, success } = usePage().props.flash as flashType;
+    const { flashData, error } = usePage().props.flash as flashType;
+
+    // エラーメッセージの監視
+    useEffect(() => {
+        if (error) {
+            apiErrorshowToast(error, "error");
+        }
+    }, [error]);
 
     const [isActiveAiSound, setIsActiveAiSound] = useState<null | number>(null);
 
@@ -353,16 +361,6 @@ const ChatContainer = ({
                 },
                 onError: (errors) => {
                     console.error("音声の送信に失敗しました:", errors);
-                    if (errors.error === "無音でした。") {
-                        // 無音エラーは専用のメッセージを表示
-                        alert("無音でした。もう一度録音してください。");
-                    } else if (errors.file_too_big) {
-                        // ファイルサイズが大きすぎる場合のエラー処理
-                        alert("音声ファイルが大きすぎます（上限10MB）");
-                    } else {
-                        // それ以外のエラーは汎用的なメッセージを表示
-                        alert("音声の送信に失敗しました。");
-                    }
                     setIsSending(false);
                 },
             }

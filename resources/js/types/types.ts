@@ -26,6 +26,7 @@ export type ThreadType = {
 export interface flashType {
     success: boolean | null;
     flashData: number | string | null;
+    error: string | null;
 }
 export interface LanguageType {
     id: number;

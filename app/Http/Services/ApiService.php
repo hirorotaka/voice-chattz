@@ -29,19 +29,25 @@ class ApiService
         try {
             $fullPath = storage_path('app/public/' . $audioFilePath);
 
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . config('services.openai.api_key'),
-            ])->attach(
-                'file',
-                file_get_contents($fullPath),
-                basename($fullPath),
-            )->post('https://api.openai.com/v1/audio/transcriptions', [
-                'model' => 'whisper-1',
-                'language' => $language->locale,
-                'prompt' => $language->audio_prompt,
-                'no_speech_threshold' => 0.9, // API側の無音判定閾値
-                'response_format' => 'verbose_json', // 詳細なJSONレスポンスを取得
-            ]);
+            // config()ヘルパーで設定値を取得
+            $timeout = config('services.openai.timeout'); // 40秒
+            $connectTimeout = config('services.openai.connect_timeout'); // 10秒
+
+            $response = Http::timeout($timeout)
+                ->connectTimeout($connectTimeout)
+                ->withHeaders([
+                    'Authorization' => 'Bearer ' . config('services.openai.api_key'),
+                ])->attach(
+                    'file',
+                    file_get_contents($fullPath),
+                    basename($fullPath),
+                )->post('https://api.openai.com/v1/audio/transcriptions', [
+                    'model' => 'whisper-1',
+                    'language' => $language->locale,
+                    'prompt' => $language->audio_prompt,
+                    'no_speech_threshold' => 0.9, // API側の無音判定閾値
+                    'response_format' => 'verbose_json', // 詳細なJSONレスポンスを取得
+                ]);
 
             if ($response->successful()) {
                 $result = $response->json();
@@ -118,6 +124,12 @@ class ApiService
         //     }'
 
         try {
+
+
+            // config()ヘルパーで設定値を取得
+            $timeout = config('services.openai.timeout'); // 40秒
+            $connectTimeout = config('services.openai.connect_timeout'); // 10秒
+
             $systemMessage = [
                 'role' => 'system',
                 'content' => $language->text_prompt . $promptDescription
@@ -130,13 +142,15 @@ class ApiService
 
             $mergedMessages = array_merge([$systemMessage], $modelMessages);
 
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . config('services.openai.api_key'),
-                'Content-Type' => 'application/json'
-            ])->post('https://api.openai.com/v1/chat/completions', [
-                'model' => 'gpt-4o-mini',
-                'messages' => $mergedMessages,
-            ]);
+            $response = Http::timeout($timeout)
+                ->connectTimeout($connectTimeout)
+                ->withHeaders([
+                    'Authorization' => 'Bearer ' . config('services.openai.api_key'),
+                    'Content-Type' => 'application/json'
+                ])->post('https://api.openai.com/v1/chat/completions', [
+                    'model' => 'gpt-4o-mini',
+                    'messages' => $mergedMessages,
+                ]);
 
             if ($response->successful()) {
                 Log::info('ChatGPT API Response', [
@@ -188,7 +202,13 @@ class ApiService
         // --output speech.mp3
 
         try {
-            $response = Http::withToken(config('services.openai.api_key'))
+            // config()ヘルパーで設定値を取得
+            $timeout = config('services.openai.timeout'); // 40秒
+            $connectTimeout = config('services.openai.connect_timeout'); // 10秒
+
+            $response = Http::timeout($timeout)
+                ->connectTimeout($connectTimeout)
+                ->withToken(config('services.openai.api_key'))
                 ->withHeaders([
                     'Content-Type' => 'application/json'
                 ])
@@ -247,6 +267,11 @@ class ApiService
     public function callTranslationApi(string $content, string $translate_prompt): array
     {
         try {
+
+            $timeout = config('services.openai.timeout'); // 40秒
+            $connectTimeout = config('services.openai.connect_timeout'); // 10秒
+
+
             $systemMessage = [
                 'role' => 'system',
                 'content' => $translate_prompt
@@ -261,13 +286,15 @@ class ApiService
 
             $mergedMessages = array_merge([$systemMessage], $modelMessages);
 
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . config('services.openai.api_key'),
-                'Content-Type' => 'application/json'
-            ])->post('https://api.openai.com/v1/chat/completions', [
-                'model' => 'gpt-4o-mini',
-                'messages' => $mergedMessages,
-            ]);
+            $response = Http::timeout($timeout)
+                ->connectTimeout($connectTimeout)
+                ->withHeaders([
+                    'Authorization' => 'Bearer ' . config('services.openai.api_key'),
+                    'Content-Type' => 'application/json'
+                ])->post('https://api.openai.com/v1/chat/completions', [
+                    'model' => 'gpt-4o-mini',
+                    'messages' => $mergedMessages,
+                ]);
 
             if ($response->successful()) {
                 Log::info('Translation API Response', [
