@@ -1,19 +1,10 @@
+import { LoginButton } from "@/Components/Utils/LoginButton";
+import { RegisterButton } from "@/Components/Utils/RegisterButton";
 import { slides } from "@/constants/guide";
-import AppLayout from "@/Layouts/AppLayout";
-import { IsUsingRoleType, LanguageType, ThreadType } from "@/types/types";
+import GuestAppLayout from "@/Layouts/GuestAppLayout";
 import { useState } from "react";
 
-interface HowToUseProps {
-    threads: ThreadType[];
-    languages: LanguageType[];
-    isUsingMyRoles: IsUsingRoleType[];
-}
-
-export default function HowToUse({
-    threads,
-    languages,
-    isUsingMyRoles,
-}: HowToUseProps) {
+export default function GuestHowToUse() {
     const [currentSlide, setCurrentSlide] = useState<number>(0);
 
     const nextSlide = (): void => {
@@ -25,13 +16,8 @@ export default function HowToUse({
     };
 
     return (
-        <AppLayout
-            title="トップページ"
-            threads={threads}
-            languages={languages}
-            roles={isUsingMyRoles}
-        >
-            <div className="container mx-auto px-4 md:px-8 lg:px-12 py-2 sm:py-8 md:py-12">
+        <GuestAppLayout title="使い方ガイド">
+            <div className="container mx-auto px-4 md:px-8 lg:px-12 py-2 sm:py-6 md:py-8">
                 <div className="flex items-center justify-center">
                     <h1 className="text-white text-lg sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-8 md:mb-12 text-center mr-4">
                         使い方ガイド
@@ -108,6 +94,10 @@ export default function HowToUse({
                     </div>
                 </div>
             </div>
-        </AppLayout>
+            <div className="flex justify-center gap-4">
+                <RegisterButton />
+                <LoginButton />
+            </div>
+        </GuestAppLayout>
     );
 }

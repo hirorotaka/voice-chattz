@@ -1,23 +1,13 @@
+import { LoginButton } from "@/Components/Utils/LoginButton";
+import { RegisterButton } from "@/Components/Utils/RegisterButton";
+import GuestAppLayout from "@/Layouts/GuestAppLayout";
+import { FeatureCard } from "./FeatureCard";
 import { features } from "@/Components/Utils/Features";
-import AppLayout from "@/Layouts/AppLayout";
-import { IsUsingRoleType, LanguageType, ThreadType } from "@/types/types";
-import { FeatureCard } from "./Guest/FeatureCard";
 
-interface TopProps {
-    threads: ThreadType[];
-    languages: LanguageType[];
-    isUsingMyRoles: IsUsingRoleType[];
-}
-
-export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
+export default function GuestTop() {
     return (
-        <AppLayout
-            title="トップページ"
-            threads={threads}
-            languages={languages}
-            roles={isUsingMyRoles}
-        >
-            <div className="px-5 flex flex-col items-center">
+        <GuestAppLayout title="トップページ">
+            <div className="px-5 py-3 flex flex-col items-center">
                 {/* ヒーローセクション */}
                 <div className="text-center">
                     <h1 className="text-xl sm:text-4xl font-bold text-white mb-6 leading-tight">
@@ -35,7 +25,7 @@ export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
 
                 {/* イラストレーション */}
                 <div className="flex justify-center mb-10">
-                    <div className="relative w-full sm:max-w-xl">
+                    <div className="relative w-full sm:max-w-md">
                         <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
                         <img
                             src="/storage/images/app_image.svg"
@@ -45,6 +35,16 @@ export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
                     </div>
                 </div>
 
+                <div className="text-white text-center mt-3 text-lg  max-w-2xl mx-auto">
+                    ログインすると、AIとの会話練習や、オリジナルAIの作成などすべての機能が使えます。
+                    さっそく始めてみましょう！
+                </div>
+
+                <div className="flex justify-center gap-4">
+                    <RegisterButton />
+                    <LoginButton />
+                </div>
+
                 {/* 特徴セクション */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
                     {features.map((feature, index) => (
@@ -52,6 +52,6 @@ export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
                     ))}
                 </div>
             </div>
-        </AppLayout>
+        </GuestAppLayout>
     );
 }
