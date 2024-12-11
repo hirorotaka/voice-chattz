@@ -33,11 +33,13 @@ export default function Show({
             languages={languages}
             roles={isUsingMyRoles}
         >
-            <ChatContainer
-                thread={thread}
-                messages={messages}
-                activeThreadId={activeThreadId}
-            />
+            <div className="overflow-y-auto h-[calc(100vh-100px)]">
+                <ChatContainer
+                    thread={thread}
+                    messages={messages}
+                    activeThreadId={activeThreadId}
+                />
+            </div>
         </AppLayout>
     );
 }
