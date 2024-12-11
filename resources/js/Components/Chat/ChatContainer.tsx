@@ -322,15 +322,7 @@ const ChatContainer = ({
                 onSuccess: (response) => {
                     setIsSending(false);
                     // レスポンスの処理
-                    console.log("音声アップロード成功:", response);
-
-                    // 音声が無音の場合はアラートを表示
-                    if (
-                        (response.props.flash as flashType).flashData ===
-                        "noSound"
-                    ) {
-                        alert("無音でした。音声登録をもう一度お願いします。");
-                    }
+                    console.log("音声アップロード成功:");
 
                     // ユーザー音声がDBに保存されたら、AI応答の生成を開始
                     if ((response.props.flash as flashType).success) {
