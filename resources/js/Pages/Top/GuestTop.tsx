@@ -1,8 +1,8 @@
 import { LoginButton } from "@/Components/Utils/LoginButton";
 import { RegisterButton } from "@/Components/Utils/RegisterButton";
 import GuestAppLayout from "@/Layouts/GuestAppLayout";
-import { FeatureCard } from "./FeatureCard";
-import { features } from "@/Components/Utils/Features";
+import { FeatureCard } from "../../Components/Top/FeatureCard";
+import { features } from "@/Components/Top/Features";
 
 export default function GuestTop() {
     return (

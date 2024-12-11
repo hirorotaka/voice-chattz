@@ -1,7 +1,7 @@
-import { features } from "@/Components/Utils/Features";
+import { features } from "@/Components/Top/Features";
 import AppLayout from "@/Layouts/AppLayout";
 import { IsUsingRoleType, LanguageType, ThreadType } from "@/types/types";
-import { FeatureCard } from "./Guest/FeatureCard";
+import { FeatureCard } from "../../Components/Top/FeatureCard";
 
 interface TopProps {
     threads: ThreadType[];

@@ -23,7 +23,7 @@ class ThreadController extends Controller
     public function index(): InertiaResponse
     {
         if ((Auth::check()) === false) {
-            return Inertia::render('Guest/GuestTop');
+            return Inertia::render('Top/GuestTop');
         }
 
         $user = Auth::user();
@@ -52,7 +52,7 @@ class ThreadController extends Controller
                 ];
             });
 
-        return Inertia::render('Top', ['threads' => $threads, 'languages' => $languages, 'isUsingMyRoles' => $isUsingMyRoles]);
+        return Inertia::render('Top/Top', ['threads' => $threads, 'languages' => $languages, 'isUsingMyRoles' => $isUsingMyRoles]);
     }
 
     /**
@@ -221,7 +221,7 @@ class ThreadController extends Controller
     public function howToUse(): InertiaResponse
     {
         if ((Auth::check()) === false) {
-            return Inertia::render('Guest/GuestHowToUse');
+            return Inertia::render('HowToUse/GuestHowToUse');
         }
 
         $user = Auth::user();
@@ -250,6 +250,6 @@ class ThreadController extends Controller
                 ];
             });
 
-        return Inertia::render('HowToUse', ['threads' => $threads, 'languages' => $languages, 'isUsingMyRoles' => $isUsingMyRoles]);
+        return Inertia::render('HowToUse/HowToUse', ['threads' => $threads, 'languages' => $languages, 'isUsingMyRoles' => $isUsingMyRoles]);
     }
 }
