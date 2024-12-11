@@ -2,6 +2,8 @@
 
 namespace App\Http\Services;
 
+use GuzzleHttp\Exception\RequestException;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -67,12 +69,25 @@ class ApiService
                 return ['text' => $text];
             }
 
-            // エラー処理は変更なし
-            Log::error('Whisper API Error', [/* ... */]);
-            throw new \Exception('音声の文字起こしに失敗しました。');
+            $errorMessage = $response->json()['error']['message'] ?? '音声の文字起こしに失敗しました。';
+            throw new \Exception($errorMessage);
+        } catch (ConnectionException $e) {
+            Log::error('Whisper API Timeout', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw new \Exception('音声の処理がタイムアウトしました。もう一度お試しください。');
+        } catch (RequestException $e) {
+            Log::error('Whisper API Request Error', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw new \Exception('APIリクエストに失敗しました。もう一度お試しください。');
         } catch (\Exception $e) {
-            // エラー処理は変更なし
-            Log::error('Whisper API Exception', [/* ... */]);
+            Log::error('Whisper API Exception', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             throw $e;
         }
     }
@@ -131,13 +146,20 @@ class ApiService
                 return $response->json();
             }
 
-            // エラーの詳細をログに記録
-            Log::error('ChatGPT API Error', [
-                'status' => $response->status(),
-                'body' => $response->json()
+            $errorMessage = $response->json()['error']['message'] ?? 'ChatGPTからの応答に失敗しました。';
+            throw new \Exception($errorMessage);
+        } catch (ConnectionException $e) {
+            Log::error('ChatGPT API Timeout', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
             ]);
-
-            throw new \Exception('ChatGPTからの応答に失敗しました。');
+            throw new \Exception('応答がタイムアウトしました。もう一度お試しください。');
+        } catch (RequestException $e) {
+            Log::error('ChatGPT API Request Error', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw new \Exception('APIリクエストに失敗しました。もう一度お試しください。');
         } catch (\Exception $e) {
             Log::error('ChatGPT API Exception', [
                 'message' => $e->getMessage(),
@@ -199,14 +221,25 @@ class ApiService
                 'headers' => $response->headers()
             ]);
 
-            throw new \Exception('音声生成に失敗しました。');
-        } catch (\Exception $e) {
-            Log::error('TTS API Exception', [
+            $errorMessage = $response->json()['error']['message'] ?? 'ChatGPTからの応答に失敗しました。';
+            throw new \Exception($errorMessage);
+        } catch (ConnectionException $e) {
+            Log::error('ChatGPT API Timeout', [
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-                'input_text' => $aiMessageText
+                'trace' => $e->getTraceAsString()
             ]);
-
+            throw new \Exception('応答がタイムアウトしました。もう一度お試しください。');
+        } catch (RequestException $e) {
+            Log::error('ChatGPT API Request Error', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw new \Exception('APIリクエストに失敗しました。もう一度お試しください。');
+        } catch (\Exception $e) {
+            Log::error('ChatGPT API Exception', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
             throw $e;
         }
     }
@@ -250,9 +283,22 @@ class ApiService
                 'body' => $response->json()
             ]);
 
-            throw new \Exception('翻訳APIからの応答に失敗しました。');
+            $errorMessage = $response->json()['error']['message'] ?? 'ChatGPTからの応答に失敗しました。';
+            throw new \Exception($errorMessage);
+        } catch (ConnectionException $e) {
+            Log::error('ChatGPT API Timeout', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw new \Exception('応答がタイムアウトしました。もう一度お試しください。');
+        } catch (RequestException $e) {
+            Log::error('ChatGPT API Request Error', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw new \Exception('APIリクエストに失敗しました。もう一度お試しください。');
         } catch (\Exception $e) {
-            Log::error('Translation API Exception', [
+            Log::error('ChatGPT API Exception', [
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
