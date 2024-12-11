@@ -36,7 +36,7 @@ export const slides: SlideType[] = [
         image: "/storage/images/step5.png",
     },
     {
-        title: "カスタム機能2: コミュニティAIを使う",
+        title: "カスタム機能2: 公開されたAIを使う",
         description:
             "右上のユーザー名 → 「役割一覧（公開中）」をクリック。\n「公開中のものを使用する」をオンにすると、\n他のユーザーが作成したAIキャラクターを使えます。\n役割はスレッドを作成するときに選べるようになります。",
         image: "/storage/images/step6.png",
