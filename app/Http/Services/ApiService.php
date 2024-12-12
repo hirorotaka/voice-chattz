@@ -189,23 +189,99 @@ class ApiService
      *
      *
      */
+    // public function callTtsApi(string $aiMessageText)
+    // {
+    //     // 呼び出し方
+    //     //curl https://api.openai.com/v1/audio/speech \
+    //     // -H "Authorization: Bearer $OPENAI_API_KEY" \
+    //     // -H "Content-Type: application/json" \
+    //     // -d '{
+    //     //     "model": "tts-1",
+    //     //     "input": "The quick brown fox jumped over the lazy dog.",
+    //     //     "voice": "alloy"
+    //     // }' \
+    //     // --output speech.mp3
+
+    //     try {
+    //         // config()ヘルパーで設定値を取得
+    //         $timeout = config('services.openai.timeout'); // 40秒
+    //         $connectTimeout = config('services.openai.connect_timeout'); // 10秒
+
+    //         $response = Http::timeout($timeout)
+    //             ->connectTimeout($connectTimeout)
+    //             ->withToken(config('services.openai.api_key'))
+    //             ->withHeaders([
+    //                 'Content-Type' => 'application/json'
+    //             ])
+    //             ->post('https://api.openai.com/v1/audio/speech', [
+    //                 'model' => 'tts-1',
+    //                 'input' => $aiMessageText,
+    //                 'voice' => 'nova',
+    //                 'response_format' => 'wav'
+    //             ]);
+
+    //         $timestamp = now()->format('YmdHis');
+    //         $outputPath = "ai_audio/tts_{$timestamp}.wav";
+    //         // storage/app/public/audio ディレクトリへのフルパスを取得
+    //         $fullPath = storage_path("app/public/{$outputPath}");
+    //         file_put_contents($fullPath, $response->body());
+
+    //         if ($response->successful()) {
+    //             Log::info('TTS API Response', [
+    //                 'status' => $response->status(),
+    //                 'file_path' => $outputPath
+    //             ]);
+    //             return $outputPath;
+    //         }
+
+    //         Log::info('Attempting to save file', [
+    //             'output_path' => $outputPath,
+    //             'storage_path' => storage_path("app/public/{$outputPath}"),
+    //             'directory_exists' => FacadesStorage::disk('public')->exists('ai_audio'),
+    //         ]);
+
+
+    //         Log::error('TTS API Error', [
+    //             'status_code' => $response->status(),
+    //             'error_response' => $response->json(),
+    //             'input_text' => $aiMessageText,
+    //             'headers' => $response->headers()
+    //         ]);
+
+    //         $errorMessage = $response->json()['error']['message'] ?? 'ChatGPTからの応答に失敗しました。';
+    //         throw new \Exception($errorMessage);
+    //     } catch (ConnectionException $e) {
+    //         Log::error('ChatGPT API Timeout', [
+    //             'message' => $e->getMessage(),
+    //             'trace' => $e->getTraceAsString()
+    //         ]);
+    //         throw new \Exception('応答がタイムアウトしました。もう一度お試しください。');
+    //     } catch (RequestException $e) {
+    //         Log::error('ChatGPT API Request Error', [
+    //             'message' => $e->getMessage(),
+    //             'trace' => $e->getTraceAsString()
+    //         ]);
+    //         throw new \Exception('APIリクエストに失敗しました。もう一度お試しください。');
+    //     } catch (\Exception $e) {
+    //         Log::error('ChatGPT API Exception', [
+    //             'message' => $e->getMessage(),
+    //             'trace' => $e->getTraceAsString()
+    //         ]);
+    //         throw $e;
+    //     }
+    // }
+
     public function callTtsApi(string $aiMessageText)
     {
-        // 呼び出し方
-        //curl https://api.openai.com/v1/audio/speech \
-        // -H "Authorization: Bearer $OPENAI_API_KEY" \
-        // -H "Content-Type: application/json" \
-        // -d '{
-        //     "model": "tts-1",
-        //     "input": "The quick brown fox jumped over the lazy dog.",
-        //     "voice": "alloy"
-        // }' \
-        // --output speech.mp3
-
         try {
-            // config()ヘルパーで設定値を取得
-            $timeout = config('services.openai.timeout'); // 40秒
-            $connectTimeout = config('services.openai.connect_timeout'); // 10秒
+            // ディレクトリの存在確認と作成
+            if (!FacadesStorage::disk('public')->exists('ai_audio')) {
+                FacadesStorage::disk('public')->makeDirectory('ai_audio');
+                Log::info('Created ai_audio directory');
+            }
+
+            $timeout = config('services.openai.timeout');
+            $connectTimeout = config('services.openai.connect_timeout');
 
             $response = Http::timeout($timeout)
                 ->connectTimeout($connectTimeout)
@@ -220,32 +296,45 @@ class ApiService
                     'response_format' => 'wav'
                 ]);
 
-            $timestamp = now()->format('YmdHis');
-            $outputPath = "ai_audio/tts_{$timestamp}.wav";
-            // storage/app/public/audio ディレクトリへのフルパスを取得
-            $fullPath = storage_path("app/public/{$outputPath}");
-            file_put_contents($fullPath, $response->body());
-
             if ($response->successful()) {
-                Log::info('TTS API Response', [
-                    'status' => $response->status(),
-                    'file_path' => $outputPath
+                $timestamp = now()->format('YmdHis');
+                $outputPath = "ai_audio/tts_{$timestamp}.wav";
+
+                // ファイル保存前のログ
+                Log::info('Attempting to save file', [
+                    'directory_exists' => FacadesStorage::disk('public')->exists('ai_audio'),
+                    'output_path' => $outputPath,
                 ]);
-                return $outputPath;
+
+                // FacadesStorage::putを使用してファイル保存
+                try {
+                    FacadesStorage::disk('public')->put($outputPath, $response->body());
+
+                    // ファイル保存後の確認
+                    Log::info('File saved', [
+                        'file_exists' => FacadesStorage::disk('public')->exists($outputPath),
+                        'file_size' => FacadesStorage::disk('public')->size($outputPath),
+                    ]);
+
+                    Log::info('TTS API Response', [
+                        'status' => $response->status(),
+                        'file_path' => $outputPath
+                    ]);
+
+                    return $outputPath;
+                } catch (\Exception $e) {
+                    Log::error('File save error', [
+                        'error' => $e->getMessage(),
+                        'path' => $outputPath
+                    ]);
+                    throw new \Exception('音声ファイルの保存に失敗しました。');
+                }
             }
-
-            Log::info('Attempting to save file', [
-                'output_path' => $outputPath,
-                'storage_path' => storage_path("app/public/{$outputPath}"),
-                'directory_exists' => FacadesStorage::disk('public')->exists('ai_audio'),
-            ]);
-
 
             Log::error('TTS API Error', [
                 'status_code' => $response->status(),
                 'error_response' => $response->json(),
                 'input_text' => $aiMessageText,
-                'headers' => $response->headers()
             ]);
 
             $errorMessage = $response->json()['error']['message'] ?? 'ChatGPTからの応答に失敗しました。';
