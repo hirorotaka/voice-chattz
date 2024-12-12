@@ -62,7 +62,7 @@
         "post-install-cmd": [
             "php artisan clear-compiled",
             "php artisan optimize",
-            "php artisan storage:link",
+            "php artisan storage:link --relative && cp -r public/storage/* public/ && rm -rf public/storage",
             "chmod -R 775 storage",
             "php artisan cache:clear"
         ]
