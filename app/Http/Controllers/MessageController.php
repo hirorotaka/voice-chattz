@@ -16,6 +16,7 @@ class MessageController extends Controller
     public function store(Request $request, int $threadId)
     {
         try {
+
             // 音声ファイルの存在チェック
             if (!$request->hasFile('audio')) {
                 return back()->with('error', '音声ファイルを選択してください。');
@@ -42,10 +43,22 @@ class MessageController extends Controller
 
             // Whisper APIの呼び出し
             try {
+
+                Log::info('Whisper API呼び出し開始', [
+                    'thread_id' => $threadId,
+                    'file_path' => $path,
+                    'language' => $language
+                ]);
+
+
                 $apiService = new ApiService();
                 $response = $apiService->callWhisperApi($path, $language);
 
                 if (!isset($response['text'])) {
+                    Log::error('Whisper API テキスト未取得', [
+                        'thread_id' => $threadId,
+                        'response' => $response
+                    ]);
                     throw new \Exception('音声の認識に失敗しました。');
                 }
 
@@ -57,12 +70,26 @@ class MessageController extends Controller
                     return back()->with('error', '無音でした。もう一度録音してください。');
                 }
             } catch (ConnectionException $e) {
+                Log::error('Whisper API タイムアウト', [
+                    'thread_id' => $threadId,
+                    'error' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'trace' => $e->getTraceAsString()
+                ]);
                 // タイムアウトエラー
                 if (Storage::disk('public')->exists($path)) {
                     Storage::disk('public')->delete($path);
                 }
                 return back()->with('error', '音声の処理に時間がかかりすぎました。もう一度お試しください。');
             } catch (\Exception $e) {
+                Log::error('Whisper API エラー詳細', [
+                    'thread_id' => $threadId,
+                    'error' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'trace' => $e->getTraceAsString()
+                ]);
                 // その他のAPIエラー
                 if (Storage::disk('public')->exists($path)) {
                     Storage::disk('public')->delete($path);
