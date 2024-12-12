@@ -1,5 +1,5 @@
 import { HiPlus, HiOutlineChatAlt2 } from "react-icons/hi";
-import { HiTrash, HiOutlinePencil } from "react-icons/hi2";
+import { HiTrash, HiOutlinePencil, HiMicrophone } from "react-icons/hi2";
 import {
     BsFillPinAngleFill,
     BsQuestionCircleFill,
@@ -147,7 +147,7 @@ export const SideMenu = ({
                     {/* ヘッダー */}
                     <div className="flex items-center text-white mb-8">
                         <Link href={route("top")} className="flex items-center">
-                            <HiOutlineChatAlt2 className="h-6 w-6 mr-2" />
+                            <HiMicrophone className="h-6 w-6 mr-2" />
                             <h1 className="text-lg font-semibold">
                                 voice chattz
                             </h1>

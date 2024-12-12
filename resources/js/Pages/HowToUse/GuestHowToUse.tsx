@@ -94,10 +94,6 @@ export default function GuestHowToUse() {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center gap-4">
-                <RegisterButton />
-                <LoginButton />
-            </div>
         </GuestAppLayout>
     );
 }

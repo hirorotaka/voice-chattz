@@ -66,9 +66,7 @@ export default function GuestAppLayout({
                 {/* Main content */}
                 <div className="flex-1 flex flex-col min-h-0">
                     {/* Content area */}
-                    <main className="flex-1 overflow-y-auto pb-5">
-                        {children}
-                    </main>
+                    <main className="flex-1 pb-5">{children}</main>
                 </div>
 
                 {/* Overlay for mobile */}

@@ -1,8 +1,9 @@
-import { HiOutlineChatAlt2 } from "react-icons/hi";
 import { BsQuestionCircleFill } from "react-icons/bs";
 import { Link } from "@inertiajs/react";
 import SideToggleButton from "./SideToggleButton";
 import { LoginButton } from "../Utils/LoginButton";
+import { RegisterButton } from "../Utils/RegisterButton";
+import { HiMicrophone } from "react-icons/hi2";
 
 export const GuestSideMenu = () => {
     return (
@@ -12,7 +13,7 @@ export const GuestSideMenu = () => {
                     {/* ヘッダー */}
                     <div className="flex items-center text-white mb-8">
                         <Link href={route("top")} className="flex items-center">
-                            <HiOutlineChatAlt2 className="h-6 w-6 mr-2" />
+                            <HiMicrophone className="h-6 w-6 mr-2" />
                             <h1 className="text-lg font-semibold">
                                 voice chattz
                             </h1>
@@ -31,6 +32,7 @@ export const GuestSideMenu = () => {
                             </span>
                         </div>
                     </Link>
+                    <RegisterButton />
                     <LoginButton />
                 </div>
             </div>

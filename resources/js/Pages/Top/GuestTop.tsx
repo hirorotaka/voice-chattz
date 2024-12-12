@@ -40,11 +40,6 @@ export default function GuestTop() {
                     さっそく始めてみましょう！
                 </div>
 
-                <div className="flex justify-center gap-4">
-                    <RegisterButton />
-                    <LoginButton />
-                </div>
-
                 {/* 特徴セクション */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
                     {features.map((feature, index) => (
