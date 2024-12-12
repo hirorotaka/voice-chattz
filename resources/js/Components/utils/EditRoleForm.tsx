@@ -5,7 +5,7 @@ import { useForm } from "@inertiajs/react";
 import { FormEventHandler, useEffect } from "react";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
-import { LanguageType, RoleType } from "@/types/types";
+import { LanguageType, MyRoleType } from "@/types/types";
 import TextArea from "../TextArea";
 import { useAppContext } from "@/Contexts/AppContext";
 
@@ -13,7 +13,7 @@ interface EditRoleFormProps {
     onClose: () => void;
     show: boolean;
     languages: LanguageType[];
-    roleToEdit: RoleType;
+    roleToEdit: MyRoleType;
 }
 
 interface FormData {
