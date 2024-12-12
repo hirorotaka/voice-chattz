@@ -108,9 +108,9 @@ const AiMessage = ({
         <div className="flex items-center gap-2 mb-4 justify-start">
             <div className="flex flex-wrap gap-2 bg-gray-300 rounded-full">
                 {isPlaying ? (
-                    <Avatar img="/storage/images/icon_chat.gif" rounded />
+                    <Avatar img="/images/icon_chat.gif" rounded />
                 ) : (
-                    <Avatar img="/storage/images/icon_chat.png" rounded />
+                    <Avatar img="/images/icon_chat.png" rounded />
                 )}
             </div>
             <div className="flex items-center gap-2 w-5/6">
