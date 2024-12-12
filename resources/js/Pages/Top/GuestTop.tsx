@@ -1,10 +1,10 @@
-import { LoginButton } from "@/Components/Utils/LoginButton";
-import { RegisterButton } from "@/Components/Utils/RegisterButton";
 import GuestAppLayout from "@/Layouts/GuestAppLayout";
 import { FeatureCard } from "../../Components/Top/FeatureCard";
 import { features } from "@/Components/Top/Features";
+import { useState } from "react";
 
 export default function GuestTop() {
+    const [imageLoaded, setImageLoaded] = useState(false);
     return (
         <GuestAppLayout title="トップページ">
             <div className="px-5 py-3 flex flex-col items-center">
@@ -30,8 +30,16 @@ export default function GuestTop() {
                         <img
                             src="/images/app_image.svg"
                             alt="アプリケーションイメージ"
-                            className="relative rounded-3xl shadow-2xl"
+                            className={`relative rounded-3xl shadow-2xl transition-opacity duration-300 ${
+                                imageLoaded ? "opacity-100" : "opacity-0"
+                            }`}
+                            onLoad={() => setImageLoaded(true)}
                         />
+                        {!imageLoaded && (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
+                            </div>
+                        )}
                     </div>
                 </div>
 

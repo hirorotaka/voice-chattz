@@ -34,6 +34,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'asset_version' => md5_file(public_path('images/app_image.svg')),
         ];
     }
 }

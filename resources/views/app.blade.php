@@ -14,6 +14,9 @@
   <!-- Styles -->
   <link rel="icon" type="image/x-icon" href="{{ asset('favicon.png') }}">
 
+  {{-- Preload --}}
+  <link rel="preload" href="/images/app_image.svg" as="image" type="image/svg+xml">
+
   <!-- Scripts -->
   @routes
   @viteReactRefresh
