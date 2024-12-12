@@ -28,7 +28,7 @@ export default function GuestTop() {
                     <div className="relative w-full sm:max-w-md">
                         <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
                         <img
-                            src="/storage/images/app_image.svg"
+                            src="{{ asset('images/app_image.svg') }}"
                             alt="アプリケーションイメージ"
                             className="relative rounded-3xl shadow-2xl"
                         />
