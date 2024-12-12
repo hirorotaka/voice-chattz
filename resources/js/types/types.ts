@@ -87,3 +87,9 @@ export interface LanguageSelectType {
     name: string;
     defaultTitle: string;
 }
+
+export interface SlideType {
+    title: string;
+    description: string;
+    image: string;
+}

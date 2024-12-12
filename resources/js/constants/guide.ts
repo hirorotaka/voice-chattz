@@ -1,8 +1,4 @@
-interface SlideType {
-    title: string;
-    description: string;
-    image: string;
-}
+import { SlideType } from "@/types/types";
 
 export const slides: SlideType[] = [
     {
