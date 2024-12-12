@@ -6,6 +6,7 @@ use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage as FacadesStorage;
 
 class ApiService
 {
@@ -232,6 +233,12 @@ class ApiService
                 ]);
                 return $outputPath;
             }
+
+            Log::info('Attempting to save file', [
+                'output_path' => $outputPath,
+                'storage_path' => storage_path("app/public/{$outputPath}"),
+                'directory_exists' => FacadesStorage::disk('public')->exists('ai_audio'),
+            ]);
 
 
             Log::error('TTS API Error', [
