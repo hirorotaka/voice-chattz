@@ -38,7 +38,7 @@ export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
                     <div className="relative w-full sm:max-w-xl">
                         <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
                         <img
-                            src="{{ asset('images/app_image.svg') }}"
+                            src="/storage/images/app_image.svg"
                             alt="アプリケーションイメージ"
                             className="relative rounded-3xl shadow-2xl"
                         />
