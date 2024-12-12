@@ -44,15 +44,21 @@ class MessageController extends Controller
             // Whisper APIの呼び出し
             try {
 
-                Log::info('Whisper API呼び出し開始', [
+                $apiService = new ApiService();
+
+                // APIサービスの処理を開始する前にログ
+                Log::debug('API処理開始', [
                     'thread_id' => $threadId,
-                    'file_path' => $path,
+                    'path' => $path,
                     'language' => $language
                 ]);
-
-
-                $apiService = new ApiService();
                 $response = $apiService->callWhisperApi($path, $language);
+
+                // レスポンスの詳細をログ
+                Log::debug('APIレスポンス', [
+                    'response' => $response,
+                    'thread_id' => $threadId
+                ]);
 
                 if (!isset($response['text'])) {
                     Log::error('Whisper API テキスト未取得', [
