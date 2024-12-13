@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage as FacadesStorage;
 class ApiService
 {
     /**
-     * WhisperAPIを使用して音声をテキストに変換する
+     * WhisperAPIをw使用して音声をテキストに変換する
      *
      * @param string $audioFilePath 音声ファイルのパス
      * @return string|null 文字起こしされたテキスト
@@ -28,7 +28,7 @@ class ApiService
         // -F model="whisper-1"
 
         try {
-            // S3からファイルを読み込む
+            // S3からファイルのバイナリデータを取得
             $audioContent = FacadesStorage::disk('s3')->get($audioFilePath);
 
             // 一時ファイルを作成
@@ -288,11 +288,6 @@ class ApiService
     public function callTtsApi(string $aiMessageText)
     {
         try {
-            // ディレクトリの存在確認と作成
-            if (!FacadesStorage::disk('public')->exists('ai_audio')) {
-                FacadesStorage::disk('public')->makeDirectory('ai_audio');
-                Log::info('Created ai_audio directory');
-            }
 
             $timeout = config('services.openai.timeout');
             $connectTimeout = config('services.openai.connect_timeout');
@@ -322,12 +317,12 @@ class ApiService
 
                 // FacadesStorage::putを使用してファイル保存
                 try {
-                    FacadesStorage::disk('public')->put($outputPath, $response->body());
+                    FacadesStorage::disk('s3')->put($outputPath, $response->body());
 
                     // ファイル保存後の確認
-                    Log::info('File saved', [
-                        'file_exists' => FacadesStorage::disk('public')->exists($outputPath),
-                        'file_size' => FacadesStorage::disk('public')->size($outputPath),
+                    Log::info('File saved to S3', [
+                        'file_exists' => FacadesStorage::disk('s3')->exists($outputPath),
+                        'file_size' => FacadesStorage::disk('s3')->size($outputPath),
                     ]);
 
                     Log::info('TTS API Response', [

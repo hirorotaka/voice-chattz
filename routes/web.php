@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AudioController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ThreadController;
@@ -68,4 +69,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/{role}/toggle-public-is-using', [RoleController::class, 'toggleRolePublicIsUsing'])
             ->name('roles.toggle-public-is-using');
     });
+
+
+    Route::get('/audio/url/{message}', [AudioController::class, 'getAudioUrl'])
+        ->name('audio.url');
 });

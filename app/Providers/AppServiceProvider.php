@@ -32,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
                     'error' => session()->get('error'),
                     'flashData' => session()->get('flashData'),
                     'errorId' => session()->get('error') ? uniqid() : null,
+                    "audioUrl" => session()->get('audioUrl')
                 ];
             },
         ]);

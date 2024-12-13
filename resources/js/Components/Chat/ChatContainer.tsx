@@ -45,7 +45,8 @@ const ChatContainer = ({
     const isCancelledRef = useRef(false);
 
     // プラッシュデータを取得
-    const { flashData, error, errorId } = usePage().props.flash as flashType;
+    const { flashData, error, errorId, audioUrl } = usePage().props
+        .flash as flashType;
 
     // エラーメッセージの監視
     useEffect(() => {
@@ -398,6 +399,7 @@ const ChatContainer = ({
                                     isActiveAiSound={isActiveAiSound}
                                     playbackRate={globalPlaybackRate}
                                     thread={thread}
+                                    audioUrl={audioUrl}
                                 />
                             )}
                         </div>

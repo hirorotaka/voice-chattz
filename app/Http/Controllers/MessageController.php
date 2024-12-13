@@ -243,14 +243,21 @@ class MessageController extends Controller
                     'sender' => 2,
                 ]);
 
+                // AIメッセージを保存する際に、音声のS3署名付きURLも生成
+                $audioUrl = Storage::disk('s3')->temporaryUrl(
+                    $aiAudioFilePath,
+                    now()->addMinutes(30)
+                );
+
                 return back()->with([
                     'success' => '処理が完了しました。',
-                    'flashData' => $aiMessage->id
+                    'flashData' => $aiMessage->id,
+                    'audioUrl' => $audioUrl  // 署名付きURLを追加
                 ]);
             } catch (\Exception $e) {
                 // 音声ファイルの削除
-                if (Storage::disk('public')->exists($aiAudioFilePath)) {
-                    Storage::disk('public')->delete($aiAudioFilePath);
+                if (Storage::disk('s3')->exists($aiAudioFilePath)) {
+                    Storage::disk('s3')->delete($aiAudioFilePath);
                 }
 
                 Log::error('AI Message Creation Error', [
@@ -268,7 +275,7 @@ class MessageController extends Controller
         }
     }
 
-    // 日本語に翻訳する
+
     // 日本語に翻訳する
     public function translateToJapanese(Request $request, int $threadId, int $messageId)
     {

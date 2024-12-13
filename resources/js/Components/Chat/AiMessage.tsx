@@ -4,6 +4,7 @@ import { flashType, MessageType, ThreadType } from "@/types/types";
 import MessageDisplay from "./MessageDisplay";
 import { Avatar } from "flowbite-react";
 import TranslateButton from "../Utils/TranslateButton";
+import axios from "axios";
 
 type AiMessageProps = {
     message?: MessageType;
@@ -12,6 +13,7 @@ type AiMessageProps = {
     handleactivePlayAudio?: (messageId: number | null) => void;
     playbackRate?: number;
     thread?: ThreadType;
+    audioUrl?: string | null;
 };
 
 const AiMessage = ({
@@ -21,14 +23,32 @@ const AiMessage = ({
     handleactivePlayAudio,
     playbackRate,
     thread,
+    audioUrl, //作成時の署名付きURL
 }: AiMessageProps) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
     const [showJapanese, setShowJapanese] = useState(false); // 日本語表示の状態管理
 
+    const [currentAudioUrl, setCurrentAudioUrl] = useState(
+        audioUrl || undefined
+    );
+
     const isDisabled =
         isActiveAiSound !== null && isActiveAiSound !== message?.id;
+
+    // 音声URL取得処理
+    const fetchAudioUrl = async () => {
+        if (!message?.id) return null;
+
+        try {
+            const response = await axios.get(`/audio/url/${message.id}`);
+            return response.data.url;
+        } catch (error) {
+            console.error("Failed to fetch audio URL:", error);
+            return null;
+        }
+    };
 
     useEffect(() => {
         if (flashData === message?.id) {
@@ -70,37 +90,87 @@ const AiMessage = ({
         }
     };
 
-    const handlePlayAudio = () => {
+    const handlePlayAudio = async () => {
+        // 音声パスがない、または再生が無効な場合は処理しない
         if (!message?.audio_file_path || isDisabled) return;
 
+        // アクティブな音声再生の制御
         if (isActiveAiSound !== null && isActiveAiSound !== message.id) {
             handleactivePlayAudio?.(null);
         }
 
-        if (!audioRef.current) {
-            const audioUrl = `/storage/${message.audio_file_path}`;
-            audioRef.current = new Audio(audioUrl);
+        // 音声URLの取得処理
+        // 現在の音声URLがない場合は取得を試みる
+        const audioUrlToUse = currentAudioUrl ?? (await fetchAudioUrl());
 
+        // URLが取得できない場合はエラー処理
+        if (!audioUrlToUse) {
+            console.error("Could not retrieve audio URL");
+            return;
+        }
+
+        // 初回再生時のAudioオブジェクト作成
+        if (!audioRef.current) {
+            audioRef.current = new Audio(audioUrlToUse);
+
+            // 再生速度の設定
             if (playbackRate !== undefined) {
-                audioRef.current.playbackRate = playbackRate; // props の playbackRate を使用する
+                audioRef.current.playbackRate = playbackRate;
             }
 
+            // 再生終了時のイベントハンドラ
             audioRef.current.onended = () => {
                 setIsPlaying(false);
                 handleactivePlayAudio?.(null);
             };
         }
 
+        // 再生/停止の切り替え
         if (isPlaying) {
             stopAudio();
         } else {
-            audioRef.current.play().catch((error) => {
-                console.error("Failed to play audio:", error);
-                setIsPlaying(false);
-                handleactivePlayAudio?.(null);
-            });
-            setIsPlaying(true);
-            handleactivePlayAudio?.(message.id);
+            try {
+                // 音声再生
+                await audioRef.current.play();
+                setIsPlaying(true);
+                handleactivePlayAudio?.(message.id);
+            } catch (error) {
+                console.error("Audio play error:", error);
+
+                // 再生エラー時の追加処理
+                try {
+                    // 新しいURLを取得
+                    const newAudioUrl = await fetchAudioUrl();
+
+                    if (newAudioUrl) {
+                        // 新しいAudioオブジェクトを作成
+                        audioRef.current = new Audio(newAudioUrl);
+                        setCurrentAudioUrl(newAudioUrl);
+
+                        // 再生速度の再設定
+                        if (playbackRate !== undefined) {
+                            audioRef.current.playbackRate = playbackRate;
+                        }
+
+                        // 再生
+                        await audioRef.current.play();
+                        setIsPlaying(true);
+                        handleactivePlayAudio?.(message.id);
+                    } else {
+                        // URL取得に失敗した場合
+                        setIsPlaying(false);
+                        handleactivePlayAudio?.(null);
+                        console.error("Failed to retrieve new audio URL");
+                    }
+                } catch (retryError) {
+                    console.error(
+                        "Failed to retry audio playback:",
+                        retryError
+                    );
+                    setIsPlaying(false);
+                    handleactivePlayAudio?.(null);
+                }
+            }
         }
     };
 

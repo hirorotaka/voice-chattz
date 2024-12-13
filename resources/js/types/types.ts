@@ -28,6 +28,7 @@ export interface flashType {
     flashData: number | string | null;
     error: string | null;
     errorId: string | null;
+    audioUrl: string | null;
 }
 export interface LanguageType {
     id: number;
