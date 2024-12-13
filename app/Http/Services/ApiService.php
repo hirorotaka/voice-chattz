@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Container\Attributes\Storage;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -26,58 +27,71 @@ class ApiService
         // -F file="@/path/to/file/audio.mp3" \
         // -F model="whisper-1"
 
-
         try {
-            $fullPath = storage_path('app/public/' . $audioFilePath);
+            // S3からファイルを読み込む
+            $audioContent = FacadesStorage::disk('s3')->get($audioFilePath);
 
-            // config()ヘルパーで設定値を取得
-            $timeout = config('services.openai.timeout'); // 40秒
-            $connectTimeout = config('services.openai.connect_timeout'); // 10秒
+            // 一時ファイルを作成
+            $tempPath = tempnam(sys_get_temp_dir(), 'whisper_');
+            file_put_contents($tempPath, $audioContent);
 
-            $response = Http::timeout($timeout)
-                ->connectTimeout($connectTimeout)
-                ->withHeaders([
-                    'Authorization' => 'Bearer ' . config('services.openai.api_key'),
-                ])->attach(
-                    'file',
-                    file_get_contents($fullPath),
-                    basename($fullPath),
-                )->post('https://api.openai.com/v1/audio/transcriptions', [
-                    'model' => 'whisper-1',
-                    'language' => $language->locale,
-                    'prompt' => $language->audio_prompt,
-                    'no_speech_threshold' => 0.9, // API側の無音判定閾値
-                    'response_format' => 'verbose_json', // 詳細なJSONレスポンスを取得
-                ]);
+            try {
+                // config()ヘルパーで設定値を取得
+                $timeout = config('services.openai.timeout'); // 40秒
+                $connectTimeout = config('services.openai.connect_timeout'); // 10秒
 
-            if ($response->successful()) {
-                $result = $response->json();
-                $segments = $result['segments'];
+                $response = Http::timeout($timeout)
+                    ->connectTimeout($connectTimeout)
+                    ->withHeaders([
+                        'Authorization' => 'Bearer ' . config('services.openai.api_key'),
+                    ])->attach(
+                        'file',
+                        fopen($tempPath, 'r'), // 一時ファイルを読み取りモードでオープン
+                        // $audioFilePath が 'audio/sample_20240101.wav' の場合
+                        basename($audioFilePath) // => 'sample_20240101.wav'
+                    )->post('https://api.openai.com/v1/audio/transcriptions', [
+                        'model' => 'whisper-1',
+                        'language' => $language->locale,
+                        'prompt' => $language->audio_prompt,
+                        'no_speech_threshold' => 0.9, // API側の無音判定閾値
+                        'response_format' => 'verbose_json', // 詳細なJSONレスポンスを取得
+                    ]);
 
-                $text = "";
-                foreach ($segments as $segment) {
-                    // セグメントごとの無音確率をチェック
-                    if ($segment['no_speech_prob'] < 0.3) {
-                        $text .= $segment['text'];
+                // 一時ファイルの削除
+                @unlink($tempPath);
+
+                if ($response->successful()) {
+                    $result = $response->json();
+                    $segments = $result['segments'];
+
+                    $text = "";
+                    foreach ($segments as $segment) {
+                        // セグメントごとの無音確率をチェック
+                        if ($segment['no_speech_prob'] < 0.3) {
+                            $text .= $segment['text'];
+                        }
                     }
+
+                    // 文字が１文字以上あるかをチェック
+                    if (mb_strlen(trim($text)) <= 1) {
+                        $text = "noSound";
+                    }
+
+                    Log::info('Whisper API Response', [
+                        'status' => $response->status(),
+                        'text' => $text
+                    ]);
+
+                    return ['text' => $text];
                 }
 
-                // 文字が１文字以上あるかをチェック
-                if (mb_strlen(trim($text)) <= 1) {
-                    $text = "noSound";
-                }
-
-
-                Log::info('Whisper API Response', [
-                    'status' => $response->status(),
-                    'text' => $text
-                ]);
-
-                return ['text' => $text];
+                $errorMessage = $response->json()['error']['message'] ?? '音声の文字起こしに失敗しました。';
+                throw new \Exception($errorMessage);
+            } catch (\Exception $e) {
+                // エラー時も一時ファイルを確実に削除
+                @unlink($tempPath);
+                throw $e;
             }
-
-            $errorMessage = $response->json()['error']['message'] ?? '音声の文字起こしに失敗しました。';
-            throw new \Exception($errorMessage);
         } catch (ConnectionException $e) {
             Log::error('Whisper API Timeout', [
                 'message' => $e->getMessage(),

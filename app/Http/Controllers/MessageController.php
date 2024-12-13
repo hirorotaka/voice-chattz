@@ -39,7 +39,27 @@ class MessageController extends Controller
 
             // 音声ファイルの保存
             $timestamp = now()->format('YmdHis');
-            $path = $audio->storeAs('audio', "audio_{$timestamp}.wav", 'public');
+            $filename = "audio_{$timestamp}.wav";
+            $path = "audio/{$filename}"; // S3上のパス
+
+
+            // S3に保存
+            try {
+                Storage::disk('s3')->put($path, file_get_contents($audio));
+
+                Log::info('Audio file uploaded to S3', [
+                    'path' => $path,
+                    'size' => $audio->getSize()
+                ]);
+            } catch (\Exception $e) {
+                Log::error('S3 Upload Error', [
+                    'error' => $e->getMessage(),
+                    'path' => $path
+                ]);
+                return back()->with('error', 'ファイルのアップロードに失敗しました。');
+            }
+
+
 
             // Whisper APIの呼び出し
             try {
@@ -65,13 +85,19 @@ class MessageController extends Controller
                         'thread_id' => $threadId,
                         'response' => $response
                     ]);
+
+                    // S3のファイルを削除
+                    if (Storage::disk('s3')->exists($path)) {
+                        Storage::disk('s3')->delete($path);
+                    }
                     throw new \Exception('音声の認識に失敗しました。');
                 }
 
                 // 無音の場合
                 if ($response['text'] === 'noSound') {
-                    if (Storage::disk('public')->exists($path)) {
-                        Storage::disk('public')->delete($path);
+                    // S3のファイルを削除
+                    if (Storage::disk('s3')->exists($path)) {
+                        Storage::disk('s3')->delete($path);
                     }
                     return back()->with('error', '無音でした。もう一度録音してください。');
                 }
@@ -84,8 +110,8 @@ class MessageController extends Controller
                     'trace' => $e->getTraceAsString()
                 ]);
                 // タイムアウトエラー
-                if (Storage::disk('public')->exists($path)) {
-                    Storage::disk('public')->delete($path);
+                if (Storage::disk('s3')->exists($path)) {
+                    Storage::disk('s3')->delete($path);
                 }
                 return back()->with('error', '音声の処理に時間がかかりすぎました。もう一度お試しください。');
             } catch (\Exception $e) {
@@ -97,8 +123,8 @@ class MessageController extends Controller
                     'trace' => $e->getTraceAsString()
                 ]);
                 // その他のAPIエラー
-                if (Storage::disk('public')->exists($path)) {
-                    Storage::disk('public')->delete($path);
+                if (Storage::disk('s3')->exists($path)) {
+                    Storage::disk('s3')->delete($path);
                 }
                 Log::error('Whisper API Error', [
                     'message' => $e->getMessage(),
