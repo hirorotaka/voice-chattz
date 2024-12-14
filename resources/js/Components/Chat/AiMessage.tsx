@@ -180,7 +180,7 @@ const AiMessage = ({
                 {isPlaying ? (
                     <Avatar img="/images/icon_chat.gif" rounded />
                 ) : (
-                    <Avatar img="/images/icon_chat.png" rounded />
+                    <Avatar img="/images/icon_chat.webp" rounded />
                 )}
             </div>
             <div className="flex items-center gap-2 w-5/6">
