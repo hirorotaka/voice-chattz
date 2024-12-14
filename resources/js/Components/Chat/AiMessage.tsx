@@ -76,8 +76,13 @@ const AiMessage = ({
 
     useEffect(() => {
         return () => {
-            stopAudio();
-            audioRef.current = null;
+            if (audioRef.current) {
+                audioRef.current.pause();
+                audioRef.current.src = "";
+                audioRef.current = null;
+            }
+            setIsPlaying(false);
+            handleactivePlayAudio?.(null);
         };
     }, []);
 
@@ -89,28 +94,111 @@ const AiMessage = ({
             handleactivePlayAudio?.(null);
         }
     };
+    //     // 音声パスがない、または再生が無効な場合は処理しない
+    //     if (!message?.audio_file_path || isDisabled) return;
+
+    //     // アクティブな音声再生の制御
+    //     if (isActiveAiSound !== null && isActiveAiSound !== message.id) {
+    //         handleactivePlayAudio?.(null);
+    //     }
+
+    //     // 音声URLの取得処理
+    //     // 現在の音声URLがない場合は取得を試みる
+    //     const audioUrlToUse = currentAudioUrl ?? (await fetchAudioUrl());
+
+    //     // URLが取得できない場合はエラー処理
+    //     if (!audioUrlToUse) {
+    //         console.error("Could not retrieve audio URL");
+    //         return;
+    //     }
+
+    //     // 初回再生時のAudioオブジェクト作成
+    //     if (!audioRef.current) {
+    //         audioRef.current = new Audio(audioUrlToUse);
+
+    //         // 再生速度の設定
+    //         if (playbackRate !== undefined) {
+    //             audioRef.current.playbackRate = playbackRate;
+    //         }
+
+    //         // 再生終了時のイベントハンドラ
+    //         audioRef.current.onended = () => {
+    //             setIsPlaying(false);
+    //             handleactivePlayAudio?.(null);
+    //         };
+    //     }
+
+    //     // 再生/停止の切り替え
+    //     if (isPlaying) {
+    //         stopAudio();
+    //     } else {
+    //         try {
+    //             // 音声再生
+    //             await audioRef.current.play();
+    //             setIsPlaying(true);
+    //             handleactivePlayAudio?.(message.id);
+    //         } catch (error) {
+    //             console.error("Audio play error:", error);
+
+    //             // 再生エラー時の追加処理
+    //             try {
+    //                 // 新しいURLを取得
+    //                 const newAudioUrl = await fetchAudioUrl();
+
+    //                 if (newAudioUrl) {
+    //                     // 新しいAudioオブジェクトを作成
+    //                     audioRef.current = new Audio(newAudioUrl);
+    //                     setCurrentAudioUrl(newAudioUrl);
+
+    //                     // 再生速度の再設定
+    //                     if (playbackRate !== undefined) {
+    //                         audioRef.current.playbackRate = playbackRate;
+    //                     }
+
+    //                     // 再生
+    //                     await audioRef.current.play();
+    //                     setIsPlaying(true);
+    //                     handleactivePlayAudio?.(message.id);
+    //                 } else {
+    //                     // URL取得に失敗した場合
+    //                     setIsPlaying(false);
+    //                     handleactivePlayAudio?.(null);
+    //                     console.error("Failed to retrieve new audio URL");
+    //                 }
+    //             } catch (retryError) {
+    //                 console.error(
+    //                     "Failed to retry audio playback:",
+    //                     retryError
+    //                 );
+    //                 setIsPlaying(false);
+    //                 handleactivePlayAudio?.(null);
+    //             }
+    //         }
+    //     }
+    // };
 
     const handlePlayAudio = async () => {
-        // 音声パスがない、または再生が無効な場合は処理しない
         if (!message?.audio_file_path || isDisabled) return;
 
-        // アクティブな音声再生の制御
         if (isActiveAiSound !== null && isActiveAiSound !== message.id) {
             handleactivePlayAudio?.(null);
         }
 
-        // 音声URLの取得処理
-        // 現在の音声URLがない場合は取得を試みる
-        const audioUrlToUse = currentAudioUrl ?? (await fetchAudioUrl());
+        try {
+            // 音声URLの取得
+            const audioUrlToUse = currentAudioUrl ?? (await fetchAudioUrl());
+            if (!audioUrlToUse) {
+                console.error("Could not retrieve audio URL");
+                return;
+            }
 
-        // URLが取得できない場合はエラー処理
-        if (!audioUrlToUse) {
-            console.error("Could not retrieve audio URL");
-            return;
-        }
+            // 再生中の場合は停止
+            if (isPlaying) {
+                stopAudio();
+                return;
+            }
 
-        // 初回再生時のAudioオブジェクト作成
-        if (!audioRef.current) {
+            // 新しいAudioオブジェクトを毎回作成
             audioRef.current = new Audio(audioUrlToUse);
 
             // 再生速度の設定
@@ -123,53 +211,48 @@ const AiMessage = ({
                 setIsPlaying(false);
                 handleactivePlayAudio?.(null);
             };
-        }
 
-        // 再生/停止の切り替え
-        if (isPlaying) {
-            stopAudio();
-        } else {
+            // Safariのための追加処理
+            audioRef.current.preload = "auto";
+            await audioRef.current.load();
+
+            // ユーザーインタラクションの確認
+            const playAttempt = audioRef.current.play();
+            if (playAttempt !== undefined) {
+                await playAttempt;
+                setIsPlaying(true);
+                handleactivePlayAudio?.(message.id);
+            }
+        } catch (error) {
+            console.error("Audio play error:", error);
+
             try {
-                // 音声再生
+                // 新しいURLでリトライ
+                const newAudioUrl = await fetchAudioUrl();
+                if (!newAudioUrl) {
+                    throw new Error("Failed to retrieve new audio URL");
+                }
+
+                audioRef.current = new Audio(newAudioUrl);
+                setCurrentAudioUrl(newAudioUrl);
+
+                // 再生速度の設定
+                if (playbackRate !== undefined) {
+                    audioRef.current.playbackRate = playbackRate;
+                }
+
+                // Safariのための追加処理
+                audioRef.current.preload = "auto";
+                await audioRef.current.load();
+
+                // 再生
                 await audioRef.current.play();
                 setIsPlaying(true);
                 handleactivePlayAudio?.(message.id);
-            } catch (error) {
-                console.error("Audio play error:", error);
-
-                // 再生エラー時の追加処理
-                try {
-                    // 新しいURLを取得
-                    const newAudioUrl = await fetchAudioUrl();
-
-                    if (newAudioUrl) {
-                        // 新しいAudioオブジェクトを作成
-                        audioRef.current = new Audio(newAudioUrl);
-                        setCurrentAudioUrl(newAudioUrl);
-
-                        // 再生速度の再設定
-                        if (playbackRate !== undefined) {
-                            audioRef.current.playbackRate = playbackRate;
-                        }
-
-                        // 再生
-                        await audioRef.current.play();
-                        setIsPlaying(true);
-                        handleactivePlayAudio?.(message.id);
-                    } else {
-                        // URL取得に失敗した場合
-                        setIsPlaying(false);
-                        handleactivePlayAudio?.(null);
-                        console.error("Failed to retrieve new audio URL");
-                    }
-                } catch (retryError) {
-                    console.error(
-                        "Failed to retry audio playback:",
-                        retryError
-                    );
-                    setIsPlaying(false);
-                    handleactivePlayAudio?.(null);
-                }
+            } catch (retryError) {
+                console.error("Failed to retry audio playback:", retryError);
+                setIsPlaying(false);
+                handleactivePlayAudio?.(null);
             }
         }
     };
