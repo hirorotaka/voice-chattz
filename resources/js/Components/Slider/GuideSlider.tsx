@@ -25,7 +25,7 @@ export const GuideSlider = ({ slides }: GuideSliderProps) => {
     };
 
     return (
-        <div className="bg-blue-900 rounded-lg shadow-lg px-2 sm:p-2">
+        <div className="bg-blue-900 rounded-lg shadow-lg p-2">
             <div className="h-[400px] sm:h-[520px] md:h-[630px] flex flex-col gap-3">
                 {/* Image Display */}
                 <div className="relative rounded-lg overflow-hidden w-full max-w-4xl mx-auto">
