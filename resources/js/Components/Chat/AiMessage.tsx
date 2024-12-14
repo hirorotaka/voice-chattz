@@ -185,21 +185,21 @@ const AiMessage = ({
         }
 
         try {
-            // 音声URLの取得
             const audioUrlToUse = currentAudioUrl ?? (await fetchAudioUrl());
-            if (!audioUrlToUse) {
-                console.error("Could not retrieve audio URL");
-                return;
-            }
+            if (!audioUrlToUse) return;
 
-            // 再生中の場合は停止
             if (isPlaying) {
                 stopAudio();
                 return;
             }
 
-            // 新しいAudioオブジェクトを毎回作成
-            audioRef.current = new Audio(audioUrlToUse);
+            // iOS Safariのための設定
+            audioRef.current = new Audio();
+            // iOSのための属性設定
+            audioRef.current.setAttribute("playsinline", "");
+            audioRef.current.setAttribute("webkit-playsinline", "");
+            // コンテキストの確立のための無音ファイル再生
+            audioRef.current.src = audioUrlToUse;
 
             // 再生速度の設定
             if (playbackRate !== undefined) {
@@ -212,14 +212,21 @@ const AiMessage = ({
                 handleactivePlayAudio?.(null);
             };
 
-            // Safariのための追加処理
+            // iOS Safariのための追加設定
             audioRef.current.preload = "auto";
             await audioRef.current.load();
 
-            // ユーザーインタラクションの確認
-            const playAttempt = audioRef.current.play();
-            if (playAttempt !== undefined) {
-                await playAttempt;
+            // インタラクション状態のチェック
+            if (document.body.hasAttribute("data-ios-interaction")) {
+                await audioRef.current.play();
+                setIsPlaying(true);
+                handleactivePlayAudio?.(message.id);
+            } else {
+                // 初回インタラクション時にフラグを設定
+                document.body.setAttribute("data-ios-interaction", "true");
+                // 無音ファイルを再生してからメインの音声を再生
+                const silentPlay = audioRef.current.play();
+                await silentPlay;
                 setIsPlaying(true);
                 handleactivePlayAudio?.(message.id);
             }
@@ -233,20 +240,21 @@ const AiMessage = ({
                     throw new Error("Failed to retrieve new audio URL");
                 }
 
-                audioRef.current = new Audio(newAudioUrl);
+                // iOS Safariのための設定を再度適用
+                audioRef.current = new Audio();
+                audioRef.current.setAttribute("playsinline", "");
+                audioRef.current.setAttribute("webkit-playsinline", "");
+                audioRef.current.src = newAudioUrl;
                 setCurrentAudioUrl(newAudioUrl);
 
-                // 再生速度の設定
                 if (playbackRate !== undefined) {
                     audioRef.current.playbackRate = playbackRate;
                 }
 
-                // Safariのための追加処理
                 audioRef.current.preload = "auto";
                 await audioRef.current.load();
-
-                // 再生
                 await audioRef.current.play();
+
                 setIsPlaying(true);
                 handleactivePlayAudio?.(message.id);
             } catch (retryError) {
