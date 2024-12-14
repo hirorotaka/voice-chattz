@@ -2,7 +2,7 @@ import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { useForm } from "@inertiajs/react";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useEffect, useMemo, useState } from "react";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import { LanguageType } from "@/types/types";
@@ -36,6 +36,13 @@ export default function CreateRoleForm({
 
     const { showToast } = useAppContext();
 
+    const [mounted, setMounted] = useState(false);
+
+    // マウント時の処理
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     const handleSuccess = () => {
         showToast("役割を作成しました", "success");
     };
@@ -58,8 +65,8 @@ export default function CreateRoleForm({
         });
     };
 
-    return (
-        <Modal show={show} onClose={handleClose}>
+    const modalContent = useMemo(
+        () => (
             <form
                 onSubmit={createRole}
                 className="p-6  max-h-[90vh] max-w-[80vw] overflow-y-auto"
@@ -197,6 +204,25 @@ export default function CreateRoleForm({
                     </PrimaryButton>
                 </div>
             </form>
+        ),
+        [
+            form.data,
+            form.errors,
+            createRole,
+            handleClose,
+            languages,
+            form.setData,
+        ]
+    );
+
+    // マウント前はnullを返す
+    if (!mounted) {
+        return null;
+    }
+
+    return (
+        <Modal show={show} onClose={handleClose}>
+            {modalContent}
         </Modal>
     );
 }

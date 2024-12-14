@@ -2,7 +2,7 @@ import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { useForm } from "@inertiajs/react";
-import { FormEventHandler, useEffect } from "react";
+import { FormEventHandler, useEffect, useMemo, useState } from "react";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import { LanguageType, MyRoleType } from "@/types/types";
@@ -30,7 +30,6 @@ export default function EditRoleForm({
     languages,
     roleToEdit,
 }: EditRoleFormProps) {
-    console.log(roleToEdit);
     const form = useForm<FormData>({
         id: roleToEdit.id,
         name: roleToEdit.name,
@@ -39,11 +38,18 @@ export default function EditRoleForm({
         language_id: roleToEdit.language_id, // 初期値を空に設定
     });
 
+    const [mounted, setMounted] = useState(false);
+
     const { showToast } = useAppContext();
 
     const handleSuccess = () => {
         showToast("役割を更新しました", "info");
     };
+
+    // マウント時の処理
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     useEffect(() => {
         if (show) {
@@ -75,8 +81,9 @@ export default function EditRoleForm({
         });
     };
 
-    return (
-        <Modal show={show} onClose={handleClose}>
+    // フォームの内容をメモ化
+    const modalContent = useMemo(
+        () => (
             <form
                 onSubmit={createRole}
                 className="p-6   max-h-[90vh] max-w-[80vw] overflow-y-auto"
@@ -160,14 +167,14 @@ export default function EditRoleForm({
                             <label
                                 key={language.locale}
                                 className={`
-                    relative flex items-center justify-center p-2 rounded-xl cursor-pointer
-                    transition-all duration-200 ease-in-out
-                    ${
-                        String(form.data.language_id) === String(language.id)
-                            ? "bg-indigo-100 ring-2 ring-indigo-500"
-                            : "bg-white ring-1 ring-gray-200 hover:ring-indigo-200"
-                    }
-                `}
+                relative flex items-center justify-center p-2 rounded-xl cursor-pointer
+                transition-all duration-200 ease-in-out
+                ${
+                    String(form.data.language_id) === String(language.id)
+                        ? "bg-indigo-100 ring-2 ring-indigo-500"
+                        : "bg-white ring-1 ring-gray-200 hover:ring-indigo-200"
+                }
+            `}
                             >
                                 <input
                                     type="radio"
@@ -219,6 +226,25 @@ export default function EditRoleForm({
                     </PrimaryButton>
                 </div>
             </form>
+        ),
+        [
+            form.data,
+            form.errors,
+            form.processing,
+            createRole,
+            handleClose,
+            languages,
+        ]
+    );
+
+    // マウント前はnullを返す
+    if (!mounted) {
+        return null;
+    }
+
+    return (
+        <Modal show={show} onClose={handleClose}>
+            {modalContent}
         </Modal>
     );
 }
