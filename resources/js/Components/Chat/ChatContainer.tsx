@@ -7,6 +7,7 @@ import { router, usePage } from "@inertiajs/react";
 import LoadingSppiner from "../Utils/LoadingSppiner";
 import { Tooltip } from "flowbite-react";
 import { useAppContext } from "@/Contexts/AppContext";
+import RecordRTC, { RecordRTCPromisesHandler } from "recordrtc";
 
 interface ChatContainerProps {
     messages: MessageType[];
@@ -32,11 +33,14 @@ const ChatContainer = ({
 
     // 録音関連のstate
     const [isRecording, setIsRecording] = useState(false);
-    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
     const [recordingTime, setRecordingTime] = useState(0);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
     const MAX_RECORDING_TIME = 300; // 5分 = 300秒
+
+    // RecordRTCの参照を保持
+    const recorderRef = useRef<RecordRTCPromisesHandler | null>(null);
+    const streamRef = useRef<MediaStream | null>(null);
 
     // 送信関連のstate
     const [isSending, setIsSending] = useState(false);
@@ -86,43 +90,34 @@ const ChatContainer = ({
         stopRecording();
     };
 
-    const cancelRecording = () => {
-        if (
-            mediaRecorderRef.current &&
-            mediaRecorderRef.current.state === "recording"
-        ) {
-            // キャンセルフラグを立てる（即時反映）
-            isCancelledRef.current = true;
+    const cancelRecording = async () => {
+        if (recorderRef.current && streamRef.current) {
+            try {
+                // キャンセルフラグを立てる
+                isCancelledRef.current = true;
 
-            // 録音を停止
-            if (mediaRecorderRef.current) {
-                mediaRecorderRef.current.stop(); // stop() を追加
-            }
+                // 録音停止
+                await recorderRef.current.stopRecording();
 
-            setIsRecording(false);
-            setRecordingTime(0);
-            // タイマーをクリア
-            if (timerRef.current) {
-                clearInterval(timerRef.current);
-                timerRef.current = null;
+                // ストリームの停止
+                streamRef.current.getTracks().forEach((track) => track.stop());
+            } catch (error) {
+                console.error("録音のキャンセルに失敗しました:", error);
+            } finally {
+                // 初期化処理
+                cleanupRecording();
             }
-            // 音声データを初期化
-            audioChunksRef.current = [];
         }
     };
 
     // 初期化処理を共通化
     const cleanupRecording = () => {
-        // 録音を停止
-        if (mediaRecorderRef.current) {
-            mediaRecorderRef.current.stop();
-            // ストリームが存在する場合のみ停止処理を実行
-            if (mediaRecorderRef.current.stream) {
-                mediaRecorderRef.current.stream
-                    .getTracks()
-                    .forEach((track) => track.stop());
-            }
-            mediaRecorderRef.current = null;
+        if (recorderRef.current) {
+            recorderRef.current = null;
+        }
+        if (streamRef.current) {
+            streamRef.current.getTracks().forEach((track) => track.stop());
+            streamRef.current = null;
         }
 
         // 状態を初期化
@@ -168,10 +163,7 @@ const ChatContainer = ({
     // コンポーネントのアンマウント時の処理を追加
     useEffect(() => {
         return () => {
-            // クリーンアップ処理
-            if (mediaRecorderRef.current) {
-                cleanupRecording();
-            }
+            cleanupRecording();
             if (timerRef.current) {
                 clearInterval(timerRef.current);
             }
@@ -198,51 +190,22 @@ const ChatContainer = ({
                     autoGainControl: true,
                 },
             });
-            // MediaRecorderインスタンスを作成
-            const mediaRecorder = new MediaRecorder(stream);
-            // 現在のMediaRecorderへの参照を保存
-            mediaRecorderRef.current = mediaRecorder;
-            // 音声データチャンクを格納する配列を初期化
-            audioChunksRef.current = [];
 
-            // 録音データが利用可能になるたびに呼び出されるイベントハンドラ
-            mediaRecorder.ondataavailable = (event) => {
-                if (event.data.size > 0) {
-                    // 音声データのチャンクを配列に追加
-                    audioChunksRef.current.push(event.data);
-                }
-            };
-            // 録音停止時に実行されるイベントハンドラ
-            mediaRecorder.onstop = async () => {
-                setIsRecording(false); // これを追加
-                // キャンセルされていない場合のみ、データを送信
-                if (
-                    !isCancelledRef.current &&
-                    audioChunksRef.current.length > 0
-                ) {
-                    const audioBlob = new Blob(audioChunksRef.current, {
-                        type: "audio/wav",
-                    });
-                    await sendAudioToServer(audioBlob);
-                }
+            // ストリームを保存
+            streamRef.current = stream;
 
-                // キャンセルフラグをリセット
-                isCancelledRef.current = false;
-
-                // ストリームを解放
-                if (mediaRecorderRef.current?.stream) {
-                    // stream が存在するか確認
-                    mediaRecorderRef.current.stream
-                        .getTracks()
-                        .forEach((track) => track.stop());
-                }
-
-                // 初期化処理
-                cleanupRecording();
-            };
+            // RecordRTCの初期化
+            recorderRef.current = new RecordRTCPromisesHandler(stream, {
+                type: "audio",
+                mimeType: "audio/webm",
+                recorderType: RecordRTC.StereoAudioRecorder,
+                numberOfAudioChannels: 1,
+                desiredSampRate: 16000,
+                timeSlice: 1000,
+            });
 
             // 録音開始
-            mediaRecorder.start();
+            await recorderRef.current.startRecording();
             setIsRecording(true);
         } catch (error) {
             console.error("録音の開始に失敗しました:", error);
@@ -281,19 +244,35 @@ const ChatContainer = ({
      * 録音を停止する関数
      * 現在録音中の場合のみ停止処理を実行
      */
-    const stopRecording = () => {
-        if (
-            mediaRecorderRef.current &&
-            mediaRecorderRef.current.state === "recording"
-        ) {
-            // 通常の停止なのでキャンセルフラグは false
-            isCancelledRef.current = false;
+    const stopRecording = async () => {
+        if (recorderRef.current && streamRef.current) {
+            try {
+                // 通常の停止なのでキャンセルフラグは false
+                isCancelledRef.current = false;
 
-            // 録音停止後すぐにPOST送信するためローディング状態をON
-            setIsSending(true);
+                // ローディング状態をON
+                setIsSending(true);
 
-            // 初期化処理
-            cleanupRecording();
+                // 録音停止
+                await recorderRef.current.stopRecording();
+
+                // 録音データの取得
+                const blob = await recorderRef.current.getBlob();
+
+                // ストリームの停止
+                streamRef.current.getTracks().forEach((track) => track.stop());
+
+                // 音声データの送信
+                if (!isCancelledRef.current) {
+                    await sendAudioToServer(blob);
+                }
+            } catch (error) {
+                console.error("録音の停止に失敗しました:", error);
+                alert("録音の停止に失敗しました");
+            } finally {
+                // 初期化処理
+                cleanupRecording();
+            }
         }
     };
 

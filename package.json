@@ -6,10 +6,6 @@
         "prod": "vite build",
         "dev": "vite"
     },
-    "engines": {
-        "node": "20.x",
-        "npm": "10.x"
-    },
     "devDependencies": {
         "@headlessui/react": "^2.0.0",
         "@inertiajs/react": "^1.0.0",
@@ -18,6 +14,7 @@
         "@types/node": "^18.13.0",
         "@types/react": "^18.0.28",
         "@types/react-dom": "^18.0.10",
+        "@types/recordrtc": "^5.6.14",
         "@vitejs/plugin-react": "^4.2.0",
         "autoprefixer": "^10.4.12",
         "axios": "^1.7.4",
@@ -34,6 +31,7 @@
         "flowbite-react": "^0.10.2",
         "prism-react-renderer": "^2.4.0",
         "react-markdown": "^9.0.1",
+        "recordrtc": "^5.6.2",
         "remark-gfm": "^4.0.0",
         "use-sound": "^4.0.3"
     }
