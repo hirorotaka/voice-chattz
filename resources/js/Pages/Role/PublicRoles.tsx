@@ -1,7 +1,4 @@
-import React from "react";
-import PublicRoleToggleButton from "@/Components/Role/PublicRoleToggleButton";
 import TextInput from "@/Components/TextInput";
-import TruncatedText from "@/Components/Utils/TruncatedText";
 import AppLayout from "@/Layouts/AppLayout";
 import {
     IsUsingRoleType,
@@ -11,6 +8,8 @@ import {
 } from "@/types/types";
 import { useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react";
+import MobilePublicRolesCard from "../../Components/Role/MobilePublicRolesCard";
+import DesktopPublicRolesTable from "../../Components/Role/DesktopPublicRolesTable";
 
 interface TopProps {
     threads: ThreadType[];
@@ -19,105 +18,6 @@ interface TopProps {
     isUsingMyRoles: IsUsingRoleType[];
     search_str?: string;
 }
-
-interface MobileRoleCardProps {
-    role: PublicRoleType;
-}
-
-const MobileRoleCard = ({ role }: MobileRoleCardProps) => (
-    <div className="bg-white rounded-lg shadow-md p-4 mb-4">
-        <div className="space-y-2">
-            <div className="flex justify-between items-start">
-                <h3 className="font-semibold text-gray-700">{role.name}</h3>
-                <span className="text-sm text-gray-500">
-                    {role.language_name}
-                </span>
-            </div>
-
-            <div className="text-sm text-gray-600">
-                <p className="font-medium mb-1">初回メッセージ:</p>
-                <TruncatedText text={role.first_message} maxLength={100} />
-            </div>
-
-            <div className="text-sm text-gray-600">
-                <p className="font-medium mb-1">説明:</p>
-                <TruncatedText text={role.description} maxLength={150} />
-            </div>
-
-            <div className="flex justify-end mt-2">
-                <PublicRoleToggleButton
-                    isUsing={role.is_using}
-                    roleId={role.id}
-                />
-            </div>
-        </div>
-    </div>
-);
-
-interface DesktopTableProps {
-    publicRoles: PublicRoleType[];
-}
-
-const DesktopTable = ({ publicRoles }: DesktopTableProps) => (
-    <div className="overflow-x-auto  overflow-y-auto rounded-lg shadow-md">
-        <div className="overflow-x-auto h-[calc(100vh-300px)]">
-            <table className="min-w-full divide-y divide-gray-300">
-                <thead className="bg-gray-200">
-                    <tr>
-                        <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
-                            役割名
-                        </th>
-                        <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
-                            初回メッセージ
-                        </th>
-                        <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
-                            説明
-                        </th>
-                        <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
-                            言語 <br />
-                            モード
-                        </th>
-                        <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
-                            使用
-                            <br />
-                            する
-                        </th>
-                    </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                    {publicRoles.map((role) => (
-                        <tr key={role.id} className="hover:bg-gray-50">
-                            <td className="px-2 py-3 text-xs text-gray-500 break-words w-24">
-                                {role.name}
-                            </td>
-                            <td className="px-2 py-3 text-xs text-gray-500 min-w-36">
-                                <TruncatedText
-                                    text={role.first_message}
-                                    maxLength={100}
-                                />
-                            </td>
-                            <td className="px-2 py-3 text-xs text-gray-500 max-w-70">
-                                <TruncatedText
-                                    text={role.description}
-                                    maxLength={200}
-                                />
-                            </td>
-                            <td className="px-2 py-3 text-xs text-gray-500 min-w-16">
-                                {role.language_name}
-                            </td>
-                            <td className="px-2 py-3 text-xs text-gray-500">
-                                <PublicRoleToggleButton
-                                    isUsing={role.is_using}
-                                    roleId={role.id}
-                                />
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    </div>
-);
 
 export default function PublicRoles({
     threads,
@@ -158,7 +58,7 @@ export default function PublicRoles({
             languages={languages}
             roles={isUsingMyRoles}
         >
-            <div className="min-h-screen flex flex-col p-3 sm:p-5">
+            <div className="flex flex-col p-3 sm:p-5">
                 <div className="flex flex-col items-center mb-6 gap-4">
                     <h1 className="text-xl sm:text-3xl font-semibold text-white text-center">
                         役割一覧（公開プロンプト）
@@ -189,7 +89,7 @@ export default function PublicRoles({
 
                 {/* レスポンシブ切り替え */}
                 <div className="hidden sm:block">
-                    <DesktopTable publicRoles={publicRoles} />
+                    <DesktopPublicRolesTable publicRoles={publicRoles} />
                 </div>
                 <div className="block sm:hidden">
                     <div className="space-y-4">
@@ -199,7 +99,10 @@ export default function PublicRoles({
                             </div>
                         ) : (
                             publicRoles.map((role) => (
-                                <MobileRoleCard key={role.id} role={role} />
+                                <MobilePublicRolesCard
+                                    key={role.id}
+                                    role={role}
+                                />
                             ))
                         )}
                     </div>

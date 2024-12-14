@@ -51,7 +51,7 @@ class RoleController extends Controller
 
         $languages = Language::all();
 
-        return Inertia::render('Role/Index', ['threads' => $threads, 'languages' => $languages, 'myRoles' => $myRoles, 'isUsingMyRoles' => $isUsingMyRoles]);
+        return Inertia::render('Role/RoleIndex', ['threads' => $threads, 'languages' => $languages, 'myRoles' => $myRoles, 'isUsingMyRoles' => $isUsingMyRoles]);
     }
 
     /**
