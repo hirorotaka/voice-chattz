@@ -136,7 +136,9 @@ export default function AppLayout({
                     </div>
 
                     {/* Content area */}
-                    <main className="flex-1  pb-5">{children}</main>
+                    <main className="flex-1 pb-5 overflow-y-auto">
+                        {children}
+                    </main>
                 </div>
 
                 {/* Overlay for mobile */}
