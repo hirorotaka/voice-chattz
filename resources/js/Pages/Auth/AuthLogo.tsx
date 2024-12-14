@@ -8,7 +8,7 @@ const AuthLogo = () => {
                 <div className="flex items-center justify-center w-8 h-8 sm:w-16 sm:h-16 mr-4 bg-white/10 rounded-2xl backdrop-blur-lg transition-all duration-300 group-hover:scale-105">
                     <HiMicrophone className="w-4 h-4 sm:w-8 sm:h-8 text-indigo-400" />
                 </div>
-                <div className="mt-4">
+                <div>
                     <h1 className="text-2xl font-bold text-white">
                         voice chattz
                     </h1>

@@ -27,14 +27,14 @@ export default function Register() {
     return (
         <GuestAppLayout title="アカウント登録">
             <div className="relative min-h-screen flex flex-col items-center ">
-                <div className="w-full max-w-md space-y-8">
+                <div className="w-full max-w-md space-y-4  px-4">
                     {/* ロゴ */}
                     <AuthLogo />
 
                     {/* フォームコンテナ */}
                     <div className="relative">
                         <div className="absolute inset-0 rounded-2xl blur-xl" />
-                        <div className="relative bg-white/5 backdrop-blur-lg p-8 shadow-2xl rounded-2xl">
+                        <div className="relative bg-white/5 backdrop-blur-lg p-4 shadow-2xl rounded-2xl">
                             <form onSubmit={submit} className="space-y-6">
                                 <div>
                                     <InputLabel
