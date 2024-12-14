@@ -25,10 +25,10 @@ export const GuideSlider = ({ slides }: GuideSliderProps) => {
     };
 
     return (
-        <div className="bg-blue-900 rounded-lg shadow-lg p-6 md:p-8">
-            <div className="h-96 sm:h-[520px] md:h-[600px] flex flex-col gap-6">
+        <div className="bg-blue-900 rounded-lg shadow-lg px-2 sm:p-2">
+            <div className="h-[400px] sm:h-[520px] md:h-[630px] flex flex-col gap-3">
                 {/* Image Display */}
-                <div className="relative rounded-lg overflow-hidden w-full h-2/3 max-w-4xl mx-auto">
+                <div className="relative rounded-lg overflow-hidden w-full max-w-4xl mx-auto">
                     {!imageLoaded && (
                         <div className="absolute inset-0 flex items-center justify-center bg-blue-900/50">
                             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white" />
@@ -37,7 +37,7 @@ export const GuideSlider = ({ slides }: GuideSliderProps) => {
                     <img
                         src={currentSlide.image}
                         alt={currentSlide.title}
-                        className={`w-full h-full object-contain transition-opacity duration-300 ${
+                        className={`w-full  object-contain transition-opacity duration-300 ${
                             imageLoaded ? "opacity-100" : "opacity-0"
                         }`}
                         onLoad={() => setImageLoaded(true)}
@@ -45,11 +45,11 @@ export const GuideSlider = ({ slides }: GuideSliderProps) => {
                 </div>
 
                 {/* Content */}
-                <div className="text-white max-w-4xl mx-auto w-full h-1/3 overflow-y-auto">
+                <div className="text-white max-w-4xl mx-auto w-full overflow-y-auto">
                     <h2 className="text-base sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2 md:mb-4">
                         {currentSlide.title}
                     </h2>
-                    <p className="sm:text-xs md:text-sm lg:text-base whitespace-pre-line">
+                    <p className="sm:mt-3 text-xs sm:text-sm md:text-sm lg:text-base whitespace-pre-line">
                         {currentSlide.description}
                     </p>
                 </div>
@@ -74,7 +74,7 @@ export const GuideSlider = ({ slides }: GuideSliderProps) => {
             </div>
 
             {/* Dots */}
-            <div className="flex justify-center gap-2 mt-6">
+            <div className="flex justify-center gap-2 py-4">
                 {slides.map((_, index) => (
                     <button
                         key={index}
