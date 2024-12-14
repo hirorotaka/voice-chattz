@@ -5,12 +5,25 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ThreadController;
 use App\Models\Role;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
 
 Route::get('/', [ThreadController::class, 'index'])->name('top');
 Route::get('/how-to-use', [ThreadController::class, 'howToUse'])->name('how-to-use');
+
+// routes/web.php や任意のコントローラーに追加
+Route::get('/mail-test', function () {
+    try {
+        Mail::raw('Test email', function ($message) {
+            $message->to('test@example.com');
+        });
+        return 'Mail sent successfully';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});
 
 
 Route::middleware('auth')->group(function () {
