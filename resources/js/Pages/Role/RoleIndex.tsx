@@ -1,7 +1,5 @@
-import { useState } from "react";
-import CreateRoleForm from "@/Components/Utils/CreateRoleForm";
-import DeleteRoleForm from "@/Components/Utils/DeleteRoleForm";
-import EditRoleForm from "@/Components/Utils/EditRoleForm";
+import { lazy, useCallback, useMemo, useState } from "react";
+
 import AppLayout from "@/Layouts/AppLayout";
 import {
     IsUsingRoleType,
@@ -11,6 +9,11 @@ import {
 } from "@/types/types";
 import MobileRoleIndexCard from "../../Components/Role/MobileRoleIndexCard";
 import DesktopRoleIndexTable from "../../Components/Role/DesktopRoleIndexTable";
+
+// 動的インポートでモーダルコンポーネントを遅延ロード
+const CreateRoleForm = lazy(() => import("@/Components/Utils/CreateRoleForm"));
+const EditRoleForm = lazy(() => import("@/Components/Utils/EditRoleForm"));
+const DeleteRoleForm = lazy(() => import("@/Components/Utils/DeleteRoleForm"));
 
 interface RoleIndexProps {
     threads: ThreadType[];
@@ -41,18 +44,19 @@ export default function RoleIndex({
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [roleToDelete, setRoleToDelete] = useState<number | null>(null);
 
-    const handleOpenCreateModal = () => {
+    // イベントハンドラをメモ化
+    const handleOpenCreateModal = useCallback(() => {
         setRoleCreateModal(true);
-    };
+    }, []);
 
-    const handleCloseCreateModal = () => {
+    const handleCloseCreateModal = useCallback(() => {
         setRoleCreateModal(false);
-    };
+    }, []);
 
-    const handleClickOpenEditModal = (role: MyRoleType) => {
+    const handleClickOpenEditModal = useCallback((role: MyRoleType) => {
         setRoleToEdit(role);
         setRoleEditModal(true);
-    };
+    }, []);
 
     const handleCloseEditModal = () => {
         setRoleEditModal(false);
@@ -69,15 +73,15 @@ export default function RoleIndex({
         });
     };
 
-    const handleClickOpenDeleteModal = (roleId: number) => {
+    const handleClickOpenDeleteModal = useCallback((roleId: number) => {
         setRoleToDelete(roleId);
         setShowDeleteModal(true);
-    };
+    }, []);
 
-    const handleClickCloseDeleteModal = () => {
+    const handleClickCloseDeleteModal = useCallback(() => {
         setShowDeleteModal(false);
         setRoleToDelete(null);
-    };
+    }, []);
 
     return (
         <AppLayout
