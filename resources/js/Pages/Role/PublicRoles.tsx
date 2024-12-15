@@ -10,7 +10,7 @@ import { useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import MobilePublicRolesCard from "../../Components/Role/MobilePublicRolesCard";
 import DesktopPublicRolesTable from "../../Components/Role/DesktopPublicRolesTable";
-import RolePagination from "@/Components/Role/RolePagination";
+import PublicRolePagination from "@/Components/Role/PublicRolePagination";
 
 interface TopProps {
     threads: ThreadType[];
@@ -108,7 +108,7 @@ export default function PublicRoles({
                         )}
                     </div>
                 </div>
-                <RolePagination
+                <PublicRolePagination
                     currentPage={publicRoles.current_page}
                     lastPage={publicRoles.last_page}
                     links={publicRoles.links}
