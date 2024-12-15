@@ -41,9 +41,9 @@ export function FavoriteButton({ thread }: FavoriteButtonProps) {
             }
         >
             {thread.favorite ? (
-                <BsPinFill className="w-6 h-6 text-yellow-400" />
+                <BsPinFill className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-400" />
             ) : (
-                <BsPin className="w-6 h-6 text-white hover:text-yellow-400" />
+                <BsPin className="w-4 h-4 sm:w-6 sm:h-6 text-white hover:text-yellow-400" />
             )}
         </button>
     );

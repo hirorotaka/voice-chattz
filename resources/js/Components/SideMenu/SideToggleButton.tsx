@@ -12,7 +12,8 @@ export const SideToggleButton = ({
 }: ToggleButtonProps) => {
     const { handleSidebarToggle } = useAppContext();
 
-    const baseStyles = "flex items-center justify-center border-0 p-2 rounded";
+    const baseStyles =
+        "flex items-center justify-center border-0 p-1 sm:p-2 rounded";
     const variantStyles = {
         sidebar: "bg-blue-700 hover:bg-blue-600",
         header: "bg-blue-900 hover:bg-blue-800 text-white",
@@ -23,7 +24,7 @@ export const SideToggleButton = ({
             className={`${baseStyles} ${variantStyles[variant]} ${className}`}
             onClick={handleSidebarToggle}
         >
-            <HiMenu className="h-5 w-5" />
+            <HiMenu className="h-4 w-4 sm:h-5 sm:w-5" />
         </button>
     );
 };

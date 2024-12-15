@@ -360,7 +360,7 @@ const ChatContainer = ({
     }, [messages]);
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col justify-between min-h-full">
             {/* メッセージリスト - スクロール可能なエリア */}
             <div className="flex-1 overflow-y-auto">
                 <div className="flex flex-col gap-2 p-4">
@@ -394,7 +394,7 @@ const ChatContainer = ({
             </div>
 
             {/* マイクボタンとタイマー表示 */}
-            <div className="flex items-center justify-end mr-4">
+            <div className="flex items-center justify-end mr-4 pb-5">
                 {/* 録音中は表示しない */}
                 {!isRecording && (
                     <div className="flex items-center mr-auto pl-5">
@@ -466,7 +466,7 @@ const ChatContainer = ({
                 )}
                 {/* マイクボタン - 録音中も操作可能にするため z-40 を設定 */}
                 {isActiveAiSound ? (
-                    <button className="p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none  relative z-40 bg-gray-400">
+                    <button className="p-2 sm:p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none  relative z-40 bg-gray-400">
                         <HiMicrophone className="h-6 w-6 sm:w-12 sm:h-12 text-gray-600" />
                     </button>
                 ) : (
@@ -485,7 +485,7 @@ const ChatContainer = ({
                         // baseのレイアウトを修正
                     >
                         <button
-                            className={`p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 relative z-40
+                            className={`p-2 sm:p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 relative z-40
             ${
                 isRecording
                     ? "bg-red-500 hover:bg-red-600"
