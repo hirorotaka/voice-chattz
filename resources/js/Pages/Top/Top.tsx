@@ -3,6 +3,7 @@ import AppLayout from "@/Layouts/AppLayout";
 import { IsUsingRoleType, LanguageType, ThreadType } from "@/types/types";
 import { FeatureCard } from "../../Components/Top/FeatureCard";
 import { useState } from "react";
+import TopImage from "@/Components/Top/TopImage";
 
 interface TopProps {
     threads: ThreadType[];
@@ -11,7 +12,6 @@ interface TopProps {
 }
 
 export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
-    const [imageLoaded, setImageLoaded] = useState(false);
     return (
         <AppLayout
             title="トップページ"
@@ -36,22 +36,16 @@ export default function Top({ threads, languages, isUsingMyRoles }: TopProps) {
                 </div>
 
                 {/* イラストレーション */}
-                <div className="flex justify-center mb-10">
-                    <div className="relative w-full sm:max-w-xl">
+                <div className="flex justify-center mb-10 w-full">
+                    <div className="relative w-full sm:max-w-2xl px-4">
                         <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-3xl blur-xl"></div>
-                        <img
-                            src="/images/app_image.svg"
-                            alt="アプリケーションイメージ"
-                            className={`relative rounded-3xl shadow-2xl transition-opacity duration-300 ${
-                                imageLoaded ? "opacity-100" : "opacity-0"
-                            }`}
-                            onLoad={() => setImageLoaded(true)}
-                        />
-                        {!imageLoaded && (
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-500"></div>
-                            </div>
-                        )}
+                        <div className="relative rounded-3xl shadow-2xl">
+                            <TopImage
+                                className="w-full h-auto"
+                                preserveAspectRatio="xMidYMid meet"
+                                viewBox="0 0 868.98 474.67"
+                            />
+                        </div>
                     </div>
                 </div>
 
