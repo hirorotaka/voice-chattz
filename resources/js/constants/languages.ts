@@ -19,6 +19,12 @@ export const LANGUAGE_CONFIGS: { [key: number]: LanguageSelectType } = {
         name: "한국어",
         defaultTitle: "제목 없는 스레드",
     },
+    4: {
+        id: 4,
+        locale: "de",
+        name: "Deutsch",
+        defaultTitle: "Unbenannter Thread",
+    },
     // 新しい言語を追加する場合はここに追加するだけ
 };
 

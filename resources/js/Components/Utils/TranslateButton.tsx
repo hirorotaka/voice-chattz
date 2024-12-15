@@ -9,7 +9,7 @@ interface TranslateButtonProps {
 }
 
 // 言語IDの型定義
-type LanguageId = 1 | 2 | 3;
+type LanguageId = 1 | 2 | 3 | 4;
 
 // 翻訳テキストの型定義
 interface TranslationText {
@@ -39,9 +39,15 @@ const translationText: TranslationTexts = {
     },
     3: {
         // 韓国語
-        icon: "あ한",
+        icon: "한あ",
         translating: "번역 중...",
         translate: "번역",
+    },
+    4: {
+        // ドイツ語
+        icon: "AÜあ",
+        translating: "Übersetzung läuft...",
+        translate: "Übersetzen",
     },
     default: {
         icon: "Aあ",

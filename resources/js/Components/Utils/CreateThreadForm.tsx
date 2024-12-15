@@ -102,12 +102,12 @@ export default function CreateThreadForm({
                     <p className="text-sm text-gray-500 mb-4">
                         使用する言語を選択してください
                     </p>
-                    <div className="grid grid-cols-3 gap-3 max-w-80">
+                    <div className="grid grid-cols-4 gap-3 max-w-100">
                         {languages?.map((language) => (
                             <label
                                 key={language.locale}
                                 className={`
-                    relative flex items-center justify-center p-2 sm:p-4 rounded-xl cursor-pointer
+                    relative flex items-center justify-center p-1 sm:p-4 rounded-xl cursor-pointer
                     transition-all duration-200 ease-in-out
                     ${
                         Number(form.data.language_id) === Number(language.id)

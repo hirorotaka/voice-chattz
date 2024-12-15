@@ -30,10 +30,18 @@ class LanguageSeeder extends Seeder
             ],
             [
                 'locale' => 'ko',
-                'name' => '한국어',
+                'name' => '韓国語',
                 'text_prompt' => trans('prompts.text', [], 'ko'),
                 'audio_prompt' => trans('prompts.audio', [], 'ko'),
                 'translate_prompt' => trans('prompts.translate', [], 'ko'),
+                'updated_at' => now(),
+            ],
+            [
+                'locale' => 'de',
+                'name' => 'ドイツ語',
+                'text_prompt' => trans('prompts.text', [], 'de'),
+                'audio_prompt' => trans('prompts.audio', [], 'de'),
+                'translate_prompt' => trans('prompts.translate', [], 'de'),
                 'updated_at' => now(),
             ],
         ];

@@ -19,7 +19,7 @@ interface AppLayoutProps {
 }
 
 // 言語ロケールの型定義
-type LocaleType = "en" | "ja" | "ko";
+type LocaleType = "en" | "ja" | "ko" | "de";
 
 type LanguageTexts = {
     [key in LocaleType]: string;
@@ -30,18 +30,21 @@ const languageModeText: LanguageTexts = {
     en: "Language Mode: English",
     ja: "言語モード：日本語",
     ko: "언어 모드: 한국어",
+    de: "Sprachmodus: Deutsch",
 };
 
 const roleText: LanguageTexts = {
     en: "Role: ",
     ja: "役割：",
     ko: "역할: ",
+    de: "Rolle: ",
 };
 
 const defaultRoleText: LanguageTexts = {
     en: "Default",
     ja: "デフォルト",
     ko: "기본",
+    de: "Standard",
 };
 
 export default function AppLayout({

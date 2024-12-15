@@ -106,7 +106,6 @@ const AiMessage = ({
             handleactivePlayAudio?.(null);
         }
     };
-    //     // 音声パスがない、または再生が無効な場合は処理しない
     //     if (!message?.audio_file_path || isDisabled) return;
 
     //     // アクティブな音声再生の制御
@@ -192,11 +191,14 @@ const AiMessage = ({
     const handlePlayAudio = async () => {
         if (!message?.audio_file_path || isDisabled) return;
 
+        // アクティブな音声再生の制御
         if (isActiveAiSound !== null && isActiveAiSound !== message.id) {
             handleactivePlayAudio?.(null);
         }
 
         try {
+            // 音声URLの取得処理
+            // 現在の音声URLがない場合は取得を試みる
             const audioUrlToUse = currentAudioUrl ?? (await fetchAudioUrl());
             if (!audioUrlToUse) return;
 

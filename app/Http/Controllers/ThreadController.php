@@ -115,7 +115,8 @@ class ThreadController extends Controller
                 $defaultMessages = [
                     1 => "Hello! I'm your AI assistant. How can I help you today? I can engage in conversations on a wide range of topics, so please feel free to ask me anything.",
                     2 => "こんにちは！私はAIアシスタントです。どのようなお手伝いができますか？幅広い話題について会話ができますので、気軽にお話しください。",
-                    3 => "안녕하세요! 저는 AI 어시스턴트입니다. 어떤 도움이 필요하신가요? 다양한 주제에 대해 대화를 나눌 수 있으니 편하게 말씀해 주세요."
+                    3 => "안녕하세요! 저는 AI 어시스턴트입니다. 어떤 도움이 필요하신가요? 다양한 주제에 대해 대화를 나눌 수 있으니 편하게 말씀해 주세요.",
+                    4 => "Hallo! Ich bin Ihr KI-Assistent. Wie kann ich Ihnen heute helfen? Ich kann mich über eine Vielzahl von Themen unterhalten, also fragen Sie mich bitte alles, was Sie möchten.",
                 ];
 
                 // 言語IDに基づいてメッセージを選択（存在しない場合は日本語をデフォルトとする）

@@ -69,7 +69,7 @@ export default function CreateRoleForm({
         () => (
             <form
                 onSubmit={createRole}
-                className="p-6  max-h-[90vh] max-w-[80vw] overflow-y-auto"
+                className="p-6  max-h-[90vh] max-w-[90vw] overflow-y-auto"
             >
                 <h1 className="text-lg sm:text-2xl font-medium text-gray-900">
                     役割を作成
@@ -144,13 +144,13 @@ export default function CreateRoleForm({
                         <br />
                         合わせることで精度が高くなります。
                     </p>
-                    <div className="grid grid-cols-3 gap-3 max-w-80">
+                    <div className="grid grid-cols-4 gap-2 sm:gap-3 max-w-100">
                         {languages?.map((language) => (
                             <label
                                 key={language.locale}
                                 className={`
-                    relative flex items-center justify-center p-2 sm:p-4 rounded-xl cursor-pointer
-                    transition-all duration-200 ease-in-out
+                    relative flex items-center justify-center p-1 sm:p-4 rounded-xl cursor-pointer
+                    transition-all duration-200 ease-in-out text-xs sm:text-sm
                     ${
                         form.data.language_id === String(language.id)
                             ? "bg-indigo-100 ring-2 ring-indigo-500"
