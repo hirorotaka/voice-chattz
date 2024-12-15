@@ -49,6 +49,7 @@ services:
             timeout: 5s
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
+        platform: linux/amd64
         depends_on:
             - mysql
         ports:
