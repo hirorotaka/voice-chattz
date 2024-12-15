@@ -26,7 +26,7 @@ export default function DeleteRoleForm({
         showToast("役割を削除しました", "delete");
     };
 
-    const deleteThread: FormEventHandler = (e) => {
+    const deleteRole: FormEventHandler = (e) => {
         e.preventDefault();
 
         destroy(route("roles.destroy", { role: roleId }), {
@@ -47,7 +47,7 @@ export default function DeleteRoleForm({
     // フォームの内容をメモ化
     const modalContent = useMemo(
         () => (
-            <form onSubmit={deleteThread} className="p-6">
+            <form onSubmit={deleteRole} className="p-6">
                 <h2 className="text-lg font-medium text-gray-900">
                     役割を削除しますか？
                 </h2>
@@ -67,7 +67,7 @@ export default function DeleteRoleForm({
                 </div>
             </form>
         ),
-        [deleteThread, onClose, processing]
+        [deleteRole, onClose, processing]
     );
 
     // マウント前はnullを返す

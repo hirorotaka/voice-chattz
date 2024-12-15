@@ -2,7 +2,7 @@ import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { useForm } from "@inertiajs/react";
-import { FormEventHandler, useEffect } from "react";
+import { FormEventHandler, useEffect, useMemo, useState } from "react";
 import { useAppContext } from "@/Contexts/AppContext";
 
 interface CreateThreadFormProps {
@@ -25,6 +25,13 @@ export default function EditThreadForm({
     });
 
     const { showToast } = useAppContext();
+
+    const [mounted, setMounted] = useState(false);
+
+    // マウント時の処理
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const handleSuccess = () => {
         showToast("スレッドを更新しました", "info");
@@ -58,8 +65,9 @@ export default function EditThreadForm({
         });
     };
 
-    return (
-        <Modal show={show} onClose={handleClose}>
+    // フォームの内容をメモ化
+    const modalContent = useMemo(
+        () => (
             <form onSubmit={editThreadsubmit} className="p-6">
                 <h2 className="text-lg font-medium text-gray-900">
                     スレッドを編集
@@ -93,6 +101,18 @@ export default function EditThreadForm({
                     </PrimaryButton>
                 </div>
             </form>
+        ),
+        [data, errors, processing, handleClose, editThreadsubmit, setData]
+    );
+
+    // マウント前はnullを返す
+    if (!mounted) {
+        return null;
+    }
+
+    return (
+        <Modal show={show} onClose={handleClose}>
+            {modalContent}
         </Modal>
     );
 }

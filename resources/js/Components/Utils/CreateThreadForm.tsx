@@ -2,7 +2,7 @@ import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { useForm } from "@inertiajs/react";
-import { FormEventHandler, useEffect, useRef, useState } from "react";
+import { FormEventHandler, useEffect, useMemo, useRef, useState } from "react";
 import InputLabel from "@/Components/InputLabel";
 import { IsUsingRoleType, LanguageType } from "@/types/types";
 import { useAppContext } from "@/Contexts/AppContext";
@@ -37,6 +37,13 @@ export default function CreateThreadForm({
     const { showToast } = useAppContext();
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const [mounted, setMounted] = useState(false);
+
+    // マウント時の処理
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const handleSuccess = () => {
         showToast("スレッドを作成しました", "success");
@@ -86,8 +93,8 @@ export default function CreateThreadForm({
             document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    return (
-        <Modal show={show} onClose={handleClose}>
+    const modalContent = useMemo(
+        () => (
             <form onSubmit={createThread} className="p-6">
                 <h1 className="text-2xl font-medium text-gray-900">
                     新規スレッドを作成
@@ -104,15 +111,15 @@ export default function CreateThreadForm({
                             <label
                                 key={language.locale}
                                 className={`
-                                    relative flex items-center justify-center p-1 sm:p-4 rounded-xl cursor-pointer
-                                    transition-all duration-200 ease-in-out
-                                    ${
-                                        Number(form.data.language_id) ===
-                                        Number(language.id)
-                                            ? "bg-indigo-100 ring-2 ring-indigo-500"
-                                            : "bg-white ring-1 ring-gray-200 hover:ring-indigo-200"
-                                    }
-                                `}
+                                relative flex items-center justify-center p-1 sm:p-4 rounded-xl cursor-pointer
+                                transition-all duration-200 ease-in-out
+                                ${
+                                    Number(form.data.language_id) ===
+                                    Number(language.id)
+                                        ? "bg-indigo-100 ring-2 ring-indigo-500"
+                                        : "bg-white ring-1 ring-gray-200 hover:ring-indigo-200"
+                                }
+                            `}
                             >
                                 <input
                                     type="radio"
@@ -238,6 +245,27 @@ export default function CreateThreadForm({
                     </PrimaryButton>
                 </div>
             </form>
+        ),
+        [
+            form,
+            handleClose,
+            handleLanguageChange,
+            createThread,
+            isOpen,
+            roles,
+            show,
+            languages,
+        ]
+    );
+
+    // マウント前はnullを返す
+    if (!mounted) {
+        return null;
+    }
+
+    return (
+        <Modal show={show} onClose={handleClose}>
+            {modalContent}
         </Modal>
     );
 }

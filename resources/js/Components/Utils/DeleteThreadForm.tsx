@@ -3,7 +3,7 @@ import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import { useAppContext } from "@/Contexts/AppContext";
 import { useForm } from "@inertiajs/react";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useEffect, useMemo, useState } from "react";
 
 interface DeleteThreadFormProps {
     threadId: number | null;
@@ -21,6 +21,8 @@ export default function DeleteThreadForm({
     const { delete: destroy, processing } = useForm({});
 
     const { showToast } = useAppContext();
+
+    const [mounted, setMounted] = useState(false);
 
     const handleSuccess = () => {
         showToast("スレッドを削除しました", "delete");
@@ -40,8 +42,14 @@ export default function DeleteThreadForm({
         });
     };
 
-    return (
-        <Modal show={show} onClose={onClose}>
+    // コンポーネントのマウント時に一度だけ実行
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // フォームの内容をメモ化
+    const modalContent = useMemo(
+        () => (
             <form onSubmit={deleteThread} className="p-6">
                 <h2 className="text-lg font-medium text-gray-900">
                     スレッドを削除しますか？
@@ -61,6 +69,18 @@ export default function DeleteThreadForm({
                     </DangerButton>
                 </div>
             </form>
+        ),
+        [deleteThread, onClose, processing]
+    );
+
+    // マウント前はnullを返す
+    if (!mounted) {
+        return null;
+    }
+
+    return (
+        <Modal show={show} onClose={onClose}>
+            {modalContent}
         </Modal>
     );
 }

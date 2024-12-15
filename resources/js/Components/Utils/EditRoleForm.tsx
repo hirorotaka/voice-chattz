@@ -69,7 +69,7 @@ export default function EditRoleForm({
         onClose();
     };
 
-    const createRole: FormEventHandler = async (e) => {
+    const editRole: FormEventHandler = async (e) => {
         e.preventDefault();
         form.put(route("roles.update", { role: roleToEdit.id }), {
             preserveScroll: true,
@@ -85,7 +85,7 @@ export default function EditRoleForm({
     const modalContent = useMemo(
         () => (
             <form
-                onSubmit={createRole}
+                onSubmit={editRole}
                 className="p-6   max-h-[90vh] max-w-[80vw] overflow-y-auto"
             >
                 <h1 className="text-2xl font-medium text-gray-900">
@@ -231,7 +231,7 @@ export default function EditRoleForm({
             form.data,
             form.errors,
             form.processing,
-            createRole,
+            editRole,
             handleClose,
             languages,
         ]
