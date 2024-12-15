@@ -304,7 +304,7 @@ const AiMessage = ({
                     />
                     {/* 日本語訳の条件付きレンダリング */}
                     {message?.message_ja && showJapanese && (
-                        <p className="text-lg text-gray-600">
+                        <p className="text-xs sm:text-lg text-gray-600">
                             {message.message_ja}
                         </p>
                     )}

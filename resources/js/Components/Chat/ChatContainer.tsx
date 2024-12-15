@@ -467,7 +467,7 @@ const ChatContainer = ({
                 {/* マイクボタン - 録音中も操作可能にするため z-40 を設定 */}
                 {isActiveAiSound ? (
                     <button className="p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none  relative z-40 bg-gray-400">
-                        <HiMicrophone className="w-12 h-12 text-gray-600" />
+                        <HiMicrophone className="h-6 w-6 sm:w-12 sm:h-12 text-gray-600" />
                     </button>
                 ) : (
                     <Tooltip
@@ -499,7 +499,7 @@ const ChatContainer = ({
                             aria-label={isRecording ? "録音停止" : "録音開始"}
                         >
                             <HiMicrophone
-                                className={`w-12 h-12 ${
+                                className={`h-6 w-6 sm:w-12 sm:h-12 ${
                                     isRecording ? "text-white" : "text-gray-600"
                                 }`}
                             />

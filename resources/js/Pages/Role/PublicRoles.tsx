@@ -68,7 +68,7 @@ export default function PublicRoles({
                         <TextInput
                             id="search_str"
                             type="text"
-                            className="block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full sm:w-96 sm:placeholder:text-sm placeholder:text-xs"
+                            className="block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-72 sm:w-96 sm:placeholder:text-sm placeholder:text-xs"
                             placeholder="役割名か、説明で該当する単語を検索"
                             value={searchStr}
                             onChange={(e) => {

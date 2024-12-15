@@ -17,12 +17,12 @@ const MobilePublicRolesCard = ({ role }: MobileRoleCardProps) => (
                 </span>
             </div>
 
-            <div className="text-sm text-gray-600">
+            <div className="text-xs text-gray-600">
                 <p className="font-medium mb-1">初回メッセージ:</p>
                 <TruncatedText text={role.first_message} maxLength={100} />
             </div>
 
-            <div className="text-sm text-gray-600">
+            <div className="text-xs text-gray-600">
                 <p className="font-medium mb-1">説明:</p>
                 <TruncatedText text={role.description} maxLength={150} />
             </div>
