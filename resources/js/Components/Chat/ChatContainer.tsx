@@ -394,7 +394,7 @@ const ChatContainer = ({
             </div>
 
             {/* マイクボタンとタイマー表示 */}
-            <div className="flex items-center justify-end mr-4 pb-5">
+            <div className="flex items-center justify-end mr-4">
                 {/* 録音中は表示しない */}
                 {!isRecording && (
                     <div className="flex items-center mr-auto pl-5">
