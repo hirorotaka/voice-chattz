@@ -98,7 +98,7 @@ export default function AppLayout({
                 {/* Main content */}
                 <div className="flex-1 flex flex-col min-h-0">
                     {/* Header */}
-                    <div className="fixed sm:sticky top-0 z-30 bg-blue-950 shadow-lg w-full">
+                    <div className="sticky top-0 z-30 bg-blue-950 shadow-lg w-full">
                         <header className="flex items-center h-10 sm:h-16 px-4">
                             {!isSidebarOpen && (
                                 <SideToggleButton variant="header" />
