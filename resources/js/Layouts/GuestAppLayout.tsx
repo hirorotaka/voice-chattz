@@ -9,32 +9,6 @@ interface GuestAppLayoutProps {
     children: ReactNode;
 }
 
-// 言語ロケールの型定義
-type LocaleType = "en" | "ja" | "ko";
-
-type LanguageTexts = {
-    [key in LocaleType]: string;
-};
-
-// 言語モードと役割の表示テキストを定義
-const languageModeText: LanguageTexts = {
-    en: "Language Mode: English",
-    ja: "言語モード：日本語",
-    ko: "언어 모드: 한국어",
-};
-
-const roleText: LanguageTexts = {
-    en: "Role: ",
-    ja: "役割：",
-    ko: "역할: ",
-};
-
-const defaultRoleText: LanguageTexts = {
-    en: "Default",
-    ja: "デフォルト",
-    ko: "기본",
-};
-
 export default function GuestAppLayout({
     title,
     children,
