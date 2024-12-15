@@ -1,15 +1,11 @@
 import { HiPlus, HiOutlineChatAlt2 } from "react-icons/hi";
 import { HiTrash, HiOutlinePencil, HiMicrophone } from "react-icons/hi2";
-import {
-    BsFillPinAngleFill,
-    BsQuestionCircleFill,
-    BsTypeH1,
-} from "react-icons/bs";
+import { BsFillPinAngleFill, BsQuestionCircleFill } from "react-icons/bs";
 import { Link, router } from "@inertiajs/react";
 import SideToggleButton from "./SideToggleButton";
 import { LogoutButton } from "../Utils/LogoutButton";
 import { IsUsingRoleType, LanguageType, ThreadType } from "@/types/types";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import DeleteThreadForm from "../Utils/DeleteThreadForm";
 import CreateThreadForm from "../Utils/CreateThreadForm";
 import EditThreadForm from "../Utils/EditThreadForm";
@@ -112,32 +108,37 @@ export const SideMenu = ({
         });
     };
 
-    const handleThreadDelete = (threadId: number) => {
+    const handleThreadDelete = useCallback((threadId: number) => {
         setThreadToDelete(threadId);
         setShowDeleteModal(true);
-    };
+    }, []);
 
-    const handleCloseDeleteModal = () => {
+    const handleCloseDeleteModal = useCallback(() => {
         setShowDeleteModal(false);
         setThreadToDelete(null);
-    };
+    }, []);
 
-    const handleClickEditToThread = (threadId: number, title: string) => {
-        setThreadToEdit({ id: threadId, title: title });
-        setShowEditModal(true);
-    };
-
-    const handleCloseEditModal = () => {
-        setShowEditModal(false);
-        setThreadToEdit({ id: 0, title: "" });
-    };
-
-    const favariteThread = threads.filter(
-        (thread) => Boolean(thread.favorite) === true
+    const handleClickEditToThread = useCallback(
+        (threadId: number, title: string) => {
+            setThreadToEdit({ id: threadId, title: title });
+            setShowEditModal(true);
+        },
+        []
     );
 
-    const unFavariteThread = threads.filter(
-        (thread) => Boolean(thread.favorite) === false
+    const handleCloseEditModal = useCallback(() => {
+        setShowEditModal(false);
+        setThreadToEdit({ id: 0, title: "" });
+    }, []);
+
+    const favoritedThreads = useMemo(
+        () => threads.filter((thread) => Boolean(thread.favorite)),
+        [threads]
+    );
+
+    const unfavoritedThreads = useMemo(
+        () => threads.filter((thread) => !Boolean(thread.favorite)),
+        [threads]
     );
 
     return (
@@ -187,7 +188,7 @@ export const SideMenu = ({
                         className="space-y-2 overflow-y-auto flex-1"
                     >
                         {/* フェイバリートスレッド */}
-                        {favariteThread.map((thread) => {
+                        {favoritedThreads.map((thread) => {
                             const isActive =
                                 String(activeThreadId) === String(thread.id);
                             return (
@@ -273,7 +274,7 @@ export const SideMenu = ({
                         </div>
 
                         {/* 非フェイバリートスレッド */}
-                        {unFavariteThread.map((thread) => {
+                        {unfavoritedThreads.map((thread) => {
                             const isActive =
                                 String(activeThreadId) === String(thread.id);
                             return (
