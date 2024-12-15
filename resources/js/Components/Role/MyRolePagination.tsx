@@ -10,7 +10,6 @@ interface PaginationProps {
     currentPage: number;
     lastPage: number;
     links: LinkItem[];
-    searchStr: string;
 }
 
 const PaginationLink = ({
@@ -95,11 +94,10 @@ const ChevronRight = () => (
     </svg>
 );
 
-export default function RolePagination({
+export default function MyRolePagination({
     currentPage,
     lastPage,
     links,
-    searchStr,
 }: PaginationProps) {
     return (
         <nav
@@ -111,9 +109,8 @@ export default function RolePagination({
                     <div key={index}>
                         {index === 0 ? (
                             <PaginationLink
-                                href={route("roles.public", {
+                                href={route("roles.index", {
                                     page: currentPage - 1,
-                                    search_str: searchStr,
                                 })}
                                 visible={!!link.url}
                             >
@@ -122,9 +119,8 @@ export default function RolePagination({
                             </PaginationLink>
                         ) : index === lastPage + 1 ? (
                             <PaginationLink
-                                href={route("roles.public", {
+                                href={route("roles.index", {
                                     page: currentPage + 1,
-                                    search_str: searchStr,
                                 })}
                                 visible={!!link.url}
                             >
@@ -133,9 +129,8 @@ export default function RolePagination({
                             </PaginationLink>
                         ) : (
                             <PaginationNumber
-                                href={route("roles.public", {
+                                href={route("roles.index", {
                                     page: link.label,
-                                    search_str: searchStr,
                                 })}
                                 active={link.active}
                                 visible={!!link.url}

@@ -1,14 +1,16 @@
-import { lazy, useCallback, useMemo, useState } from "react";
+import { lazy, useCallback, useEffect, useMemo, useState } from "react";
 
 import AppLayout from "@/Layouts/AppLayout";
 import {
     IsUsingRoleType,
     LanguageType,
+    MyRolePaginationType,
     MyRoleType,
     ThreadType,
 } from "@/types/types";
 import MobileRoleIndexCard from "../../Components/Role/MobileRoleIndexCard";
 import DesktopRoleIndexTable from "../../Components/Role/DesktopRoleIndexTable";
+import MyRolePagination from "@/Components/Role/MyRolePagination";
 
 // 動的インポートでモーダルコンポーネントを遅延ロード
 const CreateRoleForm = lazy(() => import("@/Components/Utils/CreateRoleForm"));
@@ -18,7 +20,7 @@ const DeleteRoleForm = lazy(() => import("@/Components/Utils/DeleteRoleForm"));
 interface RoleIndexProps {
     threads: ThreadType[];
     languages: LanguageType[];
-    myRoles: MyRoleType[];
+    myRoles: MyRolePaginationType;
     isUsingMyRoles: IsUsingRoleType[];
 }
 
@@ -91,7 +93,7 @@ export default function RoleIndex({
             roles={isUsingMyRoles}
         >
             <div className="flex flex-col p-3 sm:p-5">
-                {myRoles.length === 0 ? (
+                {myRoles.data.length === 0 ? (
                     <div className="flex items-center flex-col justify-center h-full">
                         <p className="text-lg sm:text-3xl text-white font-bold mb-10 text-center">
                             あなたが作成した役割が登録されていません。
@@ -122,7 +124,7 @@ export default function RoleIndex({
                         {/* デスクトップビュー */}
                         <div className="hidden sm:block">
                             <DesktopRoleIndexTable
-                                myRoles={myRoles}
+                                myRoles={myRoles.data}
                                 onEdit={handleClickOpenEditModal}
                                 onDelete={handleClickOpenDeleteModal}
                             />
@@ -131,7 +133,7 @@ export default function RoleIndex({
                         {/* モバイルビュー */}
                         <div className="block sm:hidden">
                             <div className="space-y-4">
-                                {myRoles.map((role) => (
+                                {myRoles.data.map((role) => (
                                     <MobileRoleIndexCard
                                         key={role.id}
                                         role={role}
@@ -141,6 +143,11 @@ export default function RoleIndex({
                                 ))}
                             </div>
                         </div>
+                        <MyRolePagination
+                            currentPage={myRoles.current_page}
+                            lastPage={myRoles.last_page}
+                            links={myRoles.links}
+                        />
                     </>
                 )}
 
