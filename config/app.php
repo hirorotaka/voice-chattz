@@ -123,4 +123,6 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'aws_cloudfront_url' => env('AWS_CLOUDFRONT_URL', ''),
+
 ];

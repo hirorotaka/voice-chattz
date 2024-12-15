@@ -133,5 +133,8 @@ export interface LanguageSelectType {
 export interface SlideType {
     title: string;
     description: string;
-    image: string;
+    image: {
+        webp: string;
+        fallback: string; // JPEG/PNG用
+    };
 }

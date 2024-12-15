@@ -34,14 +34,20 @@ export const GuideSlider = ({ slides }: GuideSliderProps) => {
                             <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white" />
                         </div>
                     )}
-                    <img
-                        src={currentSlide.image}
-                        alt={currentSlide.title}
-                        className={`w-full  object-contain transition-opacity duration-300 ${
-                            imageLoaded ? "opacity-100" : "opacity-0"
-                        }`}
-                        onLoad={() => setImageLoaded(true)}
-                    />
+                    <picture>
+                        <source
+                            srcSet={currentSlide.image.webp}
+                            type="image/webp"
+                        />
+                        <img
+                            src={currentSlide.image.fallback}
+                            alt={currentSlide.title}
+                            className={`w-full object-contain transition-opacity duration-300 ${
+                                imageLoaded ? "opacity-100" : "opacity-0"
+                            }`}
+                            onLoad={() => setImageLoaded(true)}
+                        />
+                    </picture>
                 </div>
 
                 {/* Content */}
