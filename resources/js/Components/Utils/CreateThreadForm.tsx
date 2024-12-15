@@ -18,7 +18,7 @@ interface CreateThreadFormProps {
 
 interface FormData {
     title: string;
-    role_id: number | null;
+    role_id: number | null | undefined;
     language_id: number | null | undefined;
 }
 
@@ -30,11 +30,13 @@ export default function CreateThreadForm({
     roles,
 }: CreateThreadFormProps) {
     const form = useForm<FormData>({
-        title: getDefaultTitle(2), // デフォルトは日本語
-        role_id: null,
+        title: "",
+        role_id: undefined,
         language_id: undefined,
     });
     const { showToast } = useAppContext();
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const handleSuccess = () => {
         showToast("スレッドを作成しました", "success");
@@ -46,10 +48,9 @@ export default function CreateThreadForm({
         onClose();
     };
 
-    // 言語選択時に両方のデータを更新
     const handleLanguageChange = (languageId: number) => {
         form.setData({
-            role_id: null,
+            role_id: undefined,
             language_id: languageId,
             title: getDefaultTitle(languageId),
         });
@@ -58,7 +59,6 @@ export default function CreateThreadForm({
     const createThread: FormEventHandler = async (e) => {
         e.preventDefault();
 
-        // データが設定された後で送信
         form.post(route("thread.store"), {
             preserveScroll: true,
             preserveState: true,
@@ -69,9 +69,6 @@ export default function CreateThreadForm({
             },
         });
     };
-
-    const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
 
     // クリックアウトサイドで閉じる
     useEffect(() => {
@@ -107,14 +104,15 @@ export default function CreateThreadForm({
                             <label
                                 key={language.locale}
                                 className={`
-                    relative flex items-center justify-center p-1 sm:p-4 rounded-xl cursor-pointer
-                    transition-all duration-200 ease-in-out
-                    ${
-                        Number(form.data.language_id) === Number(language.id)
-                            ? "bg-indigo-100 ring-2 ring-indigo-500"
-                            : "bg-white ring-1 ring-gray-200 hover:ring-indigo-200"
-                    }
-                `}
+                                    relative flex items-center justify-center p-1 sm:p-4 rounded-xl cursor-pointer
+                                    transition-all duration-200 ease-in-out
+                                    ${
+                                        Number(form.data.language_id) ===
+                                        Number(language.id)
+                                            ? "bg-indigo-100 ring-2 ring-indigo-500"
+                                            : "bg-white ring-1 ring-gray-200 hover:ring-indigo-200"
+                                    }
+                                `}
                             >
                                 <input
                                     type="radio"
@@ -129,7 +127,7 @@ export default function CreateThreadForm({
                                             Number(e.target.value)
                                         )
                                     }
-                                    className="sr-only" // ラジオボタンを視覚的に隠す
+                                    className="sr-only"
                                 />
                                 <span
                                     className={`text-base font-medium ${
@@ -153,27 +151,39 @@ export default function CreateThreadForm({
                     </p>
 
                     <div
-                        className="relative w-60  h-72 sm:h-60 sm:w-96"
+                        className="relative w-60 h-72 sm:h-60 sm:w-96"
                         ref={dropdownRef}
                     >
-                        {/* トリガーボタン */}
                         <button
                             type="button"
                             onClick={() => setIsOpen(!isOpen)}
                             className="w-full px-3 py-2 bg-white border rounded-md text-left flex justify-between items-center"
                         >
-                            <span>
-                                {form.data.role_id
-                                    ? roles.find(
+                            <span
+                                className={
+                                    form.data.role_id === undefined
+                                        ? "text-gray-400"
+                                        : "text-gray-900"
+                                }
+                            >
+                                {form.data.role_id === undefined
+                                    ? "役割を選択してください"
+                                    : form.data.role_id === null
+                                    ? "デフォルト（フリートーク）"
+                                    : roles.find(
                                           (role) =>
                                               role.id === form.data.role_id
-                                      )?.name
-                                    : "デフォルト（フリートーク）"}
+                                      )?.name}
                             </span>
-                            <span className="text-gray-400">▼</span>
+                            <span
+                                className={`text-gray-400 transform transition-transform duration-200 ${
+                                    isOpen ? "rotate-180" : ""
+                                }`}
+                            >
+                                ▼
+                            </span>
                         </button>
 
-                        {/* オプションリスト */}
                         {isOpen && (
                             <div className="absolute left-0 right-0 mt-1 bg-white border rounded-md shadow-sm overflow-y-auto max-h-60">
                                 <div
@@ -218,7 +228,11 @@ export default function CreateThreadForm({
 
                     <PrimaryButton
                         className="ms-3"
-                        disabled={form.processing || !form.data.language_id}
+                        disabled={
+                            form.processing ||
+                            !form.data.language_id ||
+                            form.data.role_id === undefined
+                        }
                     >
                         作成する
                     </PrimaryButton>
