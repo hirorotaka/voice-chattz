@@ -5,6 +5,7 @@ import MessageDisplay from "./MessageDisplay";
 import { Avatar } from "flowbite-react";
 import TranslateButton from "../Utils/TranslateButton";
 import axios from "axios";
+import { AWS_CLOUDFRONT_URL } from "@/constants/utils";
 
 type AiMessageProps = {
     message?: MessageType;
@@ -283,9 +284,15 @@ const AiMessage = ({
         <div className="flex items-center gap-2 mb-4 justify-start">
             <div className="flex flex-wrap gap-2 bg-gray-300 rounded-full">
                 {isPlaying ? (
-                    <Avatar img="/images/icon_chat.gif" rounded />
+                    <Avatar
+                        img={`${AWS_CLOUDFRONT_URL}/icon_chat.gif`}
+                        rounded
+                    />
                 ) : (
-                    <Avatar img="/images/icon_chat.webp" rounded />
+                    <Avatar
+                        img={`${AWS_CLOUDFRONT_URL}/icon_chat.webp`}
+                        rounded
+                    />
                 )}
             </div>
             <div className="flex items-center gap-2 w-5/6">
