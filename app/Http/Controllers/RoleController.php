@@ -17,14 +17,48 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
-        $myRoles = Role::whereHas('users', function ($query) use ($user) {
+        // ページネーション用のクエリを構築
+        $query = Role::whereHas('users', function ($query) use ($user) {
             $query->where('users.id', $user->id)
-                ->where('role_user.owner', 1); // ピボットテーブルのownerカラムで絞り込み
-        })->with('language')->get();
+                ->where('role_user.owner', 1);
+        })->with('language');
+
+        // ページネーションを実行
+        $myRoles = $query->paginate(10);
+
+        // 総ページ数を取得
+        $lastPage = $myRoles->lastPage();
+
+        // 現在のページ番号を取得
+        $currentPage = $request->input('page', 1);
+
+        // 不正なページ番号の場合は最後のページにリダイレクト
+        if ($currentPage > $lastPage && $lastPage > 0) {
+            return redirect()->route('roles.index', ['page' => $lastPage]);
+        }
+        // 0以下のページ番号の場合は1ページ目にリダイレクト
+        if ($currentPage < 1) {
+            return redirect()->route('roles.index', ['page' => 1]);
+        }
+
+        // データを整形
+        $myRoles->through(function ($role) {
+            return [
+                'id' => $role->id,
+                'name' => $role->name,
+                'first_message' => $role->first_message ?? '',
+                'description' => $role->description ?? '',
+                'language_id' => $role->language_id,
+                'is_public' => $role->is_public,
+                'language' => $role->language,
+                'created_at' => $role->created_at->toISOString(),
+                'updated_at' => $role->updated_at->toISOString(),
+            ];
+        });
 
         // 自分のロールのうち、is_using が 1 のものだけを取得（非公開も含む）
         $isUsingMyRoles = $user->roles()
@@ -150,22 +184,42 @@ class RoleController extends Controller
             });
         }
 
-        // 各ロールに対してページネーションを適用し、必要な情報を整形
-        $publicRoles = $query->paginate(10)->through(function ($role) use ($user) {
-            // ユーザーがロールに紐づいているか
-            $isRelatedToUser = $role->users->isNotEmpty();
+        // ページネーションを実行
+        $publicRoles = $query->paginate(10);
 
-            // ロールを使用しているか
+        // 総ページ数を取得
+        $lastPage = $publicRoles->lastPage();
+
+        // 現在のページ番号を取得
+        $currentPage = $request->input('page', 1);
+
+        // 不正なページ番号の場合のリダイレクト処理
+        if ($currentPage > $lastPage && $lastPage > 0) {
+            return redirect()->route('roles.public', [
+                'page' => $lastPage,
+                'search_str' => $search_str
+            ]);
+        }
+        // 0以下のページ番号の場合は1ページ目にリダイレクト
+        if ($currentPage < 1) {
+            return redirect()->route('roles.public', [
+                'page' => 1,
+                'search_str' => $search_str
+            ]);
+        }
+
+        // データの整形
+        $publicRoles->through(function ($role) use ($user) {
+            $isRelatedToUser = $role->users->isNotEmpty();
             $isUsing = $isRelatedToUser ? $role->users->first()->pivot->is_using : 0;
 
             return [
                 'id' => $role->id,
                 'name' => $role->name,
-                'first_message' => $role->first_message,
-                'description' => $role->description,
-                // ... other role attributes
+                'first_message' => $role->first_message ?? '', // null対策
+                'description' => $role->description ?? '',     // null対策
                 'language_name' => $role->language->name,
-                'is_using' => $isUsing, // 使用中かどうか
+                'is_using' => $isUsing,
             ];
         });
 
