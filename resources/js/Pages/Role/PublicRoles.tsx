@@ -3,18 +3,19 @@ import AppLayout from "@/Layouts/AppLayout";
 import {
     IsUsingRoleType,
     LanguageType,
-    PublicRoleType,
+    PublicRolePaginationType,
     ThreadType,
 } from "@/types/types";
 import { useForm } from "@inertiajs/react";
 import { useState, useEffect } from "react";
 import MobilePublicRolesCard from "../../Components/Role/MobilePublicRolesCard";
 import DesktopPublicRolesTable from "../../Components/Role/DesktopPublicRolesTable";
+import RolePagination from "@/Components/Role/RolePagination";
 
 interface TopProps {
     threads: ThreadType[];
     languages: LanguageType[];
-    publicRoles: PublicRoleType[];
+    publicRoles: PublicRolePaginationType;
     isUsingMyRoles: IsUsingRoleType[];
     search_str?: string;
 }
@@ -67,8 +68,8 @@ export default function PublicRoles({
                         <TextInput
                             id="search_str"
                             type="text"
-                            className="block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full sm:w-72 sm:placeholder:text-sm placeholder:text-xs"
-                            placeholder="役割名を入力してください"
+                            className="block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full sm:w-96 sm:placeholder:text-sm placeholder:text-xs"
+                            placeholder="役割名か、説明で該当する単語を検索"
                             value={searchStr}
                             onChange={(e) => {
                                 setSearchStr(e.target.value);
@@ -89,16 +90,16 @@ export default function PublicRoles({
 
                 {/* レスポンシブ切り替え */}
                 <div className="hidden sm:block">
-                    <DesktopPublicRolesTable publicRoles={publicRoles} />
+                    <DesktopPublicRolesTable publicRoles={publicRoles.data} />
                 </div>
                 <div className="block sm:hidden">
                     <div className="space-y-4">
-                        {publicRoles.length === 0 ? (
+                        {publicRoles.data.length === 0 ? (
                             <div className="text-center text-gray-500 bg-white p-4 rounded-lg">
                                 役割が見つかりませんでした
                             </div>
                         ) : (
-                            publicRoles.map((role) => (
+                            publicRoles.data.map((role) => (
                                 <MobilePublicRolesCard
                                     key={role.id}
                                     role={role}
@@ -107,6 +108,12 @@ export default function PublicRoles({
                         )}
                     </div>
                 </div>
+                <RolePagination
+                    currentPage={publicRoles.current_page}
+                    lastPage={publicRoles.last_page}
+                    links={publicRoles.links}
+                    searchStr={searchStr}
+                />
             </div>
         </AppLayout>
     );

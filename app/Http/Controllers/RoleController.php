@@ -150,20 +150,8 @@ class RoleController extends Controller
             });
         }
 
-
-        // 公開中の全ロールのうち、自分がオーナーではないもの取得し、リレーションをロード
-        // $publicRoles = Role::where('is_public', true)
-        //     ->whereDoesntHave('users', function ($query) use ($user) {
-        //         $query->where('users.id', $user->id)
-        //             ->where('owner', 1);
-        //     })
-        //     ->with(['language', 'users' => function ($query) use ($user) {
-        //         $query->where('users.id', $user->id);
-        //     }])
-        //     ->get();
-
-        // 各ロールに対して必要な情報を整形
-        $publicRoles = $query->get()->map(function ($role) use ($user) {
+        // 各ロールに対してページネーションを適用し、必要な情報を整形
+        $publicRoles = $query->paginate(10)->through(function ($role) use ($user) {
             // ユーザーがロールに紐づいているか
             $isRelatedToUser = $role->users->isNotEmpty();
 
