@@ -1,15 +1,13 @@
-import { HiMicrophone } from "react-icons/hi2";
-import AiMessage from "./AiMessage";
-import UserMessage from "./UserMessage";
 import { flashType, MessageType, ThreadType } from "@/types/types";
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { router, usePage } from "@inertiajs/react";
-import LoadingSppiner from "../Utils/LoadingSppiner";
-import { Tooltip } from "flowbite-react";
 import { useAppContext } from "@/Contexts/AppContext";
 import RecordRTC, { RecordRTCPromisesHandler } from "recordrtc";
 import { MessageList } from "./MessageList";
 import { PlaybackSpeedControls } from "./PlaybackControls";
+import { MessageOverlay } from "./MessageOverlay";
+import { RecordingCancel } from "./RecordingCancel";
+import { MicButton } from "./MicButton";
 
 interface ChatContainerProps {
     messages: MessageType[];
@@ -383,90 +381,29 @@ const ChatContainer = ({
                         handlePlaybackRateReset={handlePlaybackRateReset}
                     />
                 )}
-                {/* 録音中またはSE再生中のオーバーレイ - マイクボタン以外を押せないようにする */}
-                {isRecording && (
-                    <div className="fixed inset-0 bg-black/5 backdrop-blur-[0.7px] z-40" />
-                )}
-                {/* Ai応答中のオーバーレイ  */}
-                {isCreatingMessage && (
-                    <div className="fixed inset-0 bg-black/5 backdrop-blur-[0.5px] z-50" />
-                )}
 
-                {/* ローディング中の表示とオーバーレイ */}
-                {isSending && (
-                    <>
-                        <div className="fixed inset-0 backdrop-blur-[0.7px] bg-black/5 z-50 transition-all duration-300 ease-in-out" />
-                        <div className="absolute inset-x-0 top-1/2 transform -translate-y-1/2 z-50 transition-all duration-300 ease-in-out">
-                            <LoadingSppiner />
-                        </div>
-                    </>
-                )}
+                {/* 録音中・ユーザーメッセージ送信・AI応答生成中のオーバーレイ */}
+                <MessageOverlay
+                    isRecording={isRecording}
+                    isCreatingMessage={isCreatingMessage}
+                    isSending={isSending}
+                />
+
                 {/* 録音時間とコントロールの表示 */}
-                {isRecording && (
-                    <div className="flex items-center gap-4 relative mr-4 z-40">
-                        <div className="flex items-center gap-2">
-                            <div className="animate-pulse">
-                                <div className="w-4 h-4 bg-red-500 rounded-full"></div>
-                            </div>
-                            <span className="text-lg font-medium text-white min-w-[130px] text-right font-mono">
-                                {`${formatTime(recordingTime)}/${formatTime(
-                                    MAX_RECORDING_TIME
-                                )}`}
-                            </span>
-                        </div>
-
-                        {/* キャンセルボタン */}
-                        <button
-                            onClick={cancelRecording}
-                            className="px-4 py-2 rounded-full bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium transition-colors duration-200"
-                            aria-label="録音キャンセル"
-                        >
-                            キャンセル
-                        </button>
-                    </div>
-                )}
+                <RecordingCancel
+                    isRecording={isRecording}
+                    recordingTime={recordingTime}
+                    maxRecordingTime={MAX_RECORDING_TIME}
+                    formatTime={formatTime}
+                    onCancel={cancelRecording}
+                />
                 {/* マイクボタン - 録音中も操作可能にするため z-40 を設定 */}
-                {isActiveAiSound ? (
-                    <button className="p-2 sm:p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none  relative z-40 bg-gray-400">
-                        <HiMicrophone className="h-6 w-6 sm:w-12 sm:h-12 text-gray-600" />
-                    </button>
-                ) : (
-                    <Tooltip
-                        content={
-                            <span className="text-md font-bold">
-                                {isRecording ? "録音停止" : "録音開始"}
-                            </span>
-                        }
-                        placement="top"
-                        style="light"
-                        arrow={false}
-                        theme={{
-                            base: "absolute z-40 inline-block rounded-lg px-3 py-2 text-sm font-medium shadow-sm",
-                        }}
-                        // baseのレイアウトを修正
-                    >
-                        <button
-                            className={`p-2 sm:p-3 rounded-full shadow-lg transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 relative z-40
-            ${
-                isRecording
-                    ? "bg-red-500 hover:bg-red-600"
-                    : "bg-white hover:bg-gray-50"
-            }`}
-                            onClick={
-                                isRecording
-                                    ? handleMicButtonClickStop
-                                    : handleMicButtonClickStart
-                            }
-                            aria-label={isRecording ? "録音停止" : "録音開始"}
-                        >
-                            <HiMicrophone
-                                className={`h-6 w-6 sm:w-12 sm:h-12 ${
-                                    isRecording ? "text-white" : "text-gray-600"
-                                }`}
-                            />
-                        </button>
-                    </Tooltip>
-                )}
+                <MicButton
+                    isRecording={isRecording}
+                    isActiveAiSound={Boolean(isActiveAiSound)}
+                    onStart={startRecording}
+                    onStop={stopRecording}
+                />
             </div>
         </div>
     );
