@@ -107,7 +107,6 @@ const AiMessage = ({
             handleactivePlayAudio?.(null);
         }
     };
-    //     if (!message?.audio_file_path || isDisabled) return;
 
     //     // アクティブな音声再生の制御
     //     if (isActiveAiSound !== null && isActiveAiSound !== message.id) {

@@ -2,12 +2,14 @@ import { HiMicrophone } from "react-icons/hi2";
 import AiMessage from "./AiMessage";
 import UserMessage from "./UserMessage";
 import { flashType, MessageType, ThreadType } from "@/types/types";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { router, usePage } from "@inertiajs/react";
 import LoadingSppiner from "../Utils/LoadingSppiner";
 import { Tooltip } from "flowbite-react";
 import { useAppContext } from "@/Contexts/AppContext";
 import RecordRTC, { RecordRTCPromisesHandler } from "recordrtc";
+import { MessageList } from "./MessageList";
+import { PlaybackSpeedControls } from "./PlaybackControls";
 
 interface ChatContainerProps {
     messages: MessageType[];
@@ -36,7 +38,7 @@ const ChatContainer = ({
     const audioChunksRef = useRef<Blob[]>([]);
     const [recordingTime, setRecordingTime] = useState(0);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
-    const MAX_RECORDING_TIME = 300; // 5分 = 300秒
+    const MAX_RECORDING_TIME = 120; // 5分 = 300秒
 
     // RecordRTCの参照を保持
     const recorderRef = useRef<RecordRTCPromisesHandler | null>(null);
@@ -69,13 +71,13 @@ const ChatContainer = ({
     const [isCreatingMessage, setIsCreatingMessage] = useState(false);
 
     // 録音時間を表示用にフォーマットする関数
-    const formatTime = (seconds: number): string => {
+    const formatTime = useCallback((seconds: number): string => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = seconds % 60;
         return `${String(minutes).padStart(2, "0")}:${String(
             remainingSeconds
         ).padStart(2, "0")}`;
-    };
+    }, []);
 
     const handleMicButtonClickStart = () => {
         // 録音中か、SE音声再生中の場合は何もしない
@@ -354,42 +356,20 @@ const ChatContainer = ({
         }
     }, [messages, hasMessages]);
 
-    // 最新のsender: 2のメッセージを取得
-    const latestSenderMessage: MessageType | undefined = useMemo(() => {
-        return [...messages].reverse().find((message) => message.sender === 2);
-    }, [messages]);
-
     return (
         <div className="flex flex-col justify-between min-h-full pb-2">
             {/* メッセージリスト - スクロール可能なエリア */}
             <div className="flex-1 overflow-y-auto">
-                <div className="flex flex-col gap-2 p-4">
-                    {messages.map((message) => (
-                        <div key={message.id}>
-                            {message.sender === 1 ? (
-                                <UserMessage message={message} />
-                            ) : (
-                                <AiMessage
-                                    message={message}
-                                    flashData={flashData}
-                                    handleactivePlayAudio={
-                                        handleactivePlayAudio
-                                    }
-                                    isActiveAiSound={isActiveAiSound}
-                                    playbackRate={globalPlaybackRate}
-                                    thread={thread}
-                                    audioUrl={audioUrl}
-                                />
-                            )}
-                        </div>
-                    ))}
-                    {/* AI応答中の表示 */}
-                    {isCreatingMessage && (
-                        <div className="animate-pulse">
-                            <AiMessage />
-                        </div>
-                    )}
-                </div>
+                <MessageList
+                    messages={messages}
+                    isCreatingMessage={isCreatingMessage}
+                    thread={thread}
+                    flashData={flashData}
+                    handleactivePlayAudio={handleactivePlayAudio}
+                    isActiveAiSound={isActiveAiSound}
+                    globalPlaybackRate={globalPlaybackRate}
+                    audioUrl={audioUrl}
+                />
                 <div ref={messagesEndRef} /> {/* 末尾に空のdiv */}
             </div>
 
@@ -397,30 +377,11 @@ const ChatContainer = ({
             <div className="flex items-center justify-end mr-4">
                 {/* 録音中は表示しない */}
                 {!isRecording && (
-                    <div className="flex items-center mr-auto pl-5">
-                        {/* 再生速度調整スライダー */}
-                        <input
-                            type="range"
-                            min="1.0"
-                            max="3.0"
-                            step="0.1"
-                            value={globalPlaybackRate}
-                            onInput={handlePlaybackRateChange}
-                            aria-label="再生速度"
-                            className="sm:w-40 h-2 bg-gray-400 rounded-full appearance-none block"
-                        />
-                        {/* 再生速度表示 */}
-                        <div className="ml-2 text-white text-lg w-8">
-                            {globalPlaybackRate}x
-                        </div>
-                        {/* 再生速度リセットボタン */}
-                        <div
-                            onClick={handlePlaybackRateReset}
-                            className="ml-2 text-white text-sm bg-white/10 hover:bg-white/20 px-2 py-1 rounded-full cursor-pointer"
-                        >
-                            リセット
-                        </div>
-                    </div>
+                    <PlaybackSpeedControls
+                        globalPlaybackRate={globalPlaybackRate}
+                        handlePlaybackRateChange={handlePlaybackRateChange}
+                        handlePlaybackRateReset={handlePlaybackRateReset}
+                    />
                 )}
                 {/* 録音中またはSE再生中のオーバーレイ - マイクボタン以外を押せないようにする */}
                 {isRecording && (
