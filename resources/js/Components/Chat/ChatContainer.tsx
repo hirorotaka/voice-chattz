@@ -360,7 +360,7 @@ const ChatContainer = ({
     }, [messages]);
 
     return (
-        <div className="flex flex-col justify-between min-h-full">
+        <div className="flex flex-col justify-between min-h-full pb-2">
             {/* メッセージリスト - スクロール可能なエリア */}
             <div className="flex-1 sm:overflow-y-auto">
                 <div className="flex flex-col gap-2 p-4">
