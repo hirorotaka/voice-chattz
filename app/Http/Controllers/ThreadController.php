@@ -12,6 +12,8 @@ use App\Models\Thread;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 
@@ -206,8 +208,53 @@ class ThreadController extends Controller
      */
     public function destroy(Thread $thread)
     {
-        $thread->delete();
-        return redirect()->route('top');
+        try {
+            DB::transaction(function () use ($thread) {
+                // スレッドに紐づく音声ファイルを削除
+                $messages = $thread->messages()
+                    ->whereNotNull('audio_file_path')
+                    ->where('audio_file_path', '!=', '')
+                    ->get();
+
+                $failedDeletes = [];
+
+                foreach ($messages as $message) {
+                    try {
+                        if (!Storage::disk('s3')->delete($message->audio_file_path)) {
+                            $failedDeletes[] = $message->audio_file_path;
+                        }
+                    } catch (\Exception $e) {
+                        Log::error('S3ファイル削除エラー: ' . $e->getMessage(), [
+                            'file_path' => $message->audio_file_path,
+                            'message_id' => $message->id,
+                            'thread_id' => $thread->id
+                        ]);
+                        $failedDeletes[] = $message->audio_file_path;
+                    }
+                }
+
+                // エラーがあった場合でもスレッドは削除する
+                $thread->delete();
+
+                // 削除に失敗したファイルがある場合
+                if (!empty($failedDeletes)) {
+                    Log::warning('一部のS3ファイルの削除に失敗:', [
+                        'failed_files' => $failedDeletes,
+                        'thread_id' => $thread->id
+                    ]);
+                }
+            });
+
+            return redirect()
+                ->route('top');
+        } catch (\Exception $e) {
+            Log::error('スレッド削除エラー: ' . $e->getMessage(), [
+                'thread_id' => $thread->id
+            ]);
+
+            return redirect()
+                ->route('top');
+        }
     }
 
     public function toggleFavorite(Thread $thread)
