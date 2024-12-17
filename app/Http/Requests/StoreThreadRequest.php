@@ -28,6 +28,7 @@ class StoreThreadRequest extends FormRequest
             'title.max' => 'タイトルは30文字以内で入力してください。',
             'language_id.required' => '言語を選択してください。',
             'language_id.exists' => '無効な言語が選択されています。',
+            'role_id.exists' => '無効なキャラクターが選択されています.',
         ];
     }
 }

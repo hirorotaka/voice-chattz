@@ -54,7 +54,7 @@ export default function PublicRoles({
 
     return (
         <AppLayout
-            title="公開プロンプト一覧"
+            title="AIキャラクターリスト（公開中）"
             threads={threads}
             languages={languages}
             roles={isUsingMyRoles}
@@ -62,14 +62,19 @@ export default function PublicRoles({
             <div className="flex flex-col p-3 sm:p-5">
                 <div className="flex flex-col items-center mb-6 gap-4">
                     <h1 className="text-xl sm:text-3xl font-semibold text-white text-center">
-                        役割一覧（公開プロンプト）
+                        AIキャラクターリスト（公開中）
                     </h1>
+                    <p className="text-xs sm:text-sm text-gray-400">
+                        『項目：使用する』の下にあるボタンをクリックすると
+                        <br />
+                        スレッド作成時にキャラクタを選択できます。
+                    </p>
                     <div className="flex flex-col sm:flex-row items-center gap-2">
                         <TextInput
                             id="search_str"
                             type="text"
                             className="block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-72 sm:w-96 sm:placeholder:text-sm placeholder:text-xs"
-                            placeholder="役割名か、説明で該当する単語を検索"
+                            placeholder="AIキャラ名か、AIキャラ人物像を検索"
                             value={searchStr}
                             onChange={(e) => {
                                 setSearchStr(e.target.value);
@@ -96,7 +101,7 @@ export default function PublicRoles({
                     <div className="space-y-4">
                         {publicRoles.data.length === 0 ? (
                             <div className="text-center text-gray-500 bg-white p-4 rounded-lg">
-                                役割が見つかりませんでした
+                                キャラクターが見つかりませんでした
                             </div>
                         ) : (
                             publicRoles.data.map((role) => (

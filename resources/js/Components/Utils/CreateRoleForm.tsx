@@ -8,6 +8,7 @@ import TextInput from "@/Components/TextInput";
 import { LanguageType } from "@/types/types";
 import TextArea from "../TextArea";
 import { useAppContext } from "@/Contexts/AppContext";
+import { ROLE_FORM_NAMES } from "@/constants/utils";
 
 interface CreateRoleFormProps {
     onClose: () => void;
@@ -44,7 +45,7 @@ export default function CreateRoleForm({
     }, []);
 
     const handleSuccess = () => {
-        showToast("役割を作成しました", "success");
+        showToast(`${ROLE_FORM_NAMES.ai_chara}を作成しました`, "success");
     };
 
     const handleClose = () => {
@@ -72,11 +73,14 @@ export default function CreateRoleForm({
                 className="p-6  max-h-[90vh] max-w-[90vw] overflow-y-auto"
             >
                 <h1 className="text-lg sm:text-2xl font-medium text-gray-900">
-                    役割を作成
+                    {ROLE_FORM_NAMES.ai_chara}を作成
                 </h1>
 
                 <div className="mt-6">
-                    <InputLabel htmlFor="name" value="役割名" />
+                    <InputLabel
+                        htmlFor="name"
+                        value={ROLE_FORM_NAMES.ai_character}
+                    />
                     <TextInput
                         id="name"
                         name="name"
@@ -95,14 +99,14 @@ export default function CreateRoleForm({
                 <div className="mt-6">
                     <InputLabel
                         htmlFor="first_message"
-                        value="初回メッセージ"
+                        value={ROLE_FORM_NAMES.first_message}
                     />
                     <TextArea // TextArea を使用
                         id="first_message"
                         name="first_message"
                         className="mt-1 block w-full h-24 md:h-28 lg:h-32 placeholder-gray-400 sm:placeholder:text-sm placeholder:text-xs" // 高さを小さく調整
                         value={form.data.first_message}
-                        placeholder={`スレッド開始時にAIが最初に送信するメッセージを入力してください。\n例：「こんにちは！私は〇〇が得意なAIです。どんな〇〇をしたいですか？」`}
+                        placeholder={`スレッド開始時にAIが最初に送信するメッセージを入力してください。\n例：「こんにちは！私は〇〇が得意なAIです。どんな〇〇をしたいですか？」\n\n※こちらを作成することで会話の方向性を強化します。`}
                         onChange={(e) =>
                             form.setData("first_message", e.target.value)
                         }
@@ -116,7 +120,10 @@ export default function CreateRoleForm({
                 </div>
 
                 <div className="mt-6">
-                    <InputLabel htmlFor="description" value="説明" />
+                    <InputLabel
+                        htmlFor="description"
+                        value={ROLE_FORM_NAMES.description}
+                    />
                     <TextArea // TextArea を使用
                         id="description"
                         name="description"
@@ -126,7 +133,8 @@ export default function CreateRoleForm({
                             form.setData("description", e.target.value)
                         }
                         rows={10}
-                        placeholder={`この役割がどのような役割なのか、\nどのような機能を持つのかを説明してください。\n\n例：「〇〇なAIです。〇〇ができます。」`}
+                        placeholder={`このキャラクターがどのような性格なのか、\nどのような能力を持つのかを記載してください。\n\n例：「私は褒めるのが得意なカウンセラーです。とにかく話を聞くのが得意です。」
+                       `}
                     />
                     {form.errors.description && (
                         <div className="text-red-500 text-sm mt-1">
@@ -138,11 +146,7 @@ export default function CreateRoleForm({
                 <div className="mt-6">
                     <InputLabel value="対話モード *" />
                     <p className="text-xs sm:text-sm text-gray-500 mb-4">
-                        使用する言語モードを選択してください。
-                        <br />
-                        英語用には英語モード、日本語用には日本語モードを選択してください。
-                        <br />
-                        合わせることで精度が高くなります。
+                        会話する言語に合わせてモードを選択すると、より正確な応答が得られます。
                     </p>
                     <div className="grid grid-cols-4 gap-2 sm:gap-3 max-w-100">
                         {languages?.map((language) => (

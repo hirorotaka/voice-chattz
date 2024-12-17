@@ -13,13 +13,13 @@ const DesktopPublicRolesTable = ({ publicRoles }: DesktopTableProps) => (
                 <thead className="bg-gray-200">
                     <tr>
                         <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
-                            役割名
+                            AIキャラ名
                         </th>
                         <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
-                            初回メッセージ
+                            キャラクター挨拶文
                         </th>
                         <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
-                            説明
+                            キャラクター人物像
                         </th>
                         <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
                             言語 <br />

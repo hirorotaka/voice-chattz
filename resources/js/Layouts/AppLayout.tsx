@@ -34,10 +34,10 @@ const languageModeText: LanguageTexts = {
 };
 
 const roleText: LanguageTexts = {
-    en: "Role: ",
-    ja: "役割：",
-    ko: "역할: ",
-    de: "Rolle: ",
+    en: "AI Character: ",
+    ja: "AIキャラクター：",
+    ko: "AI 캐릭터: ",
+    de: "KI-Charakter: ",
 };
 
 const defaultRoleText: LanguageTexts = {

@@ -11,6 +11,7 @@ import {
 import MobileRoleIndexCard from "../../Components/Role/MobileRoleIndexCard";
 import DesktopRoleIndexTable from "../../Components/Role/DesktopRoleIndexTable";
 import MyRolePagination from "@/Components/Role/MyRolePagination";
+import { ROLE_FORM_NAMES } from "@/constants/utils";
 
 // 動的インポートでモーダルコンポーネントを遅延ロード
 const CreateRoleForm = lazy(() => import("@/Components/Utils/CreateRoleForm"));
@@ -87,7 +88,7 @@ export default function RoleIndex({
 
     return (
         <AppLayout
-            title="役割一覧(自分)"
+            title="AIキャラクターリスト(自分)"
             threads={threads}
             languages={languages}
             roles={isUsingMyRoles}
@@ -96,28 +97,36 @@ export default function RoleIndex({
                 {myRoles.data.length === 0 ? (
                     <div className="flex items-center flex-col justify-center h-full">
                         <p className="text-lg sm:text-3xl text-white font-bold mb-10 text-center">
-                            あなたが作成した役割が登録されていません。
+                            あなたが作成したAIキャラクターが登録されていません。
                             <br />
-                            役割を作成してみましょう。
+                            AIキャラクターを作成してみましょう。
+                            <br />
+                            <br />
+                            作成したキャラクターはスレッド作成時に選択できます。
                         </p>
                         <button
                             onClick={handleOpenCreateModal}
                             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded text-xl sm:text-3xl"
                         >
-                            役割作成
+                            {ROLE_FORM_NAMES.ai_chara}作成
                         </button>
                     </div>
                 ) : (
                     <>
                         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-                            <h1 className="text-xl sm:text-3xl font-semibold text-white text-center">
-                                役割一覧(自分)
-                            </h1>
+                            <div>
+                                <h1 className="text-xl sm:text-3xl font-semibold text-white text-center">
+                                    AIキャラクターリスト(自分)
+                                </h1>
+                                <p className="text-xs sm:text-sm text-gray-400">
+                                    作成したキャラクターをスレッド作成時に選択できます。
+                                </p>
+                            </div>
                             <button
                                 onClick={handleOpenCreateModal}
                                 className="w-full sm:w-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                             >
-                                役割作成
+                                AIキャラ作成
                             </button>
                         </div>
 

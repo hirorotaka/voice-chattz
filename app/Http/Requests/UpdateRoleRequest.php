@@ -37,9 +37,9 @@ class UpdateRoleRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => '役割名',
-            'first_message' => '初回メッセージ',
-            'description' => '説明',
+            'name' => 'キャラクター名',
+            'first_message' => 'キャラクター挨拶文',
+            'description' => 'キャラクター人物像',
             'language_id' => '対話モード',
         ];
     }

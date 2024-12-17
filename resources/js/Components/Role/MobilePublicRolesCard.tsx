@@ -1,5 +1,6 @@
 import PublicRoleToggleButton from "@/Components/Role/PublicRoleToggleButton";
 import TruncatedText from "@/Components/Utils/TruncatedText";
+import { ROLE_FORM_NAMES } from "@/constants/utils";
 import { PublicRoleType } from "@/types/types";
 import React from "react";
 
@@ -18,12 +19,16 @@ const MobilePublicRolesCard = ({ role }: MobileRoleCardProps) => (
             </div>
 
             <div className="text-xs text-gray-600">
-                <p className="font-medium mb-1">初回メッセージ:</p>
+                <p className="font-medium mb-1">
+                    {ROLE_FORM_NAMES.first_message}:
+                </p>
                 <TruncatedText text={role.first_message} maxLength={100} />
             </div>
 
             <div className="text-xs text-gray-600">
-                <p className="font-medium mb-1">説明:</p>
+                <p className="font-medium mb-1">
+                    {ROLE_FORM_NAMES.description}:
+                </p>
                 <TruncatedText text={role.description} maxLength={150} />
             </div>
 

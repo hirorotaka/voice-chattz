@@ -152,13 +152,17 @@ export default function CreateThreadForm({
                 </div>
 
                 <div className="mt-6">
-                    <InputLabel value="役割選択 *" />
+                    <InputLabel value="AIキャラクターを選択 *" />
                     <p className="text-xs sm:text-sm text-gray-500 mb-4">
-                        AIに特定の役割や専門性を持たせることができます。
+                        目的に合わせたAIキャラクターとの会話が可能です。
+                        <br />
+                        スレッド作成時に、自作または公開中のAIキャラクターを選択できます。
+                        <br />
+                        選択がない場合は、デフォルト（フリートーク）で会話します。
                     </p>
 
                     <div
-                        className="relative w-60 h-72 sm:h-60 sm:w-96"
+                        className="relative w-72 h-72 sm:h-60 sm:w-96"
                         ref={dropdownRef}
                     >
                         <button
@@ -167,14 +171,17 @@ export default function CreateThreadForm({
                             className="w-full px-3 py-2 bg-white border rounded-md text-left flex justify-between items-center"
                         >
                             <span
-                                className={
-                                    form.data.role_id === undefined
-                                        ? "text-gray-400"
-                                        : "text-gray-900"
-                                }
+                                className={`
+                                    ${
+                                        form.data.role_id === undefined
+                                            ? "text-gray-400"
+                                            : "text-gray-900"
+                                    }
+                                    text-sm sm:text-base
+                                 `}
                             >
                                 {form.data.role_id === undefined
-                                    ? "役割を選択してください"
+                                    ? "AIキャラクターを選択してください"
                                     : form.data.role_id === null
                                     ? "デフォルト（フリートーク）"
                                     : roles.find(

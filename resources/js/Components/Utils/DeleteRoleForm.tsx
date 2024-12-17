@@ -23,7 +23,7 @@ export default function DeleteRoleForm({
     const [mounted, setMounted] = useState(false);
 
     const handleSuccess = () => {
-        showToast("役割を削除しました", "delete");
+        showToast("AIキャラを削除しました", "delete");
     };
 
     const deleteRole: FormEventHandler = (e) => {
@@ -49,7 +49,7 @@ export default function DeleteRoleForm({
         () => (
             <form onSubmit={deleteRole} className="p-6">
                 <h2 className="text-lg font-medium text-gray-900">
-                    役割を削除しますか？
+                    AIキャラを削除しますか？
                 </h2>
 
                 <p className="mt-1 text-sm text-gray-600">

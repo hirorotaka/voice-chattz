@@ -1,5 +1,6 @@
 import RoleToggleButton from "@/Components/Role/RoleToggleButton";
 import TruncatedText from "@/Components/Utils/TruncatedText";
+import { ROLE_FORM_NAMES } from "@/constants/utils";
 import { MyRoleType } from "@/types/types";
 import { Tooltip } from "flowbite-react";
 import React from "react";
@@ -62,12 +63,16 @@ const MobileRoleIndexCard = ({
             </div>
 
             <div className="text-sm text-gray-600">
-                <p className="font-medium mb-1">初回メッセージ:</p>
+                <p className="font-medium mb-1">
+                    {ROLE_FORM_NAMES.first_message}:
+                </p>
                 <TruncatedText text={role.first_message} maxLength={100} />
             </div>
 
             <div className="text-sm text-gray-600">
-                <p className="font-medium mb-1">説明:</p>
+                <p className="font-medium mb-1">
+                    {ROLE_FORM_NAMES.description}:
+                </p>
                 <TruncatedText text={role.description} maxLength={150} />
             </div>
 

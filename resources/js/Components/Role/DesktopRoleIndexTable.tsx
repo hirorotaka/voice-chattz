@@ -1,5 +1,6 @@
 import RoleToggleButton from "@/Components/Role/RoleToggleButton";
 import TruncatedText from "@/Components/Utils/TruncatedText";
+import { ROLE_FORM_NAMES } from "@/constants/utils";
 import { MyRoleType } from "@/types/types";
 import { Tooltip } from "flowbite-react";
 import { HiTrash, HiOutlinePencil } from "react-icons/hi2";
@@ -21,16 +22,16 @@ const DesktopRoleIndexTable = ({
                 <thead className="bg-gray-200">
                     <tr className="font-bold">
                         <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                            役割名
+                            {ROLE_FORM_NAMES.ai_chara}名
                         </th>
                         <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                            初回メッセージ
+                            {ROLE_FORM_NAMES.first_message}
                         </th>
                         <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">
-                            説明
+                            {ROLE_FORM_NAMES.description}
                         </th>
                         <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">
-                            言語モード
+                            言語
                         </th>
                         <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase tracking-wider whitespace-nowrap">
                             公開状態

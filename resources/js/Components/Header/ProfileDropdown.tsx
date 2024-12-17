@@ -22,10 +22,10 @@ const ProfileDropdown = () => {
                 <Dropdown.Item>TOP</Dropdown.Item>
             </Link>
             <Link href={route("roles.index")}>
-                <Dropdown.Item>役割一覧(自分)</Dropdown.Item>
+                <Dropdown.Item>AIキャラリスト(自分)</Dropdown.Item>
             </Link>
             <Link href={route("roles.public")}>
-                <Dropdown.Item>役割一覧(公開中)</Dropdown.Item>
+                <Dropdown.Item>AIキャラリスト(公開中)</Dropdown.Item>
             </Link>
             <Dropdown.Item onClick={handleLogout}>ログアウト</Dropdown.Item>
         </Dropdown>
