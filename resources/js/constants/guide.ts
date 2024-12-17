@@ -61,7 +61,7 @@ export const slides: SlideType[] = [
         description:
             "ブラウザからマイクのアクセス許可のポップアップが出る方は、許可をクリックしてください。\n拒否を押してしまった方は、URL欄左端にあるアイコンをクリックしてマイクの許可をしてください。",
         image: {
-            webp: `${AWS_CLOUDFRONT_URL}/step7.webp`,
+            webp: `${AWS_CLOUDFRONT_URL}/step7_var2.webp`,
             fallback: "/step7.png",
         },
     },
