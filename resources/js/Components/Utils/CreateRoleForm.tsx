@@ -203,7 +203,17 @@ export default function CreateRoleForm({
                         キャンセル
                     </SecondaryButton>
 
-                    <PrimaryButton className="ms-3" type="submit">
+                    <PrimaryButton
+                        className="ms-3"
+                        type="submit"
+                        disabled={
+                            form.processing ||
+                            !form.data.name ||
+                            !form.data.first_message ||
+                            !form.data.description ||
+                            !form.data.language_id
+                        }
+                    >
                         作成する
                     </PrimaryButton>
                 </div>

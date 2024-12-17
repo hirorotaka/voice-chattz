@@ -224,7 +224,13 @@ export default function EditRoleForm({
                     <PrimaryButton
                         className="ms-3"
                         type="submit"
-                        disabled={form.processing}
+                        disabled={
+                            form.processing ||
+                            !form.data.name ||
+                            !form.data.first_message ||
+                            !form.data.description ||
+                            !form.data.language_id
+                        }
                     >
                         更新する
                     </PrimaryButton>
