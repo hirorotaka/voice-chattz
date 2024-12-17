@@ -23,7 +23,7 @@ export const slides: SlideType[] = [
     {
         title: "Step 3: 会話を送信",
         description:
-            "話し終わったら、もう一度マイクボタンをクリック。\nあなたの声が、AIに送信されます。",
+            "話し終わったら、もう一度マイクボタンをクリック。\nあなたの声が、AIキャラクターに送信されます。",
         image: {
             webp: `${AWS_CLOUDFRONT_URL}/step3.webp`,
             fallback: "/step3.png",
@@ -32,25 +32,25 @@ export const slides: SlideType[] = [
     {
         title: "Step 4: AIと対話",
         description:
-            "AIが音声で応答します。\n右下のスライダーで音声の速度を調整できます。\n必要な場合は、日本語訳も表示できます。",
+            "AIキャラクターが音声で応答します。\n右下のスライダーで音声の速度を調整できます。\n必要な場合は、日本語訳も表示できます。",
         image: {
             webp: `${AWS_CLOUDFRONT_URL}/step4.webp`,
             fallback: "/step4.png",
         },
     },
     {
-        title: "カスタム機能1: オリジナルAIを作る",
+        title: "カスタム機能1: オリジナルAIキャラクターを作る",
         description:
-            "右上のユーザー名 → 「役割一覧（自分）」をクリック。\n自分だけのAIキャラクターを作成できます。\n作ったAIは「公開」をオンにすると、他のユーザーにもシェアできます。",
+            "右上のユーザー名 → 「AIキャラリスト（自分）」をクリック。\n自分だけのAIキャラクターを作成できます。\n作ったAIは「公開」をオンにすると、他のユーザーにもシェアできます。",
         image: {
             webp: `${AWS_CLOUDFRONT_URL}/step5.webp`,
             fallback: "/step5.png",
         },
     },
     {
-        title: "カスタム機能2: 公開されたAIを使う",
+        title: "カスタム機能2: 公開されたAIキャラクターを使う",
         description:
-            "右上のユーザー名 → 「役割一覧（公開中）」をクリック。\n「公開中のものを使用する」をオンにすると、\n他のユーザーが作成したAIキャラクターを使えます。\n役割はスレッドを作成するときに選べるようになります。",
+            "右上のユーザー名 → 「AIキャラリスト（公開中）」をクリック。\n「公開中のものを使用する」をオンにすると、\n他のユーザーが作成したAIキャラクターを使えます。\n役割はスレッドを作成するときに選べるようになります。",
         image: {
             webp: `${AWS_CLOUDFRONT_URL}/step6.webp`,
             fallback: "/step6.png",
