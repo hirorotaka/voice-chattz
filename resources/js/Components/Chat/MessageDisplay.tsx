@@ -68,34 +68,54 @@ const MessageDisplay = ({ content }: { content: string }) => {
         },
         // 見出し
         h1: ({ children }) => (
-            <h1 className="text-2xl font-bold mb-4 mt-6">{children}</h1>
+            <h1 className="text-lg sm:text-2xl font-bold mb-4 mt-6">
+                {children}
+            </h1>
         ),
         h2: ({ children }) => (
-            <h2 className="text-xl font-bold mb-3 mt-5">{children}</h2>
+            <h2 className="text-base sm:text-xl font-bold mb-3 mt-5">
+                {children}
+            </h2>
         ),
         h3: ({ children }) => (
-            <h3 className="text-lg font-bold mb-2 mt-4">{children}</h3>
+            <h3 className="text-sm sm:text-lg font-bold mb-2 mt-4">
+                {children}
+            </h3>
         ),
         // リスト
         ol: ({ children }) => (
-            <ol className="list-decimal ml-6 mb-4 space-y-1">{children}</ol>
+            <ol className="text-xs sm:text-base list-decimal ml-6 mb-4 space-y-1">
+                {children}
+            </ol>
         ),
         ul: ({ children }) => (
-            <ul className="list-disc ml-6 mb-4 space-y-1">{children}</ul>
+            <ul className="text-xs sm:text-base list-disc ml-6 mb-4 space-y-1">
+                {children}
+            </ul>
         ),
-        li: ({ children }) => <li className="mb-1">{children}</li>,
+        li: ({ children }) => (
+            <li className="text-xs sm:text-base mb-1">{children}</li>
+        ),
         // 段落
-        p: ({ children }) => <p className="mb-4 leading-relaxed">{children}</p>,
+        p: ({ children }) => (
+            <p className="text-xs sm:text-base mb-4 leading-relaxed">
+                {children}
+            </p>
+        ),
         // 強調
         strong: ({ children }) => (
-            <strong className="font-bold">{children}</strong>
+            <strong className="text-xs sm:text-base font-bold">
+                {children}
+            </strong>
         ),
-        em: ({ children }) => <em className="italic">{children}</em>,
+        em: ({ children }) => (
+            <em className="text-xs sm:text-base italic">{children}</em>
+        ),
         // リンク
         a: ({ children, href }) => (
             <a
                 href={href}
-                className="text-blue-600 hover:text-blue-800 underline"
+                className="text-xs sm:text-base text-blue-600 hover:text-blue-800 underline"
                 target="_blank"
                 rel="noopener noreferrer"
             >
