@@ -355,7 +355,7 @@ const ChatContainer = ({
     }, [messages, hasMessages]);
 
     return (
-        <div className="flex flex-col justify-between min-h-full pb-2">
+        <div className="flex flex-col justify-between min-h-full pb-28 sm:pb-2">
             {/* メッセージリスト - スクロール可能なエリア */}
             <div className="flex-1 overflow-y-auto">
                 <MessageList
