@@ -17,6 +17,9 @@ export default {
             fontFamily: {
                 sans: ['"Noto Sans JP"', "sans-serif"],
             },
+            padding: {
+                "safe-bottom": "env(safe-area-inset-bottom)",
+            },
         },
     },
 
