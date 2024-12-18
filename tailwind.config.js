@@ -17,36 +17,8 @@ export default {
             fontFamily: {
                 sans: ['"Noto Sans JP"', "sans-serif"],
             },
-            height: {
-                "screen-safe": ["100vh", "100dvh", "-webkit-fill-available"],
-            },
         },
     },
 
-    plugins: [
-        forms,
-        flowbite.plugin(),
-        function ({ addUtilities }) {
-            addUtilities({
-                ".p-safe": {
-                    "padding-top": "var(--sat)",
-                    "padding-right": "var(--sar)",
-                    "padding-bottom": "var(--sab)",
-                    "padding-left": "var(--sal)",
-                },
-                ".pt-safe": {
-                    "padding-top": "var(--sat)",
-                },
-                ".pr-safe": {
-                    "padding-right": "var(--sar)",
-                },
-                ".pb-safe": {
-                    "padding-bottom": "var(--sab)",
-                },
-                ".pl-safe": {
-                    "padding-left": "var(--sal)",
-                },
-            });
-        },
-    ],
+    plugins: [forms, flowbite.plugin()],
 };

@@ -147,8 +147,8 @@ export const SideMenu = ({
 
     return (
         <>
-            <div className="bg-blue-600 h-screen-safe safe-area-container">
-                <div className="w-64 sm:p-4 h-full flex flex-col">
+            <div className="bg-blue-600 h-100dvh">
+                <div className="w-64 p-4 h-screen flex flex-col">
                     {/* ヘッダー */}
                     <div className="flex items-center text-white mb-8">
                         <Link href={route("top")} className="flex items-center">
@@ -201,6 +201,10 @@ export const SideMenu = ({
                                 </div>
                             </div>
                         </Link>
+
+                        <div className="block sm:hidden mt-auto">
+                            <ProfileDropdown />
+                        </div>
                     </div>
 
                     {/* スレッドリスト */}
@@ -241,7 +245,7 @@ export const SideMenu = ({
                         ))}
                     </nav>
 
-                    <div className="mt-auto">
+                    <div className="hidden sm:block mt-auto">
                         <ProfileDropdown />
                     </div>
                 </div>
