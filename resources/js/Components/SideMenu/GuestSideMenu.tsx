@@ -11,7 +11,7 @@ export const GuestSideMenu = () => {
             <div className="bg-blue-600 min-h-screen">
                 <div className="w-64 p-4 h-screen flex flex-col">
                     {/* ヘッダー */}
-                    <div className="flex items-center text-white mb-8">
+                    <div className="flex items-center text-white mb-4">
                         <Link href={route("top")} className="flex items-center">
                             <HiMicrophone className="h-6 w-6 mr-2" />
                             <h1 className="text-lg font-semibold">
@@ -25,15 +25,15 @@ export const GuestSideMenu = () => {
                     </div>
 
                     <Link href={route("how-to-use")}>
-                        <div className="flex items-center p-3 mb-8 text-white bg-blue-700 hover:bg-blue-600 rounded-lg shadow-md transition-colors duration-300">
+                        <div className="flex items-center p-3 mb-4 text-white bg-blue-700 hover:bg-blue-600 rounded-lg shadow-md transition-colors duration-300">
                             <BsQuestionCircleFill className="h-5 w-5 mr-2 flex-shrink-0" />
                             <span className="text-base font-medium">
                                 使い方ガイド
                             </span>
                         </div>
                     </Link>
-                    <RegisterButton />
                     <LoginButton />
+                    <RegisterButton />
                 </div>
             </div>
         </>
