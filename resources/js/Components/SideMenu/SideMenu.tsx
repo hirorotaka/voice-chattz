@@ -148,7 +148,7 @@ export const SideMenu = ({
     return (
         <>
             <div className="bg-blue-600 h-[100dvh] flex flex-col">
-                <div className="w-64 p-4 h-screen flex flex-col pb-safe-bottom">
+                <div className="w-64 p-4 h-screen flex flex-col">
                     {/* ヘッダー */}
                     <div className="flex items-center text-white mb-8">
                         <Link href={route("top")} className="flex items-center">
@@ -241,7 +241,7 @@ export const SideMenu = ({
                         ))}
                     </nav>
 
-                    <div className="pb-20 sm:pb-0 mt-auto">
+                    <div className="pb-24 sm:pb-0 mt-auto">
                         <ProfileDropdown />
                     </div>
                 </div>
