@@ -88,7 +88,7 @@ export default function RoleIndex({
 
     return (
         <AppLayout
-            title="AIキャラクターリスト(自分)"
+            title="マイAIキャラクター"
             threads={threads}
             languages={languages}
             roles={isUsingMyRoles}
@@ -115,8 +115,8 @@ export default function RoleIndex({
                     <>
                         <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
                             <div>
-                                <h1 className="text-xl sm:text-3xl font-semibold text-white text-center">
-                                    AIキャラクターリスト(自分)
+                                <h1 className="text-xl sm:text-3xl font-semibold text-white">
+                                    マイAIキャラクター
                                 </h1>
                                 <p className="text-xs sm:text-sm text-gray-400">
                                     作成したキャラクターをスレッド作成時に選択できます。

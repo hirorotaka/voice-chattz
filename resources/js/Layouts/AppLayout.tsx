@@ -132,9 +132,6 @@ export default function AppLayout({
                                     </div>
                                 </>
                             )}
-                            <div className="ml-auto text-white font-bold text-2xl">
-                                <ProfileDropdown />
-                            </div>
                         </header>
                     </div>
 

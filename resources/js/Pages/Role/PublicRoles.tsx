@@ -54,7 +54,7 @@ export default function PublicRoles({
 
     return (
         <AppLayout
-            title="AIキャラクターリスト（公開中）"
+            title="公開AIキャラクター"
             threads={threads}
             languages={languages}
             roles={isUsingMyRoles}
@@ -62,7 +62,7 @@ export default function PublicRoles({
             <div className="flex flex-col p-3 sm:p-5">
                 <div className="flex flex-col items-center mb-6 gap-4">
                     <h1 className="text-xl sm:text-3xl font-semibold text-white text-center">
-                        AIキャラクターリスト（公開中）
+                        公開AIキャラクター
                     </h1>
                     <p className="text-xs sm:text-sm text-gray-400">
                         『項目：使用する』の下にあるボタンをクリックすると

@@ -11,6 +11,9 @@ import CreateThreadForm from "../Utils/CreateThreadForm";
 import EditThreadForm from "../Utils/EditThreadForm";
 import { FavoriteThread } from "./FavoritedThreadItem";
 import { UnfavoritedThread } from "./UnfavoritedThreadItem";
+import { HiUserCircle } from "react-icons/hi2"; // 個人用アイコン
+import { HiUsers } from "react-icons/hi2"; // 公開用アイコン
+import ProfileDropdown from "../Header/ProfileDropdown";
 
 interface SideMenuProps {
     threads: ThreadType[];
@@ -160,15 +163,6 @@ export const SideMenu = ({
                         />
                     </div>
 
-                    <Link href={route("how-to-use")}>
-                        <div className="flex items-center p-3 mb-8 text-white bg-blue-700 hover:bg-blue-600 rounded-lg shadow-md transition-colors duration-300">
-                            <BsQuestionCircleFill className="h-5 w-5 mr-2 flex-shrink-0" />
-                            <span className="text-base font-medium">
-                                使い方ガイド
-                            </span>
-                        </div>
-                    </Link>
-
                     {/* 新規スレッド作成ボタン */}
                     <button
                         onClick={handleCreateThread}
@@ -182,6 +176,32 @@ export const SideMenu = ({
                             </span>
                         </div>
                     </button>
+
+                    <div className="space-y-3 mb-6">
+                        {/* マイAIキャラクター */}
+                        <Link href={route("roles.index")}>
+                            <div className="flex items-center p-2 mb-2 text-white bg-gradient-to-r from-blue-800 via-blue-700 to-blue-600 hover:from-blue-700 hover:via-blue-600 hover:to-blue-500 rounded-lg shadow-sm transition-all duration-300 hover:shadow-md">
+                                <HiUserCircle className="h-6 w-6 mr-3 flex-shrink-0 text-blue-300" />
+                                <div className="flex flex-col">
+                                    <span className="text-base font-medium">
+                                        マイAIキャラクター
+                                    </span>
+                                </div>
+                            </div>
+                        </Link>
+
+                        {/* 公開AIキャラクター */}
+                        <Link href={route("roles.public")}>
+                            <div className="flex items-center p-2 text-white bg-gradient-to-l from-indigo-800 via-indigo-700 to-indigo-600 hover:from-indigo-700 hover:via-indigo-600 hover:to-indigo-500 rounded-lg shadow-sm transition-all duration-300 hover:shadow-md">
+                                <HiUsers className="h-6 w-6 mr-3 flex-shrink-0 text-indigo-300" />
+                                <div className="flex flex-col">
+                                    <span className="text-base font-medium">
+                                        公開AIキャラクター
+                                    </span>
+                                </div>
+                            </div>
+                        </Link>
+                    </div>
 
                     {/* スレッドリスト */}
                     <nav
@@ -221,7 +241,7 @@ export const SideMenu = ({
                         ))}
                     </nav>
 
-                    <LogoutButton />
+                    <ProfileDropdown />
                 </div>
             </div>
 

@@ -1,34 +1,74 @@
 import { Link, router, usePage } from "@inertiajs/react";
-import { Dropdown } from "flowbite-react";
+import { HiUserCircle, HiCog } from "react-icons/hi2";
+import { HiHome } from "react-icons/hi2"; // TOPアイコン
+import { HiQuestionMarkCircle } from "react-icons/hi2"; // 使い方ガイドアイコン
+import { HiArrowLeftOnRectangle } from "react-icons/hi2"; // ログアウトアイコン
+import { useState } from "react";
+import { IoSettingsOutline } from "react-icons/io5";
 
 const ProfileDropdown = () => {
     const { auth } = usePage().props;
+    const [isOpen, setIsOpen] = useState(false);
+
     const handleLogout = () => {
         router.post(route("logout"));
     };
 
+    // ユーザー名を省略する関数
+    const truncateName = (name: string) => {
+        return name.length > 20 ? name.substring(0, 20) + "..." : name;
+    };
+
     return (
-        <Dropdown
-            label={
-                <span className="hidden sm:block">
-                    {auth.user?.name || "メニュー"}
+        <div className="relative mb-2">
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full p-3 flex items-center text-white bg-blue-700/100 hover:bg-blue-600/100 rounded-lg transition-colors duration-200"
+            >
+                <span className="text-base font-bold flex-grow text-left">
+                    {truncateName(auth.user?.name || "メニュー")}
                 </span>
-            }
-            dismissOnClick={false}
-            inline
-        >
-            <Dropdown.Divider />
-            <Link href={route("top")}>
-                <Dropdown.Item>TOP</Dropdown.Item>
-            </Link>
-            <Link href={route("roles.index")}>
-                <Dropdown.Item>AIキャラリスト(自分)</Dropdown.Item>
-            </Link>
-            <Link href={route("roles.public")}>
-                <Dropdown.Item>AIキャラリスト(公開中)</Dropdown.Item>
-            </Link>
-            <Dropdown.Item onClick={handleLogout}>ログアウト</Dropdown.Item>
-        </Dropdown>
+                <IoSettingsOutline
+                    className={`h-6 w-6 text-blue-200 transition-transform duration-300 ${
+                        isOpen ? "rotate-45 transform" : ""
+                    }`}
+                />
+            </button>
+
+            {isOpen && (
+                <>
+                    <div
+                        className="fixed inset-0 z-10"
+                        onClick={() => setIsOpen(false)}
+                    />
+                    <div className="absolute bottom-full left-0 w-full mb-2 bg-white rounded-lg shadow-lg overflow-hidden z-20">
+                        <div className="py-1">
+                            <Link
+                                href={route("top")}
+                                className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                            >
+                                <HiHome className="h-5 w-5 mr-2 text-gray-500" />
+                                TOP
+                            </Link>
+                            <Link
+                                href={route("how-to-use")}
+                                className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                            >
+                                <HiQuestionMarkCircle className="h-5 w-5 mr-2 text-gray-500" />
+                                使い方ガイド
+                            </Link>
+                            <button
+                                onClick={handleLogout}
+                                className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                            >
+                                <HiArrowLeftOnRectangle className="h-5 w-5 mr-2 text-gray-500" />
+                                ログアウト
+                            </button>
+                        </div>
+                    </div>
+                </>
+            )}
+        </div>
     );
 };
 
