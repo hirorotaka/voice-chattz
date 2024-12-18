@@ -20,7 +20,12 @@ const ProfileDropdown = () => {
     };
 
     return (
-        <div className="relative mb-2">
+        <div
+            className="relative mb-2"
+            style={{
+                paddingBottom: "env(safe-area-inset-bottom, 40px)",
+            }}
+        >
             <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full p-3 flex items-center text-white bg-blue-700/100 hover:bg-blue-600/100 rounded-lg transition-colors duration-200"
@@ -41,7 +46,12 @@ const ProfileDropdown = () => {
                         className="fixed inset-0 z-10"
                         onClick={() => setIsOpen(false)}
                     />
-                    <div className="absolute bottom-full left-0 w-full mb-2 bg-white rounded-lg shadow-lg overflow-hidden z-20">
+                    <div
+                        style={{
+                            marginBottom: `calc(env(safe-area-inset-bottom, 40px) + 0.5rem)`,
+                        }}
+                        className="absolute bottom-full left-0 w-full mb-2 bg-white rounded-lg shadow-lg overflow-hidden z-20"
+                    >
                         <div className="py-1">
                             <Link
                                 href={route("top")}
