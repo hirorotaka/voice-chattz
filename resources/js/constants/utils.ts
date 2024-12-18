@@ -7,3 +7,10 @@ export const ROLE_FORM_NAMES = {
     description: "AIキャラクター人物像",
     language_id: "対話モード",
 };
+
+export const ROLE_TABLE_NAMES = {
+    ai_character: "AIキャラ名",
+    first_message: "AIキャラ挨拶文",
+    description: "AIキャラ人物像",
+    language_id: "対話モード",
+};

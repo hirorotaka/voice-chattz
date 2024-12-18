@@ -67,7 +67,7 @@ export default function PublicRoles({
                     <p className="text-xs sm:text-sm text-gray-400">
                         『項目：使用する』の下にあるボタンをクリックすると
                         <br />
-                        スレッド作成時にキャラクタを選択できます。
+                        スレッド作成時にキャラクターを選択できます。
                     </p>
                     <div className="flex flex-col sm:flex-row items-center gap-2">
                         <TextInput

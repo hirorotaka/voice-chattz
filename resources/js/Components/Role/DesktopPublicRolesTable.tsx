@@ -1,5 +1,6 @@
 import PublicRoleToggleButton from "@/Components/Role/PublicRoleToggleButton";
 import TruncatedText from "@/Components/Utils/TruncatedText";
+import { ROLE_TABLE_NAMES } from "@/constants/utils";
 import { PublicRoleType } from "@/types/types";
 
 interface DesktopTableProps {
@@ -13,13 +14,13 @@ const DesktopPublicRolesTable = ({ publicRoles }: DesktopTableProps) => (
                 <thead className="bg-gray-200">
                     <tr>
                         <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
-                            AIキャラ名
+                            {ROLE_TABLE_NAMES.ai_character}
                         </th>
                         <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
-                            キャラクター挨拶文
+                            {ROLE_TABLE_NAMES.first_message}
                         </th>
                         <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
-                            キャラクター人物像
+                            {ROLE_TABLE_NAMES.description}
                         </th>
                         <th className="px-2 py-2 text-left text-xs font-bold text-gray-600 uppercase">
                             言語 <br />
