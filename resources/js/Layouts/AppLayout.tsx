@@ -107,7 +107,9 @@ export default function AppLayout({
                                 <Tooltip
                                     content={
                                         <span className="text-md font-bold">
-                                            ピン留め
+                                            {thread.favorite
+                                                ? "解除"
+                                                : "ピン留め"}
                                         </span>
                                     }
                                     placement="bottom"

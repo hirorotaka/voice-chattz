@@ -1,9 +1,10 @@
 // components/Thread/FavoriteThread.tsx
-import { memo } from "react";
+import { memo, useState } from "react";
 import { BsFillPinAngleFill } from "react-icons/bs";
 import { HiTrash, HiOutlinePencil } from "react-icons/hi2";
 import { Tooltip } from "flowbite-react";
 import { ThreadType } from "@/types/types";
+import { router } from "@inertiajs/react";
 
 interface FavoriteThreadProps {
     thread: ThreadType;
@@ -15,6 +16,28 @@ interface FavoriteThreadProps {
 
 export const FavoriteThread = memo(
     ({ thread, isActive, onSelect, onEdit, onDelete }: FavoriteThreadProps) => {
+        const [isSubmitting, setIsSubmitting] = useState(false); // ボタンの状態を管理するstate
+
+        const handleFavoriteToggle = async () => {
+            if (isSubmitting) return; // 既にリクエスト中の場合は何もしない
+
+            setIsSubmitting(true); // ボタンを非活性状態にする
+
+            try {
+                await router.put(
+                    route("thread.toggleFavorite", { thread: thread.id }),
+                    {},
+                    {
+                        preserveState: true,
+                        preserveScroll: true,
+                    }
+                );
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsSubmitting(false); // ボタンを活性状態に戻す
+            }
+        };
         return (
             <div
                 key={thread.id}
@@ -24,11 +47,24 @@ export const FavoriteThread = memo(
                         : "hover:bg-blue-700"
                 }`}
             >
+                <Tooltip
+                    content={<span className="text-xs font-bold">解除</span>}
+                    placement="bottom"
+                    style="light"
+                    arrow={false}
+                >
+                    <button
+                        className="ml-2"
+                        onClick={handleFavoriteToggle}
+                        disabled={isSubmitting}
+                    >
+                        <BsFillPinAngleFill className="flex-shrink-0 h-5 w-5 mr-2 text-yellow-400" />
+                    </button>
+                </Tooltip>
                 <button
                     onClick={() => onSelect(thread.id)}
                     className="flex-1 flex items-center p-2 pr-14"
                 >
-                    <BsFillPinAngleFill className="flex-shrink-0 h-5 w-5 mr-2 text-yellow-400" />
                     <p className="text-sm text-left">{thread.title}</p>
                 </button>
 
