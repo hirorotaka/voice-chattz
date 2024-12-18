@@ -1,7 +1,7 @@
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
-import { useForm } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import { FormEventHandler, useEffect, useMemo, useRef, useState } from "react";
 import InputLabel from "@/Components/InputLabel";
 import { IsUsingRoleType, LanguageType } from "@/types/types";
@@ -160,6 +160,20 @@ export default function CreateThreadForm({
                         <br />
                         デフォルト（フリートーク）では、一般的なAIキャラクターを選択できます。
                     </p>
+                    <div className="flex gap-4 text-sm mb-4">
+                        <Link
+                            href={route("roles.index")}
+                            className="text-blue-600 hover:text-blue-800 flex items-center gap-1 underline-offset-2 hover:underline"
+                        >
+                            <span>→ AIキャラクター作成</span>
+                        </Link>
+                        <Link
+                            href={route("roles.public")}
+                            className="text-blue-600 hover:text-blue-800 flex items-center gap-1 underline-offset-2 hover:underline"
+                        >
+                            <span>→ 公開AIキャラクター</span>
+                        </Link>
+                    </div>
 
                     <div
                         className="relative w-72 h-72 sm:h-60 sm:w-96"
