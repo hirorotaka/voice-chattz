@@ -241,7 +241,7 @@ export const SideMenu = ({
                         ))}
                     </nav>
 
-                    <div className="pb-24 sm:pb-0 mt-auto">
+                    <div className="pb-28 sm:pb-0 mt-auto">
                         <ProfileDropdown />
                     </div>
                 </div>
