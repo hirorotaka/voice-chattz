@@ -147,7 +147,7 @@ export const SideMenu = ({
 
     return (
         <>
-            <div className="bg-blue-600 h-[100dvh] flex flex-col">
+            <div className="bg-blue-600 h-[100dvh] safe-area-padding">
                 <div className="w-64 p-4 h-screen flex flex-col">
                     {/* ヘッダー */}
                     <div className="flex items-center text-white mb-8">
