@@ -148,7 +148,7 @@ export const SideMenu = ({
     return (
         <>
             <div className="bg-blue-600 min-h-screen">
-                <div className="w-64 p-4 h-screen flex flex-col">
+                <div className="w-64 p-4 h-screen flex flex-col pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)]">
                     {/* ヘッダー */}
                     <div className="flex items-center text-white mb-8">
                         <Link href={route("top")} className="flex items-center">
