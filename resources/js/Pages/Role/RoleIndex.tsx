@@ -120,6 +120,8 @@ export default function RoleIndex({
                                 </h1>
                                 <p className="text-xs sm:text-sm text-gray-400">
                                     作成したキャラクターをスレッド作成時に選択できます。
+                                    <br />
+                                    公開状態にすると他のユーザーに公開できます。
                                 </p>
                             </div>
                             <button
