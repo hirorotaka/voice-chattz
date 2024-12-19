@@ -8,20 +8,25 @@ import { HiMicrophone } from "react-icons/hi2";
 export const GuestSideMenu = () => {
     return (
         <>
-            <div className="bg-blue-600 min-h-screen">
-                <div className="w-64 p-4 h-screen flex flex-col">
+            <div className="bg-blue-600">
+                <div className="w-64 p-2 flex flex-col h-[100dvh]">
                     {/* ヘッダー */}
-                    <div className="flex items-center text-white mb-4">
-                        <Link href={route("top")} className="flex items-center">
-                            <HiMicrophone className="h-6 w-6 mr-2" />
-                            <h1 className="text-lg font-semibold">
-                                voice chattz
-                            </h1>
-                        </Link>
-                        <SideToggleButton
-                            className="ml-auto"
-                            variant="sidebar"
-                        />
+                    <div className="flex-none pt-[env(safe-area-inset-top)]">
+                        <div className="flex items-center text-white mb-2 sm:mb-8 p-4">
+                            <Link
+                                href={route("top")}
+                                className="flex items-center"
+                            >
+                                <HiMicrophone className="h-4 w-4 sm:h-6 sm:w-6 mr-2" />
+                                <h1 className="text-base sm:text-lg font-semibold">
+                                    voice chattz
+                                </h1>
+                            </Link>
+                            <SideToggleButton
+                                className="ml-auto"
+                                variant="sidebar"
+                            />
+                        </div>
                     </div>
 
                     <Link href={route("how-to-use")}>
