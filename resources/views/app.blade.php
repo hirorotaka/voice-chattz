@@ -3,10 +3,9 @@
 
 <head>
   <meta charset="utf-8">
-  {{-- <meta name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"> --}}
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=contain">
-  <meta name="apple-mobile-web-app-capable" content="no">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+
 
   <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
