@@ -57,6 +57,13 @@ const ProfileDropdown = () => {
                                 <HiQuestionMarkCircle className="h-5 w-5 mr-2 text-gray-500" />
                                 使い方ガイド
                             </Link>
+                            <Link
+                                href={route("profile.edit")}
+                                className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                            >
+                                <HiQuestionMarkCircle className="h-5 w-5 mr-2 text-gray-500" />
+                                プロフィール
+                            </Link>
                             <button
                                 onClick={handleLogout}
                                 className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
