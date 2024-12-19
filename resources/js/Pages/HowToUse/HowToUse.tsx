@@ -2,7 +2,6 @@ import { GuideSlider } from "@/Components/Slider/GuideSlider";
 import { slides } from "@/constants/guide";
 import AppLayout from "@/Layouts/AppLayout";
 import { IsUsingRoleType, LanguageType, ThreadType } from "@/types/types";
-import { useState } from "react";
 
 interface HowToUseProps {
     threads: ThreadType[];
@@ -15,16 +14,6 @@ export default function HowToUse({
     languages,
     isUsingMyRoles,
 }: HowToUseProps) {
-    const [currentSlide, setCurrentSlide] = useState<number>(0);
-
-    const nextSlide = (): void => {
-        setCurrentSlide((prev) => (prev + 1) % slides.length);
-    };
-
-    const prevSlide = (): void => {
-        setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-    };
-
     return (
         <AppLayout
             title="トップページ"
