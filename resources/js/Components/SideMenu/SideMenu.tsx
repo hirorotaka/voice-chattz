@@ -148,16 +148,16 @@ export const SideMenu = ({
     return (
         <>
             <div className="bg-blue-600">
-                <div className="w-64 p-4 flex flex-col h-[100dvh]">
+                <div className="w-64 p-2 flex flex-col h-[100dvh]">
                     {/* ヘッダー */}
-                    <div className="flex-none px-4 pt-[env(safe-area-inset-top)]">
-                        <div className="flex items-center text-white mb-8 p-4">
+                    <div className="flex-none pt-[env(safe-area-inset-top)]">
+                        <div className="flex items-center text-white mb-2 sm:mb-8 p-4">
                             <Link
                                 href={route("top")}
                                 className="flex items-center"
                             >
-                                <HiMicrophone className="h-6 w-6 mr-2" />
-                                <h1 className="text-lg font-semibold">
+                                <HiMicrophone className="h-4 w-4 sm:h-6 sm:w-6 mr-2" />
+                                <h1 className="text-base sm:text-lg font-semibold">
                                     voice chattz
                                 </h1>
                             </Link>
@@ -170,12 +170,12 @@ export const SideMenu = ({
                         {/* 新規スレッド作成ボタン */}
                         <button
                             onClick={handleCreateThread}
-                            className="w-full mb-6 p-3 bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition-colors duration-300 shadow-lg hover:shadow-xl"
+                            className="w-full mb-6 p-2 sm:p-3 bg-blue-700 hover:bg-blue-600 text-white rounded-lg transition-colors duration-300 shadow-lg hover:shadow-xl"
                         >
                             <div className="flex items-center justify-center space-x-2">
                                 <HiPlus className="h-6 w-6 flex-shrink-0" />{" "}
                                 {/* サイズを h-6 w-6 に増やし、flex-shrink-0 を追加 */}
-                                <span className="text-lg font-medium">
+                                <span className="text-base sm:text-lg font-medium">
                                     新規スレッド作成
                                 </span>
                             </div>
@@ -187,7 +187,7 @@ export const SideMenu = ({
                                 <div className="flex items-center p-2 mb-2 text-white bg-gradient-to-r from-blue-800 via-blue-700 to-blue-600 hover:from-blue-700 hover:via-blue-600 hover:to-blue-500 rounded-lg shadow-sm transition-all duration-300 hover:shadow-md">
                                     <HiUserCircle className="h-6 w-6 mr-3 flex-shrink-0 text-blue-300" />
                                     <div className="flex flex-col">
-                                        <span className="text-base font-medium">
+                                        <span className="text-sm font-medium">
                                             マイAIキャラクター
                                         </span>
                                     </div>
@@ -199,7 +199,7 @@ export const SideMenu = ({
                                 <div className="flex items-center p-2 text-white bg-gradient-to-l from-indigo-800 via-indigo-700 to-indigo-600 hover:from-indigo-700 hover:via-indigo-600 hover:to-indigo-500 rounded-lg shadow-sm transition-all duration-300 hover:shadow-md">
                                     <HiUsers className="h-6 w-6 mr-3 flex-shrink-0 text-indigo-300" />
                                     <div className="flex flex-col">
-                                        <span className="text-base font-medium">
+                                        <span className="text-sm font-medium">
                                             公開AIキャラクター
                                         </span>
                                     </div>
@@ -242,7 +242,7 @@ export const SideMenu = ({
                         ))}
                     </nav>
 
-                    <div className="flex-none  pb-[env(safe-area-inset-bottom)]">
+                    <div className="py-2 flex-none pb-[env(safe-area-inset-bottom)]">
                         <ProfileDropdown />
                     </div>
                 </div>

@@ -41,7 +41,7 @@ const ProfileDropdown = () => {
                         className="fixed inset-0 z-10"
                         onClick={() => setIsOpen(false)}
                     />
-                    <div className="absolute top-hull sm:bottom-full left-0 w-full mt-2 sm:mb-2 bg-white rounded-lg shadow-lg overflow-hidden z-20">
+                    <div className="absolute bottom-full left-0 w-full mb-2 bg-white rounded-lg shadow-lg overflow-hidden z-20">
                         <div className="py-1">
                             <Link
                                 href={route("top")}
