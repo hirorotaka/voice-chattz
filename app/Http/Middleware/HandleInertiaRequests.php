@@ -35,6 +35,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user() ? $request->user()->only([
                     'id',
                     'name',
+                    'email',
                 ]) : null,
             ],
             'asset_version' => md5_file(public_path('images/app_image.svg')),

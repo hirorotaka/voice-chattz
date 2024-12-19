@@ -1,5 +1,5 @@
 import { Link, router, usePage } from "@inertiajs/react";
-import { HiUserCircle, HiCog } from "react-icons/hi2";
+import { HiUserCircle } from "react-icons/hi2";
 import { HiHome } from "react-icons/hi2"; // TOPアイコン
 import { HiQuestionMarkCircle } from "react-icons/hi2"; // 使い方ガイドアイコン
 import { HiArrowLeftOnRectangle } from "react-icons/hi2"; // ログアウトアイコン
@@ -61,7 +61,7 @@ const ProfileDropdown = () => {
                                 href={route("profile.edit")}
                                 className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
                             >
-                                <HiQuestionMarkCircle className="h-5 w-5 mr-2 text-gray-500" />
+                                <HiUserCircle className="h-5 w-5 mr-2 text-gray-500" />
                                 プロフィール
                             </Link>
                             <button

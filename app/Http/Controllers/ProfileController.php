@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Language;
+use App\Models\Thread;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,9 +20,40 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+
+        $user = Auth::user();
+
+        $threads = Thread::where('user_id', Auth::user()->id)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        $languages = Language::all();
+
+        // 自分のロールのうち、is_using が 1 のものだけを取得（非公開も含む）
+        $isUsingMyRoles = $user->roles()
+            ->with('language')
+            ->wherePivot('is_using', 1) // is_using が 1 のものだけを取得
+            ->get()
+            ->map(function ($role) {
+                return [
+                    'id' => $role->id,
+                    'name' => $role->name,
+                    'first_message' => $role->first_message,
+                    'description' => $role->description,
+                    'language' => $role->language,
+                    'is_owned' => $role->pivot->owner,
+                    'is_using' => $role->pivot->is_using, // 常に 1
+                    'is_public' => $role->is_public,
+                ];
+            });
+
+
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'threads' => $threads,
+            'languages' => $languages,
+            'isUsingMyRoles' => $isUsingMyRoles
         ]);
     }
 
