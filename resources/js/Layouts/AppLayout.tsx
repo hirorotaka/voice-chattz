@@ -80,7 +80,7 @@ export default function AppLayout({
     return (
         <>
             <Head title={title} />
-            <div className="flex h-screen overflow-hidden bg-blue-950">
+            <div className="flex h-[100dvh] overflow-hidden bg-blue-950">
                 {/* Sidebar */}
                 <div
                     className={`fixed md:static overflow-hidden z-40 h-full ${
