@@ -75,9 +75,13 @@ export default function ResetPassword({
                                 <div>
                                     <InputLabel
                                         htmlFor="password"
-                                        value="新しいパスワード"
                                         className="text-slate-100"
-                                    />
+                                    >
+                                        新しいパスワード
+                                        <span className="text-red-500 ml-1">
+                                            *
+                                        </span>
+                                    </InputLabel>
                                     <TextInput
                                         id="password"
                                         type="password"
@@ -99,10 +103,14 @@ export default function ResetPassword({
 
                                 <div>
                                     <InputLabel
-                                        htmlFor="password_confirmation"
-                                        value="新しいパスワード（確認）"
+                                        htmlFor="password"
                                         className="text-slate-100"
-                                    />
+                                    >
+                                        新しいパスワード（確認）
+                                        <span className="text-red-500 ml-1">
+                                            *
+                                        </span>
+                                    </InputLabel>
                                     <TextInput
                                         id="password_confirmation"
                                         type="password"
