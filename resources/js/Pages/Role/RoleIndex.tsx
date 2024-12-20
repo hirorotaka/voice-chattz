@@ -95,21 +95,50 @@ export default function RoleIndex({
         >
             <div className="flex flex-col p-3 sm:p-5">
                 {myRoles.data.length === 0 ? (
-                    <div className="flex items-center flex-col justify-center h-full">
-                        <p className="text-lg sm:text-3xl text-white font-bold mb-10 text-center">
-                            あなたが作成したAIキャラクターが登録されていません。
-                            <br />
-                            AIキャラクターを作成してみましょう。
-                            <br />
-                            <br />
-                            作成したキャラクターはスレッド作成時に選択できます。
-                        </p>
-                        <button
-                            onClick={handleOpenCreateModal}
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded text-xl sm:text-3xl"
-                        >
-                            {ROLE_FORM_NAMES.ai_chara}作成
-                        </button>
+                    <div className="flex flex-col items-center justify-center min-h-[60vh] p-6">
+                        <div className="max-w-2xl text-center space-y-6">
+                            {/* メインメッセージ */}
+                            <h2 className="text-xl sm:text-3xl font-bold text-white">
+                                はじめてのAIキャラクター作成
+                            </h2>
+
+                            {/* サブメッセージ */}
+                            <p className="text-sm sm:text-lg text-gray-300 leading-relaxed">
+                                オリジナルのAIキャラクターを作って、
+                                <br className="hidden sm:block" />
+                                新しい会話体験を始めてみませんか？
+                            </p>
+
+                            {/* 説明文 */}
+                            <p className="text-xs sm:text-sm text-gray-400">
+                                作成したキャラクターは、新しいスレッドでいつでも使えます
+                            </p>
+
+                            {/* ボタン */}
+                            <div className="pt-8">
+                                <button
+                                    onClick={handleOpenCreateModal}
+                                    className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-500 transition-colors duration-200"
+                                >
+                                    <span className="mr-2">
+                                        <svg
+                                            className="w-6 h-6"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                                            />
+                                        </svg>
+                                    </span>
+                                    AIキャラクターを作成
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 ) : (
                     <>
