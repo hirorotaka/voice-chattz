@@ -73,7 +73,7 @@ export default function CreateRoleForm({
                 className="p-6  max-h-[90vh] max-w-[90vw] overflow-y-auto"
             >
                 <h1 className="text-lg sm:text-2xl font-medium text-gray-900">
-                    {ROLE_FORM_NAMES.ai_chara}を作成
+                    AIキャラクターを作成
                 </h1>
 
                 <div className="mt-6">

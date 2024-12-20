@@ -96,7 +96,7 @@ export default function CreateThreadForm({
     const modalContent = useMemo(
         () => (
             <form onSubmit={createThread} className="p-6">
-                <h1 className="text-2xl font-medium text-gray-900">
+                <h1 className="text-lg sm:text-2xl font-medium text-gray-900">
                     新規スレッドを作成
                 </h1>
 
@@ -181,7 +181,7 @@ export default function CreateThreadForm({
                     </div>
 
                     <div
-                        className="relative w-72 h-72 sm:h-60 sm:w-96"
+                        className="relative w-64 h-64 sm:h-60 sm:w-96"
                         ref={dropdownRef}
                     >
                         <button
@@ -196,7 +196,7 @@ export default function CreateThreadForm({
                                             ? "text-gray-400"
                                             : "text-gray-900"
                                     }
-                                    text-sm sm:text-base
+                                    text-xs sm:text-base
                                  `}
                             >
                                 {form.data.role_id === undefined
@@ -218,7 +218,7 @@ export default function CreateThreadForm({
                         </button>
 
                         {isOpen && (
-                            <div className="absolute left-0 right-0 mt-1 bg-white border rounded-md shadow-sm overflow-y-auto max-h-60">
+                            <div className="absolute left-0 right-0 mt-1 bg-white border rounded-md shadow-sm overflow-y-auto max-h-52 sm:max-h-60">
                                 <div
                                     className="cursor-pointer px-3 py-2 hover:bg-gray-200"
                                     onClick={() => {
@@ -237,7 +237,7 @@ export default function CreateThreadForm({
                                     .map((role) => (
                                         <div
                                             key={role.id}
-                                            className="cursor-pointer px-3 py-2 hover:bg-gray-200"
+                                            className="text-xs sm:text-sm cursor-pointer px-3 py-2 hover:bg-gray-200"
                                             onClick={() => {
                                                 form.setData(
                                                     "role_id",
