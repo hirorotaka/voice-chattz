@@ -102,7 +102,9 @@ export default function CreateThreadForm({
 
                 {/* 言語選択 */}
                 <div className="mt-6">
-                    <InputLabel value="対話モード *" />
+                    <InputLabel>
+                        対話モード<span className="text-red-500 ml-1">*</span>
+                    </InputLabel>
                     <p className="text-sm text-gray-500 mb-4">
                         使用する言語を選択してください
                     </p>
@@ -152,7 +154,10 @@ export default function CreateThreadForm({
                 </div>
 
                 <div className="mt-6">
-                    <InputLabel value="AIキャラクターを選択 *" />
+                    <InputLabel>
+                        AIキャラクターを選択
+                        <span className="text-red-500 ml-1">*</span>
+                    </InputLabel>
                     <p className="text-xs sm:text-sm text-gray-500 mb-4">
                         目的に合わせたAIキャラクターとの会話が可能です。
                         <br />

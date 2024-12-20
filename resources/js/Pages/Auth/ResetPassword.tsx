@@ -45,10 +45,14 @@ export default function ResetPassword({
                             <form onSubmit={submit} className="space-y-6">
                                 <div>
                                     <InputLabel
-                                        htmlFor="email"
-                                        value="メールアドレス"
+                                        htmlFor="password"
                                         className="text-slate-100"
-                                    />
+                                    >
+                                        パスワード
+                                        <span className="text-red-500 ml-1">
+                                            *
+                                        </span>
+                                    </InputLabel>
                                     <TextInput
                                         id="email"
                                         type="email"

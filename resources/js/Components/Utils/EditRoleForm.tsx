@@ -94,10 +94,10 @@ export default function EditRoleForm({
                 </h1>
 
                 <div className="mt-6">
-                    <InputLabel
-                        htmlFor="name"
-                        value={ROLE_FORM_NAMES.ai_character}
-                    />
+                    <InputLabel htmlFor="name">
+                        {ROLE_FORM_NAMES.ai_character}
+                        <span className="text-red-500 ml-1">*</span>
+                    </InputLabel>
                     <TextInput
                         id="name"
                         name="name"
@@ -115,10 +115,10 @@ export default function EditRoleForm({
                 </div>
 
                 <div className="mt-6">
-                    <InputLabel
-                        htmlFor="first_message"
-                        value={ROLE_FORM_NAMES.first_message}
-                    />
+                    <InputLabel htmlFor="first_message">
+                        {ROLE_FORM_NAMES.first_message}
+                        <span className="text-red-500 ml-1">*</span>
+                    </InputLabel>
                     <TextArea // TextArea を使用
                         id="first_message"
                         name="first_message"
@@ -138,10 +138,10 @@ export default function EditRoleForm({
                 </div>
 
                 <div className="mt-6">
-                    <InputLabel
-                        htmlFor="description"
-                        value={ROLE_FORM_NAMES.description}
-                    />
+                    <InputLabel htmlFor="description">
+                        {ROLE_FORM_NAMES.description}
+                        <span className="text-red-500 ml-1">*</span>
+                    </InputLabel>
                     <TextArea // TextArea を使用
                         id="description"
                         name="description"
@@ -162,7 +162,10 @@ export default function EditRoleForm({
                 </div>
 
                 <div className="mt-6">
-                    <InputLabel value="対話モード *" />
+                    <InputLabel>
+                        対話モード
+                        <span className="text-red-500 ml-1">*</span>
+                    </InputLabel>
                     <p className="text-xs sm:text-sm text-gray-500 mb-4">
                         会話する言語に合わせてモードを選択すると、より正確な応答が得られます。
                     </p>

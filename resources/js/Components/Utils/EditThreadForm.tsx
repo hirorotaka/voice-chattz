@@ -1,6 +1,8 @@
 import Modal from "@/Components/Modal";
 import SecondaryButton from "@/Components/SecondaryButton";
 import PrimaryButton from "@/Components/PrimaryButton";
+import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
 import { useForm } from "@inertiajs/react";
 import { FormEventHandler, useEffect, useMemo, useState } from "react";
 import { useAppContext } from "@/Contexts/AppContext";
@@ -28,7 +30,6 @@ export default function EditThreadForm({
 
     const [mounted, setMounted] = useState(false);
 
-    // マウント時の処理
     useEffect(() => {
         setMounted(true);
     }, []);
@@ -39,7 +40,6 @@ export default function EditThreadForm({
 
     useEffect(() => {
         if (show) {
-            // モーダルが表示されたときだけデータを更新
             setData({
                 id: threadToEdit.id,
                 title: threadToEdit.title,
@@ -57,7 +57,7 @@ export default function EditThreadForm({
 
         put(route("thread.update", { thread: data.id }), {
             preserveScroll: true,
-            preserveState: true, // バリデーションエラー時にフォームの状態を保持
+            preserveState: true,
             onSuccess: () => {
                 handleSuccess();
                 handleClose();
@@ -65,24 +65,28 @@ export default function EditThreadForm({
         });
     };
 
-    // フォームの内容をメモ化
     const modalContent = useMemo(
         () => (
             <form onSubmit={editThreadsubmit} className="p-6">
                 <h2 className="text-lg font-medium text-gray-900">
-                    スレッドを編集
+                    スレッドを編集<span className="text-red-500 ml-1">*</span>
                 </h2>
 
                 <div className="mt-6">
-                    <input
+                    <InputLabel htmlFor="title">
+                        タイトル
+                        <span className="text-red-500 ml-1">*</span>
+                    </InputLabel>
+                    <TextInput
+                        id="title"
+                        name="title"
                         type="text"
-                        className={`w-full rounded-md border-gray-300 ${
-                            errors.title ? "border-red-500" : ""
-                        }`}
+                        className="mt-1 block w-full"
                         value={data.title}
                         onChange={(e) => setData("title", e.target.value)}
                         placeholder="スレッドのタイトル"
-                        autoFocus
+                        isFocused={true}
+                        required
                     />
                     {errors.title && (
                         <div className="text-red-500 text-sm mt-1">
@@ -105,7 +109,6 @@ export default function EditThreadForm({
         [data, errors, processing, handleClose, editThreadsubmit, setData]
     );
 
-    // マウント前はnullを返す
     if (!mounted) {
         return null;
     }

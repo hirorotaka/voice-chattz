@@ -7,16 +7,34 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 import AuthLogo from "./AuthLogo";
 import AuthFooter from "./AuthFooter";
+import { useAppContext } from "@/Contexts/AppContext";
 
 export default function ForgotPassword({ status }: { status?: string }) {
     const { data, setData, post, processing, errors } = useForm({
         email: "",
     });
 
+    const { showToast } = useAppContext();
+
+    const handleSuccess = () => {
+        showToast(
+            "パスワードリセット用のリンクをメールでお送りしました",
+            "success"
+        );
+    };
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route("password.email"));
+        post(route("password.email"), {
+            onSuccess: () => {
+                console.log("メール送信に成功しました");
+                handleSuccess();
+            },
+            onError: () => {
+                console.log("メール送信に失敗しました");
+            },
+        });
     };
 
     return (
@@ -45,10 +63,14 @@ export default function ForgotPassword({ status }: { status?: string }) {
                             <form onSubmit={submit} className="space-y-6">
                                 <div>
                                     <InputLabel
-                                        htmlFor="email"
-                                        value="メールアドレス"
+                                        htmlFor="password"
                                         className="text-slate-100"
-                                    />
+                                    >
+                                        パスワード
+                                        <span className="text-red-500 ml-1">
+                                            *
+                                        </span>
+                                    </InputLabel>
                                     <TextInput
                                         id="email"
                                         type="email"
