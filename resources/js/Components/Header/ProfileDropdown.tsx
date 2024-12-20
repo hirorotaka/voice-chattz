@@ -48,7 +48,7 @@ const ProfileDropdown = () => {
                                 className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
                             >
                                 <HiHome className="h-5 w-5 mr-2 text-gray-500" />
-                                TOP
+                                アプリ概要
                             </Link>
                             <Link
                                 href={route("how-to-use")}

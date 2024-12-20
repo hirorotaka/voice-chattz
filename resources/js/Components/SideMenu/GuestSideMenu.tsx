@@ -4,6 +4,7 @@ import SideToggleButton from "./SideToggleButton";
 import { LoginButton } from "../Utils/LoginButton";
 import { RegisterButton } from "../Utils/RegisterButton";
 import { HiMicrophone } from "react-icons/hi2";
+import { HiHome } from "react-icons/hi2";
 
 export const GuestSideMenu = () => {
     return (
@@ -29,6 +30,14 @@ export const GuestSideMenu = () => {
                         </div>
                     </div>
 
+                    <Link href={route("top")}>
+                        <div className="flex items-center p-3 mb-4 text-white bg-blue-700 hover:bg-blue-600 rounded-lg shadow-md transition-colors duration-300">
+                            <HiHome className="h-5 w-5 mr-2 flex-shrink-0" />
+                            <span className="text-base font-medium">
+                                アプリ概要
+                            </span>
+                        </div>
+                    </Link>
                     <Link href={route("how-to-use")}>
                         <div className="flex items-center p-3 mb-4 text-white bg-blue-700 hover:bg-blue-600 rounded-lg shadow-md transition-colors duration-300">
                             <BsQuestionCircleFill className="h-5 w-5 mr-2 flex-shrink-0" />
