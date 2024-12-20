@@ -66,7 +66,7 @@ export const Toast = ({ message, type, onDismiss }: ToastProps) => {
                         }`}
                     />
                 </div>
-                <div className="text-sm sm:text-xl  text-black">{message}</div>
+                <div className="text-xs sm:text-lg  text-black">{message}</div>
                 <button
                     onClick={onDismiss}
                     className="ml-auto p-1.5 rounded-lg bg-red-50 hover:bg-red-100 transition-colors"

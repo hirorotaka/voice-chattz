@@ -7,6 +7,7 @@ import { Link, useForm } from "@inertiajs/react";
 import { FormEventHandler } from "react";
 import AuthLogo from "./AuthLogo";
 import AuthFooter from "./AuthFooter";
+import { useAppContext } from "@/Contexts/AppContext";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -16,10 +17,17 @@ export default function Register() {
         password_confirmation: "",
     });
 
+    const { showToast } = useAppContext();
+
+    const handleSuccess = () => {
+        showToast("ログインしました", "success");
+    };
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
         post(route("register"), {
+            onSuccess: () => handleSuccess(),
             onFinish: () => reset("password", "password_confirmation"),
         });
     };
@@ -39,9 +47,13 @@ export default function Register() {
                                 <div>
                                     <InputLabel
                                         htmlFor="name"
-                                        value="氏名"
                                         className="text-slate-100"
-                                    />
+                                    >
+                                        氏名
+                                        <span className="text-red-500 ml-1">
+                                            *
+                                        </span>
+                                    </InputLabel>
                                     <TextInput
                                         id="name"
                                         name="name"
@@ -64,9 +76,13 @@ export default function Register() {
                                 <div>
                                     <InputLabel
                                         htmlFor="email"
-                                        value="メールアドレス"
                                         className="text-slate-100"
-                                    />
+                                    >
+                                        メールアドレス
+                                        <span className="text-red-500 ml-1">
+                                            *
+                                        </span>
+                                    </InputLabel>
                                     <TextInput
                                         id="email"
                                         type="email"
@@ -89,9 +105,13 @@ export default function Register() {
                                 <div>
                                     <InputLabel
                                         htmlFor="password"
-                                        value="パスワード"
                                         className="text-slate-100"
-                                    />
+                                    >
+                                        パスワード
+                                        <span className="text-red-500 ml-1">
+                                            *
+                                        </span>
+                                    </InputLabel>
                                     <TextInput
                                         id="password"
                                         type="password"
@@ -113,9 +133,13 @@ export default function Register() {
                                 <div>
                                     <InputLabel
                                         htmlFor="password_confirmation"
-                                        value="パスワード（確認用）"
                                         className="text-slate-100"
-                                    />
+                                    >
+                                        パスワード（確認用）
+                                        <span className="text-red-500 ml-1">
+                                            *
+                                        </span>
+                                    </InputLabel>
                                     <TextInput
                                         id="password_confirmation"
                                         type="password"

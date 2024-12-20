@@ -4,31 +4,52 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Link, useForm } from "@inertiajs/react";
-import { FormEventHandler } from "react";
+import { FormEventHandler, useEffect } from "react";
 import GuestAppLayout from "@/Layouts/GuestAppLayout";
 import AuthLogo from "./AuthLogo";
 import AuthFooter from "./AuthFooter";
+import { useAppContext } from "@/Contexts/AppContext";
 
-export default function Login({
-    status,
-    canResetPassword,
-}: {
+interface LoginProps {
     status?: string;
     canResetPassword: boolean;
-}) {
+    flash: {
+        success?: string;
+        error?: string;
+        flashData?: any;
+        errorId?: string;
+        audioUrl?: string;
+    };
+}
+
+export default function Login({ status, canResetPassword, flash }: LoginProps) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: "",
         password: "",
         remember: false,
     });
 
+    const { showToast } = useAppContext();
+
+    const handleSuccess = () => {
+        showToast("ログインしました", "success");
+    };
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
         post(route("login"), {
+            onSuccess: () => handleSuccess(),
             onFinish: () => reset("password"),
         });
     };
+
+    //ログアウト時のメッセージ
+    useEffect(() => {
+        if (flash.success) {
+            showToast("ログアウトしました", "success");
+        }
+    }, [flash.success]);
 
     return (
         <GuestAppLayout title="ログイン">
@@ -45,9 +66,13 @@ export default function Login({
                                 <div>
                                     <InputLabel
                                         htmlFor="email"
-                                        value="メールアドレス"
                                         className="text-slate-100"
-                                    />
+                                    >
+                                        メールアドレス
+                                        <span className="text-red-500 ml-1">
+                                            *
+                                        </span>
+                                    </InputLabel>
                                     <TextInput
                                         id="email"
                                         type="email"
@@ -71,9 +96,13 @@ export default function Login({
                                 <div>
                                     <InputLabel
                                         htmlFor="password"
-                                        value="パスワード"
                                         className="text-slate-100"
-                                    />
+                                    >
+                                        パスワード
+                                        <span className="text-red-500 ml-1">
+                                            *
+                                        </span>
+                                    </InputLabel>
                                     <TextInput
                                         id="password"
                                         type="password"
