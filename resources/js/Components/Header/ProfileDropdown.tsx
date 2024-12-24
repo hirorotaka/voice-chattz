@@ -5,10 +5,27 @@ import { HiQuestionMarkCircle } from "react-icons/hi2"; // 使い方ガイドア
 import { HiArrowLeftOnRectangle } from "react-icons/hi2"; // ログアウトアイコン
 import { useState } from "react";
 import { IoSettingsOutline } from "react-icons/io5";
+import LegalTerms from "../Legal/LegalTerms";
+import LegalPolicies from "../Legal/LegalPolicies";
+import LegalModal from "../Utils/LegalModal";
+import { HiDocumentText } from "react-icons/hi2";
+import { HiShieldCheck } from "react-icons/hi2";
 
 const ProfileDropdown = () => {
     const { auth } = usePage().props;
     const [isOpen, setIsOpen] = useState(false);
+
+    const [showLegalModal, setShowLegalModal] = useState(false);
+    const [legalContent, setLegalContent] = useState<JSX.Element>(<></>);
+
+    const handleLegalOpenModal = (content: JSX.Element) => {
+        setLegalContent(content);
+        setShowLegalModal(true);
+    };
+
+    const handleLegalCloseModal = () => {
+        setShowLegalModal(false);
+    };
 
     const handleLogout = () => {
         router.post(route("logout"));
@@ -65,6 +82,24 @@ const ProfileDropdown = () => {
                                 プロフィール
                             </Link>
                             <button
+                                onClick={() =>
+                                    handleLegalOpenModal(<LegalTerms />)
+                                }
+                                className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                            >
+                                <HiDocumentText className="h-5 w-5 mr-2 text-gray-500" />
+                                利用規約
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleLegalOpenModal(<LegalPolicies />)
+                                }
+                                className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
+                            >
+                                <HiShieldCheck className="h-5 w-5 mr-2 text-gray-500" />
+                                プライバシーポリシー
+                            </button>
+                            <button
                                 onClick={handleLogout}
                                 className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
                             >
@@ -73,6 +108,12 @@ const ProfileDropdown = () => {
                             </button>
                         </div>
                     </div>
+
+                    <LegalModal
+                        show={showLegalModal}
+                        onClose={handleLegalCloseModal}
+                        modalContent={legalContent}
+                    />
                 </>
             )}
         </div>
