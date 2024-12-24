@@ -170,6 +170,10 @@ return [
         'terms' => [
             'required' => '登録には規約への同意が必須となります。',
         ],
+        'agreement' => [
+            'required' => '利用規約への同意が必要です',
+            'accepted' => '利用規約に同意してください',
+        ],
     ],
 
     /*
@@ -256,6 +260,7 @@ return [
         'updated_at' => '更新日',
         'username' => 'ユーザー名',
         'year' => '年',
+        'agreement' => '利用規約への同意',
     ],
 
 ];

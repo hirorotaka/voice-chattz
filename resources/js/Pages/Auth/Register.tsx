@@ -8,6 +8,7 @@ import { FormEventHandler } from "react";
 import AuthLogo from "./AuthLogo";
 import AuthFooter from "./AuthFooter";
 import { useAppContext } from "@/Contexts/AppContext";
+import LegalLinks from "@/Components/Legal/LegalLinks";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -15,7 +16,18 @@ export default function Register() {
         email: "",
         password: "",
         password_confirmation: "",
+        agreement: false,
     });
+
+    const isFormValid = () => {
+        return (
+            data.name.trim() !== "" &&
+            data.email.trim() !== "" &&
+            data.password.trim() !== "" &&
+            data.password_confirmation.trim() !== "" &&
+            data.agreement
+        );
+    };
 
     const { showToast } = useAppContext();
 
@@ -161,10 +173,41 @@ export default function Register() {
                                     />
                                 </div>
 
+                                <div className="space-y-2">
+                                    <div className="flex items-center space-x-2">
+                                        <input
+                                            type="checkbox"
+                                            id="agreement"
+                                            name="agreement"
+                                            checked={data.agreement}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "agreement",
+                                                    e.target.checked
+                                                )
+                                            }
+                                            className="w-4 h-4 rounded border-gray-700 bg-white/5 text-indigo-600 focus:ring-indigo-500"
+                                            required
+                                        />
+                                        <label className="text-sm text-slate-100">
+                                            <span className="flex items-center">
+                                                <span>
+                                                    <LegalLinks />
+                                                    に同意します
+                                                </span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <InputError
+                                        message={errors.agreement}
+                                        className="mt-1"
+                                    />
+                                </div>
+
                                 <div>
                                     <PrimaryButton
                                         className="w-full justify-center py-3 bg-indigo-600 hover:bg-indigo-500 transition-colors"
-                                        disabled={processing}
+                                        disabled={processing || !isFormValid()}
                                     >
                                         登録する
                                     </PrimaryButton>

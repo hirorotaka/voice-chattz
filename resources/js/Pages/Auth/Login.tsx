@@ -9,6 +9,7 @@ import GuestAppLayout from "@/Layouts/GuestAppLayout";
 import AuthLogo from "./AuthLogo";
 import AuthFooter from "./AuthFooter";
 import { useAppContext } from "@/Contexts/AppContext";
+import LegalLinks from "@/Components/Legal/LegalLinks";
 
 interface LoginProps {
     status?: string;
@@ -28,6 +29,10 @@ export default function Login({ status, canResetPassword, flash }: LoginProps) {
         password: "",
         remember: false,
     });
+
+    const isFormValid = () => {
+        return data.email.trim() !== "" && data.password.trim() !== "";
+    };
 
     const { showToast } = useAppContext();
 
@@ -152,7 +157,7 @@ export default function Login({ status, canResetPassword, flash }: LoginProps) {
                                 <div>
                                     <PrimaryButton
                                         className="w-full justify-center py-3 bg-indigo-600 hover:bg-indigo-500 transition-colors"
-                                        disabled={processing}
+                                        disabled={processing || !isFormValid()}
                                     >
                                         ログイン
                                     </PrimaryButton>
@@ -171,6 +176,7 @@ export default function Login({ status, canResetPassword, flash }: LoginProps) {
                     </div>
 
                     {/* フッター */}
+                    <LegalLinks />
                     <AuthFooter />
                 </div>
             </div>
