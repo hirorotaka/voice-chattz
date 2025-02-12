@@ -101,7 +101,7 @@ export default function MyRolePagination({
 }: PaginationProps) {
     return (
         <nav
-            className="flex items-center gap-x-2 mt-2 mb-2 mx-auto"
+            className="flex items-center gap-x-2 mt-6 mb-2 mx-auto"
             aria-label="Pagination"
         >
             <div className="flex items-center gap-x-2">

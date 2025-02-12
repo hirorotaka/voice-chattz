@@ -9,7 +9,7 @@ interface DesktopTableProps {
 
 const DesktopPublicRolesTable = ({ publicRoles }: DesktopTableProps) => (
     <div className="overflow-x-auto  overflow-y-auto rounded-lg shadow-md">
-        <div className="overflow-x-auto h-[calc(100vh-300px)]">
+        <div className="overflow-x-auto h-[calc(100vh-400px)]">
             <table className="min-w-full divide-y divide-gray-300">
                 <thead className="bg-gray-200">
                     <tr>
