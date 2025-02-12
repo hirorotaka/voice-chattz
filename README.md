@@ -1,5 +1,8 @@
 # 🎉 Voice Chatzz 
-AI と音声で学ぶ言語学習プラットフォーム
+<img src="https://github.com/user-attachments/assets/da1ed189-735b-4ce8-b8ff-465c125865a9" width="500">
+<br>
+
+### AI と音声で学ぶ言語学習プラットフォーム
 
 ## 🌟 概要
 
@@ -89,8 +92,7 @@ AI との会話という選択機能を実装することで：
 -   webAPI OpenAI_API
 
 ## 📃 ER 図
-![スクリーンショット 2025-02-12 18 25 08](https://github.com/user-attachments/assets/d0e77df0-d213-4f54-91c2-e03ac39966f6)
-
+<img src="https://github.com/user-attachments/assets/d0e77df0-d213-4f54-91c2-e03ac39966f6" width="700">
 
 <br>
 <br>
