@@ -1,66 +1,131 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎉 Voice Chatzz - AI と音声で学ぶ言語学習プラットフォーム
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 🌟 概要
 
-## About Laravel
+AI と音声認識を組み合わせた次世代の言語学習プラットフォーム。ブラウザ上でリアルタイムな音声認識により、AI との自然な会話を通じて語学力を向上させることができます。
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**サービス URL**: [https://voice-chattz.com](https://voice-chattz.com)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 💡 開発背景
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 課題認識
 
-## Learning Laravel
+-   突発的な「話したい」気持ちを満たせる場所の不足
+-   LINE や SNS では相手の時間を考慮する必要がある
+-   カウンセリングは敷居が高く、友人に相談するほどでもない悩みの存在
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 解決策として
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+AI との会話という選択機能を実装することで：
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+-   時間を気にせず、気軽に話しかけられる相手の提供
+-   適切なアドバイスやフィードバックが得られる環境の実現
+-   英会話練習や面接練習など、実用的な用途への展開
 
-## Laravel Sponsors
+## ⚡ 主要機能
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 🔐 アカウント管理
 
-### Premium Partners
+-   ユーザー登録・編集・削除
+-   ログイン/ログアウト
+-   パスワードリセット
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 💬 コミュニケーション
 
-## Contributing
+-   **マルチ言語対応チャット**
+    -   英語・日本語など目的に応じた言語選択
+    -   AI キャラクターとの会話
+-   **音声認識チャット**
+    -   リアルタイム音声録音
+    -   AI 応答システム
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 🤖 AI キャラクター管理
 
-## Code of Conduct
+-   **カスタム AI キャラクター作成**
+    -   目的に応じたキャラクター設定
+    -   他ユーザーとの共有機能
+-   **公開 AI キャラクター使用**
+    -   コミュニティ作成キャラクターの利用
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🛠 技術スタック
 
-## Security Vulnerabilities
+### バックエンド
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+-   PHP 8.4
+-   Laravel Framework 11.35.1
+-   認証機能(Laravel Breeze)
+-   MySQL 8.0
+-   mailpit(開発環境でのメール確認)
+-   API 連携 inertiajs/inertia-laravel
 
-## License
+### フロントエンド
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+-   React 18.2.0
+-   TypeScript 5.0.2
+-   TailwindCSS 3.2.1
+-   Flowbite React 0.10.2
+-   axios 1.7.4
+-   RecordRTC 5.6.2
+-   API 連携 inertiajs/react
+-   vite 5.4.11
+
+### インフラストラクチャー
+
+-   ホスティング: Heroku
+-   メール配信: SendGrid
+-   静的コンテンツ配信: S3 + CloudFrontt
+
+### 開発環境
+
+-   docker(Laravel Sail) 開発環境
+-   phpMyAdmin
+-   Visual Studio Code
+-   API クライアント(Thunder Client)
+
+### 外部 API
+
+-   webAPI OpenAI_API
+
+## 📃 ER 図
+
+<br>
+<br>
+<br>
+
+## 💪 工夫した点
+
+### UI / UX
+
+とにかくユーザーがストレスなく、サクサクと使える UI/UX の実装を図りました。
+<br>
+<br>
+
+-   メニューなどはサイドバーにすべて配置
+-   得たい情報が視覚的にパッと目につくようなページ構成
+-   画面全体の読み込みやスクロールをできるだけ減らす
+-   モーダルを使用したコンテンツの表示・切り替え
+-   パフォーマンス最適化
+-   不要なレンダリング防止のため、memo 化・useMemo・useCallback を実装
+
+## 💦 苦労した点と解決方法
+
+### 音声認識について
+
+まず、いままで音声認識の実装を取り扱ったことがなく、音声認識についての知識がない中でのスタートでした。まず簡単に音声認識の概要を把握しました。（音声入力の受付・音声データの保存・音声データの処理） その後、サンプルになるような記事を読み込んだり、ChatGPT と壁打ちしたりしていました。その中で WebSpeech API や MediaRecorder API を使って音声認識を実装しました。試行錯誤した結果、javaScript ライブラリの RecordRTC がクロスブラウザ対応が充実しており、複数の音声フォーマットに対応していて安定して使えそうだったので採用としました。
+
+### 音声の無音検知について
+
+音声が無音のまま、API エンドポイントに送られたとき無音の音声を元に文字起こしをしており、文字起こしがうまくいかない事象が発生していました。そのため無音を検知する機能が必要と考えました。今回は API 側で検知するようにしました。 OpenAI_API の Whisper で no_speech_threshold という API 側の無音判定閾値を設定して、 音声の無音検知を実装しました。自宅での実験のみで現在もどの閾値が適切か調整中ではありますが、期待通りに無音検知を実装できました。また音声を無音で送ったときにブラウザに無音を通知する機能までできたので良かったです。
+
+## 🚀 今後の展望
+
+### 改善点
+
+-   AI との会話なので、もっとテンポよく会話できるようにする。入力トークン数の制限などでレイテンシーの改善
+-   音声認識が、えー、あー、とかの状態を感知したら AI 側が省いて最適化するようになっているので原文のまま取得出来るようにする。
+-   音声認識のときに多少の訛りなども認識できるようにする。
+-   AI をアイコンだけではなく、ビジュアルキャラクターにしてそれとも会話できるようにする。
+
+### 追加機能
+
+-   ブラウザ間で直接リアルタイムな通信を可能にする Web 標準技術(webRTC)を組み込むことが出来れば、リアルタイムでのやり取りができるようになりそうと考えている。現在技術的に知見がないので、現在は未実装となっている。今後勉強してみて実装したい。
