@@ -1,8 +1,10 @@
-# 🎉 Voice Chatzz - AI と音声で学ぶ言語学習プラットフォーム
+# 🎉 Voice Chatzz 
+AI と音声で学ぶ言語学習プラットフォーム
 
 ## 🌟 概要
 
-AI と音声認識を組み合わせた次世代の言語学習プラットフォーム。ブラウザ上でリアルタイムな音声認識により、AI との自然な会話を通じて語学力を向上させることができます。
+AI と音声認識を組み合わせた次世代の言語学習プラットフォーム。<br>
+ブラウザ上でリアルタイムな音声認識により、AI との自然な会話を通じて語学力を向上させることができます。
 
 **サービス URL**: [https://voice-chattz.com](https://voice-chattz.com)
 
@@ -55,7 +57,6 @@ AI との会話という選択機能を実装することで：
 -   Laravel Framework 11.35.1
 -   認証機能(Laravel Breeze)
 -   MySQL 8.0
--   mailpit(開発環境でのメール確認)
 -   API 連携 inertiajs/inertia-laravel
 
 ### フロントエンド
@@ -78,6 +79,7 @@ AI との会話という選択機能を実装することで：
 ### 開発環境
 
 -   docker(Laravel Sail) 開発環境
+-   mailpit(開発環境でのメール確認)
 -   phpMyAdmin
 -   Visual Studio Code
 -   API クライアント(Thunder Client)
@@ -87,6 +89,8 @@ AI との会話という選択機能を実装することで：
 -   webAPI OpenAI_API
 
 ## 📃 ER 図
+![スクリーンショット 2025-02-12 18 25 08](https://github.com/user-attachments/assets/d0e77df0-d213-4f54-91c2-e03ac39966f6)
+
 
 <br>
 <br>
