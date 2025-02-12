@@ -43,12 +43,14 @@ const DesktopPublicRolesTable = ({ publicRoles }: DesktopTableProps) => (
                                 <TruncatedText
                                     text={role.first_message}
                                     maxLength={100}
+                                    className="break-all"
                                 />
                             </td>
                             <td className="px-2 py-3 text-xs text-gray-500 max-w-70">
                                 <TruncatedText
                                     text={role.description}
                                     maxLength={200}
+                                    className="break-all"
                                 />
                             </td>
                             <td className="px-2 py-3 text-xs text-gray-500 min-w-16">

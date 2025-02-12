@@ -22,14 +22,22 @@ const MobilePublicRolesCard = ({ role }: MobileRoleCardProps) => (
                 <p className="font-medium mb-1">
                     {ROLE_TABLE_NAMES.first_message}:
                 </p>
-                <TruncatedText text={role.first_message} maxLength={100} />
+                <TruncatedText
+                    text={role.first_message}
+                    maxLength={100}
+                    className="break-all"
+                />
             </div>
 
             <div className="text-xs text-gray-600">
                 <p className="font-medium mb-1">
                     {ROLE_TABLE_NAMES.description}:
                 </p>
-                <TruncatedText text={role.description} maxLength={150} />
+                <TruncatedText
+                    text={role.description}
+                    maxLength={150}
+                    className="break-all"
+                />
             </div>
 
             <div className="flex justify-end mt-2">
